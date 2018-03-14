@@ -13,6 +13,8 @@
 \usepackage{array,bm,color}
 \usepackage{epsfig,graphicx,nomencl,revsymb4-1,upgreek,url}
 \usepackage{hyperref}
+\usepackage{algorithm, algorithmicx}
+\usepackage{algpseudocode}
 \hypersetup{colorlinks=true, pdfauthor=Kevin C. Young, pdftitle=}
 %\hypersetup{citecolor={blue}, colorlinks={true}, filecolor={blue},
 %   linkcolor={blue}, pdfauthor=, pdfkeywords= pdfsubject=, pdftitle=,
@@ -102,15 +104,27 @@ After using GRAPE to produce a collection of controls, we now must find the weig
  \frac{1}{N} \sum^N_{i=1} w_i \mathcal{E}^{\dagger} (U_T\rho U_T^{\dagger}) \mathcal{E}
 \end{align}
 Now, to approximate a depolarizing channel we define our optimal control problem to be the following, which minimizes the off-diagonal terms:
-\begin{equation}
-  \begin{align}
+\begin{align}
    &\underset{w_0, ..., w_N}{\textbf{minimize}} \{\sum_{i\neq j}^N|\sigma_i\Lambda(\sigma_j)|^2\}\\
    &\textbf{where}\ \Lambda(\sigma_j) := \sum^N_{i=1}w_i\mathcal{E}_i^{\dagger}\sigma_j\mathcal{E}_i\\
    &\textbf{subject to} \sum_{i=1}^Nw_i = 1
-  \end{align}
-\end{equation}
+\end{align}
 
 This can be solved with a constrained minimization algorithm, such as Sequential Least Squares Programming. We present numerical results for one qubit and two qubits gates in the following sections.
+
+\section{GRAPE}
+First described in \cite{Khaneja2005}, the GRAPE (GRadient Ascent Pulse Engineering) algorithm is a technique for finding piecewise constant control sequences that approximate a desired unitary. Naively this can be done by defining a cost function $J(U) = Tr\{U_TU\}$, where $U_T$ is the target unitary, and $U = \exp\{-it(H_0 + \sum_{i=0}^{n}(c_i(t)H_i)\}$. One can then define the \textit{control matrix} $u_{ij}$, denoting the control amplitude associated with the $i^{th}$ time step and the $j^{th}$ hamiltonian. Then we see that we can maximize our cost function via the chain rule, i.e. performing the following update loop for some threshold value $\delta$:
+
+\begin{algorithmic}
+\Procedure{find\_controls}{U, $\delta$, $u_{ij}$}
+\While{$J(U) < (1-\delta$)}
+\State $u_{ij}$ $\rightarrow$ $u_{ij} + \epsilon\frac{\partial J(U)}{\partial u_{ij}}$
+\State $U \rightarrow \exp\{-it(H_0 + \sum_{i=0}^{n}(c_i(t)H_i)\}$
+\EndWhile
+\EndProcedure
+\end{algorithmic}
+
+In general these gradients can be computed via simple back propagation with the chain rule, however in \cite{Khaneja2005} Khaneja et al. derives a simple update formula that is correct to first order. So long as the discretization in time is fine enough,this will be a good approximation.
 
 \section{1Q Gates}
 We assume a model of our Hamiltonian for one qubit control to be:
@@ -128,8 +142,7 @@ $$H = \sum_{j=1}^2\epsilon_j\sigma_z^j + (1 + \delta_j)(c_x^jx(t)\sigma_x^j + c_
     \left( U^\dagger V \right)
 \end{align*}
 
-$$ \epsilon, \delta \midtilde \sim \mathcal{N}(0, .001) $$
-$$\epsilon_0, \epsilon_1, \delta_0, \delta_1 \midtilde \sim \mathcal{N}(0, .001)$$
-% \bibliography{decorrelation.bib}
-
+%$$ \epsilon, \delta \midtilde \sim \mathcal{N}(0, .001) $$
+%$$\epsilon_0, \epsilon_1, \delta_0, \delta_1 \midtilde \sim \mathcal{N}(0, .001)$$
+\bibliography{decorrelation.bib}
 \end{document}

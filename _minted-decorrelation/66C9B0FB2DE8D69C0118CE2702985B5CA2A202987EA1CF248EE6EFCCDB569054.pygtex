@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+while J(U) \PYGZlt{} (1\PYGZhy{}\PYG{esc}{$\delta$}):
+    u\PYG{esc}{$_{ij}$} \PYG{esc}{$\rightarrow$} u\PYG{esc}{$_{ij}$} + \PYG{esc}{$\epsilon\frac{\partial J(U)}{\partial u_{ij}}$}
+    U \PYG{esc}{$\rightarrow$} \PYG{esc}{$\exp\{-it(H_0 + \sum_{i=0}^{n}(c_i(t)H_i)\}$}
+\end{Verbatim}
