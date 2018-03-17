@@ -1,0 +1,1 @@
+This folder contains folder from the repository that I used for data generation. They're not very useful without the other repo, the most useful factor is for me (Anthony) to see the number of the controlset, the image, and a auto-generated texreport that has some meta information.
