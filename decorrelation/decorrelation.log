@@ -1,11 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.3.14)  16 MAR 2018 18:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.5.13)  17 JUN 2018 18:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**decorrelation.tex
+**\nonstopmode\input decorrelation.tex
 (./decorrelation.tex
-LaTeX2e <2017-04-15>
-Babel <3.12> and hyphenation patterns for 9 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/revtex/revtex4-1.cls
 Document Class: revtex4-1 2010/07/25/20:33:00 4.1r (http://publish.aps.org/revt
 ex4/ for documentation)
@@ -401,79 +399,52 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 \ALG@tmplength=\skip58
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
-) (/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
-Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
-
-(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
-Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
-Package caption3 Info: TeX engine: e-TeX on input line 67.
-\captionmargin=\dimen123
-\captionmargin@=\dimen124
-\captionwidth=\dimen125
-\caption@tempdima=\dimen126
-\caption@indent=\dimen127
-\caption@parindent=\dimen128
-\caption@hangindent=\dimen129
-Package caption Info: Unknown document class (or package),
-(caption)             standard defaults will be used.
 )
-
-Package caption Warning: Unsupported document class (or package) detected,
-(caption)                usage of the caption package is not recommended.
-See the caption package documentation for explanation.
-
-Package caption Info: \@makecaption = \long macro:#1#2->\par \vskip \abovecapti
-onskip \begingroup \small \rmfamily \sbox \@tempboxa {\let \\\heading@cr \@make
-@capt@title {#1}{#2}}\@ifdim {\wd \@tempboxa >\hsize }{\begingroup \samepage \f
-lushing \let \footnote \@footnotemark@gobble \@make@capt@title {#1}{#2}\par \en
-dgroup }{\global \@minipagefalse \hb@xt@ \hsize {\hfil \unhbox \@tempboxa \hfil
- }}\endgroup \vskip \belowcaptionskip .
-\c@ContinuedFloat=\count126
-Package caption Info: float package is loaded.
-Package caption Info: hyperref package is loaded.
-)
-Package hyperref Info: Option `colorlinks' set `true' on input line 18.
+Package hyperref Info: Option `colorlinks' set `true' on input line 16.
 Class revtex4-1 Info: Unrecognized array package. Please update this document c
-lass! (Proceeding with fingers crossed.) on input line 45.
+lass! (Proceeding with fingers crossed.) on input line 43.
 
 
 Class revtex4-1 Warning: Repair the float package.
 
-Class revtex4-1 Info: Robustifying \LaTeX's \boldmath command on input line 45.
+Class revtex4-1 Info: Robustifying \LaTeX's \boldmath command on input line 43.
 
-Class revtex4-1 Info: cite was not loaded (OK!) on input line 45.
-Class revtex4-1 Info: mcite was not loaded (OK!) on input line 45.
-Class revtex4-1 Info: multicol was not loaded (OK!) on input line 45.
-(./decorrelation.aux)
+Class revtex4-1 Info: cite was not loaded (OK!) on input line 43.
+Class revtex4-1 Info: mcite was not loaded (OK!) on input line 43.
+Class revtex4-1 Info: multicol was not loaded (OK!) on input line 43.
+(./decorrelation.aux
+
+LaTeX Warning: Label `eq:2' multiply defined.
+
+)
 \openout1 = `decorrelation.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-
-(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+ (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count127
-\scratchdimen=\dimen130
+\scratchcounter=\count126
+\scratchdimen=\dimen123
 \scratchbox=\box45
-\nofMPsegments=\count128
-\nofMParguments=\count129
+\nofMPsegments=\count127
+\nofMParguments=\count128
 \everyMPshowfont=\toks33
-\MPscratchCnt=\count130
-\MPscratchDim=\dimen131
-\MPnumerator=\count131
-\makeMPintoPDFobject=\count132
+\MPscratchCnt=\count129
+\MPscratchDim=\dimen124
+\MPnumerator=\count130
+\makeMPintoPDFobject=\count131
 \everyMPtoPDFconversion=\toks34
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -493,7 +464,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box46
-Package hyperref Info: Link coloring ON on input line 45.
+Package hyperref Info: Link coloring ON on input line 43.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -501,103 +472,158 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count133
+\c@section@level=\count132
 )
-LaTeX Info: Redefining \ref on input line 45.
-LaTeX Info: Redefining \pageref on input line 45.
-LaTeX Info: Redefining \nameref on input line 45.
+LaTeX Info: Redefining \ref on input line 43.
+LaTeX Info: Redefining \pageref on input line 43.
+LaTeX Info: Redefining \nameref on input line 43.
 
 (./decorrelation.out) (./decorrelation.out)
 \@outlinefile=\write4
 \openout4 = `decorrelation.out'.
 
-Package caption Info: Begin \AtBeginDocument code.
-Package caption Info: End \AtBeginDocument code.
-Class revtex4-1 Info: Taking \maketitle back from hyperref on input line 45.
+Class revtex4-1 Info: Taking \maketitle back from hyperref on input line 43.
 \openout3 = `decorrelationNotes.bib'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 64.
+LaTeX Font Info:    Try loading font information for U+msa on input line 62.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 64.
+LaTeX Font Info:    Try loading font information for U+msb on input line 62.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/sc' undefined
-(Font)              using `OT1/cmr/bx/n' instead on input line 123.
+(Font)              using `OT1/cmr/bx/n' instead on input line 103.
 
-<x2.png, id=73, 1156.32pt x 578.16pt>
+[2]
+<simple_example.png, id=117, 485.56406pt x 523.20468pt>
+File: simple_example.png Graphic file (type png)
+<use simple_example.png>
+Package pdftex.def Info: simple_example.png  used on input line 154. on input l
+ine 154.
+Package pdftex.def Info: Requested size: 184.5pt x 198.79588pt on input line 15
+4.
+<x2.png, id=123, 1156.32pt x 578.16pt>
 File: x2.png Graphic file (type png)
 <use x2.png>
-Package pdftex.def Info: x2.png  used on input line 147. on input line 147.
-Package pdftex.def Info: Requested size: 510.0pt x 254.9999pt on input line 147
+Package pdftex.def Info: x2.png  used on input line 182. on input line 182.
+Package pdftex.def Info: Requested size: 510.0pt x 254.9999pt on input line 182
 .
-<y2.png, id=77, 1156.32pt x 578.16pt>
+<y2.png, id=126, 1156.32pt x 578.16pt>
 File: y2.png Graphic file (type png)
 <use y2.png>
-Package pdftex.def Info: y2.png  used on input line 152. on input line 152.
-Package pdftex.def Info: Requested size: 510.0pt x 254.9999pt on input line 152
+Package pdftex.def Info: y2.png  used on input line 188. on input line 188.
+Package pdftex.def Info: Requested size: 510.0pt x 254.9999pt on input line 188
 .
-<2Q.png, id=80, 1156.32pt x 578.16pt>
+
+Overfull \hbox (17.54451pt too wide) detected at line 198
+[]\OML/cmm/m/it/10 H \OT1/cmr/m/n/10 = [] [] + [](\OML/cmm/m/it/10 ^^O[]^^[[] \
+OT1/cmr/m/n/10 + (1 + \OML/cmm/m/it/10 ^^N[]\OT1/cmr/m/n/10 )(\OML/cmm/m/it/10 
+c[]x\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 ^^[[] 
+\OT1/cmr/m/n/10 + \OML/cmm/m/it/10 c[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/c
+mr/m/n/10 )\OML/cmm/m/it/10 ^^[[]\OT1/cmr/m/n/10 ))
+ []
+
+<2Q.png, id=129, 1156.32pt x 578.16pt>
 File: 2Q.png Graphic file (type png)
 <use 2Q.png>
-Package pdftex.def Info: 2Q.png  used on input line 166. on input line 166.
-Package pdftex.def Info: Requested size: 510.0pt x 254.9999pt on input line 166
+Package pdftex.def Info: 2Q.png  used on input line 204. on input line 204.
+Package pdftex.def Info: Requested size: 510.0pt x 254.9999pt on input line 204
 .
-[2] [3 <./x2.png> <./y2.png>]
+[3pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
+has been already used, duplicate ignored
 
-LaTeX Warning: A float is stuck (cannot be placed); try class option [floatfix]
- on input line 177.
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.207 
+       <./simple_example.png>] [4pdfTeX warning (ext4): destination with the sa
+me identifier (name{figure.2}) has been already used, duplicate ignored
 
-(./decorrelation.bbl) [4 <./2Q.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 183.
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.207 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+3}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.207 
+       <./x2.png> <./y2.png>] (./decorrelation.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 101--106
+ []\OT1/cmr/m/n/9 R. Blume-Kohout, J. K. Gam-ble, E. Nielsen,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 117--122
+ []\OT1/cmr/m/n/9 E. Camp-bell, [][]Phys-i-cal Re-view A \OT1/cmr/bx/n/9 95 \OT
+1/cmr/m/n/9 (2017),
+ []
+
+
+Underfull \hbox (badness 1400) in paragraph at lines 184--188
+ \OT1/cmr/m/n/9 Cory, [][]Phys-i-cal Re-view A \OT1/cmr/bx/n/9 87 \OT1/cmr/m/n/
+9 (2013), 10.1103/phys-
+ []
+
+) [5] [6pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.4}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.222 \end{document}
+                     <./2Q.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 222.
  (./decorrelation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 183.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 183.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 222.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 222.
 Package rerunfilecheck Info: File `decorrelation.out' has not changed.
-(rerunfilecheck)             Checksum: D398E398051E013BC004C10CAA03AB78;612.
+(rerunfilecheck)             Checksum: F9A5C5EB1FE00E40DA31A40ECC469177;694.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 9890 strings out of 494813
- 142357 string characters out of 6178109
- 252697 words of memory out of 5000000
- 13031 multiletter control sequences out of 15000+600000
- 19645 words of font info for 74 fonts, out of 8000000 for 9000
+ 8950 strings out of 494813
+ 124983 string characters out of 6178109
+ 229845 words of memory out of 5000000
+ 12087 multiletter control sequences out of 15000+600000
+ 18806 words of font info for 69 fonts, out of 8000000 for 9000
  81 hyphenation exceptions out of 8191
- 36i,13n,39p,899b,433s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 32i,20n,28p,1042b,397s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/share/texlive/texmf
--dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
-blic/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5
-.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share
-/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmti9.pfb>
-Output written on decorrelation.pdf (4 pages, 1249087 bytes).
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
+0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9
+.pfb>
+Output written on decorrelation.pdf (6 pages, 1307607 bytes).
 PDF statistics:
- 203 PDF objects out of 1000 (max. 8388607)
- 163 compressed objects within 2 object streams
- 36 named destinations out of 1000 (max. 500000)
- 96 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 273 PDF objects out of 1000 (max. 8388607)
+ 227 compressed objects within 3 object streams
+ 48 named destinations out of 1000 (max. 500000)
+ 109 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,10 +1,11 @@
 \BOOKMARK [0][-]{section*.2}{Decorrelating Errors in Quantum Gates by Random Gate Synthesis}{}% 2
 \BOOKMARK [1][-]{section*.1}{Abstract}{section*.2}% 1
-\BOOKMARK [1][-]{section*.3}{Outline}{section*.2}% 3
-\BOOKMARK [1][-]{section*.4}{Introduction}{section*.2}% 4
-\BOOKMARK [1][-]{section*.5}{A Simple Example}{section*.2}% 5
-\BOOKMARK [1][-]{section*.6}{Optimal Control Problem}{section*.2}% 6
-\BOOKMARK [1][-]{section*.7}{GRAPE}{section*.2}% 7
-\BOOKMARK [1][-]{section*.10}{1Q Gates}{section*.2}% 8
-\BOOKMARK [1][-]{section*.12}{2Q Gate}{section*.2}% 9
-\BOOKMARK [1][-]{section*.13}{References}{section*.2}% 10
+\BOOKMARK [1][-]{section*.3}{Introduction}{section*.2}% 3
+\BOOKMARK [1][-]{section*.4}{GRAPE}{section*.2}% 4
+\BOOKMARK [1][-]{section*.5}{Optimal Control Problem}{section*.2}% 5
+\BOOKMARK [2][-]{section*.6}{Random Gate Synthesis}{section*.5}% 6
+\BOOKMARK [2][-]{section*.7}{Channel Approximation}{section*.5}% 7
+\BOOKMARK [1][-]{section*.8}{A Simple Example}{section*.2}% 8
+\BOOKMARK [1][-]{section*.9}{1Q Gates}{section*.2}% 9
+\BOOKMARK [1][-]{section*.10}{2Q Gates}{section*.2}% 10
+\BOOKMARK [1][-]{section*.11}{References}{section*.2}% 11

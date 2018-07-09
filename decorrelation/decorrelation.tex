@@ -1,5 +1,3 @@
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % RevTeX 4.1 LaTeX
 % Kevin C. Young
@@ -45,13 +43,13 @@
 \begin{document}
 \title{Decorrelating Errors in Quantum Gates by Random Gate Synthesis}
 
-\author{Kevin C. Young}
-\email[Corresponding author: ]{kyoung@sandia.gov}
-\affiliation{Sandia National Laboratories, Livermore, CA}
-
 \author{Anthony Polloreno}
 % \email[Email: ]{apolloreno}
 \affiliation{Rigetti Computing, Berkeley, CA}
+
+\author{Kevin C. Young}
+\email[Corresponding author: ]{kyoung@sandia.gov}
+\affiliation{Sandia National Laboratories, Livermore, CA}
 
 \date{\today}
 
@@ -127,13 +125,14 @@ In this paper we have modified the update step to use instead use approximately 
 with $p(\vec{\delta})$ Gaussian distributed. This technique has been used in previous works such as \cite{Goerz2014} to ensure that the optimal control results are robust over a wide range of errors, and we approximate this integral approximately in this paper by using Gaussian quadrature. Doing this ensures that the family of controls produced by our routine perform moderately well over a range of stochastic errors.
 
 \section{Optimal Control Problem}\label{ocp}
+\subsection{Random Gate Synthesis}
 To explore the utility of BCSs, we consider the following Hamiltonian:
 \begin{equation}\label{eq:2}
   H(t) = H_0 + \sum_{i=1}^n (c_i(t) + \delta_i(t))H_i
 \end{equation}
-for control Hamiltonians $H_{i\neq0}$, free evolution Hamiltonian $H_0$ and time-varying random variables $\delta_i$ are random variables. Such a model might describe a superconducting qubit quantum processor where control amplitudes for the RF pulses vary over time. Correlations between different $\delta_i$ could arise if two of the control have the same noise source, e.g. $X$ and $Y$ gates in superconducting qubit architectures might use the same AWG and pulse envelope.
-
-After using GRAPE to produce a collection of controls, we must find the weights $w_i$ such that the collection of controls form a BCS as described in (\ref{eq:1}). To do this, for each control $U_i$ we find the unitary error channel $\mathcal{E}_i$ such that $\mathcal{E}_iU_i=U_T$, where $U_T$ is the target gate. If we consider the Pauli-Liouville representation of this error channel, the diagonal terms are the \textit{stochastic} terms that arise from classical uncertainty, while the off-diagonal terms may more generally arise from \textit{coherent} operations. In particular, we see that we can write a convex sum over these channels as:
+for control Hamiltonians $H_i$, free evolution Hamiltonian $H_0$ and time-varying random variables $\delta_i$. Such a model might describe a superconducting qubit quantum processor where control amplitudes for the RF pulses vary over time. Correlations between different $\delta_i$ might arise if two of the controls have the same noise source. Examples of shared noise sources include $X$ and $Y$ gates in superconducting qubit architectures might use the same AWG and pulse envelope, and diurnal temperature drift of control electronics.
+\subsection{Channel Approximation}
+After using GRAPE or another optimal control routine to synthesize a collection of controls, we must find the weights $w_i$ such that the collection of controls form a BCS as described in (\ref{eq:1}). To do this, for each control $U_i$ we find the unitary error channel $\mathcal{E}_i$ such that $\mathcal{E}_iU_i=U_T$, where $U_T$ is the target gate. If we consider the Pauli-Liouville representation of this error channel, the diagonal terms are the \textit{stochastic} terms that arise from classical uncertainty, while the off-diagonal terms may more generally arise from \textit{coherent} operations. In particular, we see that we can write a convex sum over these channels as:
 \begin{align}
  \frac{1}{N} \sum^N_{i=1} w_i \mathcal{E}^{\dagger} (U_T\rho U_T^{\dagger}) \mathcal{E}
 \end{align}
@@ -195,7 +194,7 @@ $\epsilon$ is a normally distributed random variable, centered at $0$ with stand
 \section{2Q Gates}\label{2Q Gates}
  In this section, we present numerical results on a generating one and two-qubit gates that together with $RZ(\theta)$ rotations are universal for two-qubit computation. Our control Hamiltonian is given as: 
 \begin{equation} \label{eq:2Qham}
-H = \sum_{j=1}^2\epsilon_j\sigma_z^j + (1 + \delta_j)(c_x^jx(t)\sigma_x^j + c_y^j(t)\sigma_y^j)
+H = \exp{(-i\frac{\sigma_z^1\otimes\sigma_z^2}{4})} + \sum_{j=1}^2(\epsilon_j\sigma_z^j + (1 + \delta_j)(c_x^jx(t)\sigma_x^j + c_y^j(t)\sigma_y^j))
 \end{equation}
 We again assume that the standard deviations are $.001$ on all parameters $\delta_j$ and $c^j_i$ and that errors on the single qubit $\sigma_x$ and $\sigma_y$ rotations are perfectly correlated.
 [ADD ANALYSIS OF PLOTS]
