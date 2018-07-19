@@ -63,8 +63,6 @@ Thresholds for fault-tolerant quantum computation are often calculated assuming 
 
 \section{Introduction}
 
-%Thresholds for fault-tolerant quantum computation are often calculated assuming a noise model in which errors are uncorrelated. While convenient for simulation, these error models are often unphysical.  Recent work by Preskill and others has shown that the arbitrarily long computations may be performed even in the presence of spatial correlation, provided the correlation is sufficiently weak and decays sufficiently quickly with distance, but at the cost of a significantly lower threshold. The success of algebraic decorrelation methods, such as dynamical decoupling, demonstrate that quantum control techniques are capable of reducing temporal noise correlations. We propose to introduce similar methods to effect the spatial decorrelation of errors in quantum circuits, thereby increasing the threshold for fault-tolerant computation in such systems.  
-
 Steady progress has been made in the theory of quantum error correction, proving higher thresholds for increasingly general models of noise \cite{Aharonov2006}. These results show that quantum computation is feasible, however recent NISQ \cite{Preskill2018} devices have noise that is not only often above thresholds, but that also violates assumptions made by the models used in proofs.
 
 As an example, many models assume that errors are local, however systems can have spatially correlated error on more than two qubits that arise from multi-qubit terms in the Hamiltonian, such as:
@@ -73,7 +71,7 @@ As an example, many models assume that errors are local, however systems can hav
 \end{equation}
 where $a^{\textbf{i}}_{\textbf{j}}$ is a stochastic process. In a standard nearest-neighbors topology, like those found in super-conducting qubit architectures, these terms might arise from an effective model where high-frequency degrees of freedom are intergrated out to yield high-weight operators. These noise channels are one way in which the assumptions used in proofs of thresholds may be violated.
 
-Another assumption that is instrumental in proving many threshold theorems is Markovianity \cite{Kitaev1997}. There are many ways in which devices can behave in non-Markovian ways, and NISQ devices have already been shown to be subject to drift in controls, \cite{Kelly2018} and in general non-Markovian noise \cite{BlumeKohout2017}. Other authors have tried to address these problems \cite{Wallman2016, Campbell2017, Heim2016} by using circuit composition to try to remove correlated noise. [WHY IS WHAT WE'RE DOING BETTER?]
+Another assumption that is instrumental in proving many threshold theorems is Markovianity \cite{Kitaev1997}. There are many ways in which devices can behave in non-Markovian ways, and NISQ devices have already been shown to be subject to drift in controls, \cite{Kelly2018} and in general non-Markovian noise \cite{BlumeKohout2017}. Other authors have tried to address these problems \cite{Wallman2016, Campbell2017, Heim2016} by using circuit composition to try to remove correlated noise. Indeed, other have even implemented these routines natively in hardware \cite{Ware2018}. These routines all require some level of sophistication. In the case of \cite{Campbell2017}, the analysis assumes Solovay-Kitaev [CITATION]-like decomposition of unitaries, and treats Pauli and Clifford gates as being free to implement, which is far from the reality of modern quantum computers. In \cite{Wallman2016} and the implementation in \cite{Ware2018}, the random frames are implemented in each sequence by precompiling the inserted Pauli frame rotations with the Clifford operations. In general, this cannot be done efficiently for non-Clifford operations, and in addition, this introduces a linear-time precompilation overhead for shot of the circuit.
 
 To remedy these problems, we take a different approach and propose to inject additional decorrelating randomness into the system through the use of \emph{balanced control solutions} (BCSs). BCSs are families of control solutions that all approximate the same target gate, but with balanced errors for any given instance of the noise Hamiltonian. That is, for a target gate, $U_T$, we seek a family of control solutions, $c_i(t)$, each implementing an approximation $U_i$ to the target gate, such that the family of unitary approximations is \emph{balanced}. A balanced family is one which satisfies, for some small $\alpha$,
 \begin{equation}\label{eq:1}
@@ -88,7 +86,7 @@ with $p_i$ summing to one. This means that on average, the unitary approximation
 
 This techique can be used to turn coherent error into incoherent error and correlated error into uncorrelated error. The former gives the benefit that the error incurred from incoherent errors compound linearly, while coherent errors compound quadratically. The latter gives the benefit of reducing non-Markovian effects. This is a particularly useful property of BCSs, as diagnosing non-Markovianity in a gateset is challenging, but essential to perform reliable quantum computation. Many routines exist that can assess the quality of a gateset, however in the presence of non-Markovianity most of them become unreliable.
 
-For example, randomized benchmarking and tomography will report incorrect answers without any syndrome, [CITATION NEEDED], and gateset tomography will report that the gateset failed to be Markovian, but will fail to diagnose in what way it was non-Markovian. Because BCSs change the error to a depolorizing channel, the correlations in the noise can be massively reduced, and the process can be made much closer to Markovian, at no real cost to the fidelity of the implemented gate.
+For example, randomized benchmarking and tomography will report incorrect answers without any syndrome, [CITATION NEEDED], and gateset tomography will report that the gateset failed to be Markovian, but will fail to diagnose in what way it was non-Markovian. Because BCSs change the error to a depolorizing channel, the correlations in the noise can be massively reduced, and the process can be made much closer to Markovian, at no real cost to the fidelity of the implemented gate. Unlike \cite{Ware2018}, \cite{Wallman2016}, and \citep{Campbell2017}, this routine can be implemented in the firmware of the quantum computer, and requires only an instruction for a random choice - no pre or post processing is required.
 
 \section{GRAPE}\label{GRAPE}
 Generating BCSs can be done in a variety of ways, using any quantum optimal control technique \cite{Caneva2011, Machnes2018} to find a family of controls. For simplicity in this paper we use the GRAPE algorithm to generate candidate pulseshapes to approximate the target gate. First described in \cite{Khaneja2005}, the GRAPE (GRadient Ascent Pulse Engineering) algorithm is a technique for finding piecewise constant control sequences that approximate a desired unitary, $U_T$. Defining our uncontrolled Hamiltonian as $H_0$, our control Hamiltonians as $H_{i\neq 0}$, and our \textit{control matrix} $u_{ij}$ as containing control amplitude associated with the $i^{th}$ time step and the $j^{th}$ hamiltonian, we can write our approximate unitary at any timestep as
@@ -170,7 +168,8 @@ As a somewhat trivial example, consider a single-qubit rotation-angle error, suc
 Therefore, for a rotational error of angle $\epsilon > 0$, we see that $X_\pi$ and  $\bar X_\pi$  form a BCS, with $\alpha\approx\epsilon^2$.
 
 
-\section{1Q Gates}\label{1Q Gates}
+\section{Numerical Results}\label{numerical}
+\subsection{1Q Gates}\label{1Q Gates}
  In this section, we present numerical results on generating one-qubit gates that together with $RZ(\theta$) rotations are universal for one-qubit computation. Our control Hamiltonian is given as: 
 \begin{equation}\label{eq:1Qham}
   H = \epsilon\sigma_z + (1 + \delta)(c_x(t)\sigma_x + c_y(t)\sigma_y)
@@ -191,7 +190,7 @@ $\epsilon$ is a normally distributed random variable, centered at $0$ with stand
 
 
 
-\section{2Q Gates}\label{2Q Gates}
+\subsection{2Q Gates}\label{2Q Gates}
  In this section, we present numerical results on a generating one and two-qubit gates that together with $RZ(\theta)$ rotations are universal for two-qubit computation. Our control Hamiltonian is given as: 
 \begin{equation} \label{eq:2Qham}
 H = \exp{(-i\frac{\sigma_z^1\otimes\sigma_z^2}{4})} + \sum_{j=1}^2(\epsilon_j\sigma_z^j + (1 + \delta_j)(c_x^jx(t)\sigma_x^j + c_y^j(t)\sigma_y^j))
@@ -206,11 +205,26 @@ We again assume that the standard deviations are $.001$ on all parameters $\delt
 \end{figure*}
 
 
+\section{Experimental Results}\label{experimental}
+To demonstrate the realizability of this routine, we implemented it on a superconducting qubit, to calibrate an $RX(\frac{\pi}{2})$ pulse. The qubit being used had a 20.5 $\mu$s T1, and a 11.00 $\mu$s T2, and the pulse shapes being considered were 30ns long top hat pulse sequences, generated via a set-and-hold signal generator using the amplitudes shown in \ref{fig:pulseshapes}. 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.75\columnwidth]{pulseshapes.png}
+  \caption{The pulseshapes used in the routine. The original pulse was generated by iteratively applying $RX(\frac{\pi}{2})$ pulses, fitting the resulting sinusoid, and updating the controls. The variants were generated via optimal control, seeding the GRAPE algorithm with the initial pulse.}
+  \label{fig:pulseshapes}
+\end{figure}
 
+In this example we generated 10 candidate pulses using the GRAPE algorithm with a high convergence tolerance, with the intention that the optimizer would find solutions with some degree of noticeable coherent error. For each pulseshape, which enacts some unitary $U_i$, we performed an RPE-like experiment [REF RPE] where the $\sigma_y$ and $\sigma_z$ expectations values were measured at the end of a sequence of $n$ applications of $U_i$, where n ranged from 1 to 100, and each circuit was sampled 1000 times. The results are plotted in [REF SUBPLOTS OF \ref{fig:rebit}]. Then, using the same optimization tool chain as in \ref{numerical}, we picked out the coeffients $p_i$ such that $p_i, U_i$ are a BCS, and performed the same experiment, but where for each shot of the experiment, we precompiled a different circuit. In particular, in our sampling procedure, circuit $U_{i_0}, U_{i_1}, ..., U_{i_{n-1}}$ occurs with probability $p_{i_0}p_{i_1}...p_{i_{n-1}}$. While in this example high fidelity, low coherent error controls can be produced [REFERENCE SUBPLOT OF \ref{fig:pulseshapes}], this demonstrates that this method can reduce coherent errors drastically.
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.75\columnwidth]{example.png}
+  \caption{An experimental implementation of our routine. We should include an array of images, maybe similar to this one, and then comment that in the image representing the BCS (above) that the noise is dominantly incoherent. The colors, ranging from purple to red, correspond to the depth into the sequence, where the darkest purple point is at the top of the rebit at $\ket{0}$. As the color becomes more red, the gate is applied more times, and consequently in the BCS example, moves the qubit's state vector closer to the maximally mixed state at the origin. The angle was computed by taking the arctangent of the $\sigma_y$ and $\sigma_z$ expectations, while the ther radius was computed by adding the two expectations in quadrature.}
+  \label{fig:rebit}
+\end{figure}
 
-
-
+\section{Conclusion}
+We have shown numerically and experimentally that drawing from a collection of implementations of a gate with the correct probabilties can reduce coherent error by an order of magnitude, while increasing incoherent error by a smaller amount, at virtually no cost to gate fidelity. We have demonstrated that these approximate controls can be generated through optimal control, and that the minimization problem is tractable. In addition, we have shown that it is possible to perform the routine on existing quantum hardware. Future directions for this work include moving the random gate selection from a precompilation step onto runtime FPGA logic, investigating other optimzation routines such as [GOAT, CRAB], and using more precise benchmarking routines such as GST [REF GST] to more quantitatively investigate the performance of these routines. The code used in this paper is available at [REF MY GITHUB].
 
 %It might be interesting to show a dhistogram of the pribabilities assigned to each control to show that they aren't all zero. and maybe 
 
