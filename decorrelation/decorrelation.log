@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.5.13)  22 JUL 2018 23:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.7.30)  31 JUL 2018 23:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **decorrelation.tex
 (./decorrelation.tex
 LaTeX2e <2017-04-15>
-Babel <3.12> and hyphenation patterns for 9 language(s) loaded.
+Babel <3.18> and hyphenation patterns for 84 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/revtex/revtex4-1.cls
 Document Class: revtex4-1 2010/07/25/20:33:00 4.1r (http://publish.aps.org/revt
 ex4/ for documentation)
@@ -114,7 +114,7 @@ LaTeX Info: Redefining \frak on input line 111.
 LaTeX Info: Redefining \Bbb on input line 113.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-Package: amsmath 2016/11/05 v2.16a AMS math features
+Package: amsmath 2017/09/02 v2.17a AMS math features
 \@mathmargin=\skip46
 
 For additional information on amsmath, use the `?' option.
@@ -177,7 +177,7 @@ LaTeX Info: Redefining \] on input line 2818.
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
 )
 (/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty
-Package: amsthm 2015/03/04 v2.20.2
+Package: amsthm 2017/10/31 v2.20.4
 \thm@style=\toks22
 \thm@bodyfont=\toks23
 \thm@headfont=\toks24
@@ -213,7 +213,7 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 Package color Info: Driver file: pdftex.def on input line 147.
 
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
-File: pdftex.def 2017/06/24 v1.0g Graphics/color driver for pdftex
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/epsfig.sty
 Package: epsfig 2017/06/25 v1.7b (e)psfig emulation (SPQR)
@@ -256,7 +256,7 @@ LaTeX Font Info:    Overwriting symbol font `ugrf@m' in version `bold'
 (Font)                  U/eur/m/n --> U/eur/b/n on input line 38.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2017/03/14 v6.85a Hypertext links for LaTeX
+Package: hyperref 2018/02/06 v6.86b Hypertext links for LaTeX
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
 Package: hobsub-hyperref 2016/05/16 v1.14 Bundle oberdiek, subset hyperref (HO)
@@ -280,7 +280,7 @@ Package etexcmds Info: Could not find \expanded.
 (etexcmds)             In the latter case, load this package earlier.
 Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
 Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
-Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
+Package: pdftexcmds 2018/01/21 v0.26 Utility functions of pdfTeX for LuaTeX (HO
 )
 Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
@@ -315,45 +315,44 @@ Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
 \Hy@pagecounter=\count108
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2017/03/14 v6.85a Hyperref: PDFDocEncoding definition (HO)
+File: pd1enc.def 2018/02/06 v6.86b Hyperref: PDFDocEncoding definition (HO)
 )
 \Hy@SavedSpaceFactor=\count109
 
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
 )
-Package hyperref Info: Hyper figures OFF on input line 4498.
-Package hyperref Info: Link nesting OFF on input line 4503.
-Package hyperref Info: Hyper index ON on input line 4506.
-Package hyperref Info: Plain pages OFF on input line 4513.
-Package hyperref Info: Backreferencing OFF on input line 4518.
+Package hyperref Info: Hyper figures OFF on input line 4509.
+Package hyperref Info: Link nesting OFF on input line 4514.
+Package hyperref Info: Hyper index ON on input line 4517.
+Package hyperref Info: Plain pages OFF on input line 4524.
+Package hyperref Info: Backreferencing OFF on input line 4529.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4751.
-LaTeX Info: Redefining \href on input line 5015.
+Package hyperref Info: Bookmarks ON on input line 4762.
+LaTeX Info: Redefining \href on input line 5026.
 \c@Hy@tempcnt=\count110
-LaTeX Info: Redefining \url on input line 5104.
+LaTeX Info: Redefining \url on input line 5115.
 \XeTeXLinkMargin=\dimen120
 \Fld@menulength=\count111
 \Field@Width=\dimen121
 \Fld@charsize=\dimen122
-Package hyperref Info: Hyper figures OFF on input line 6358.
-Package hyperref Info: Link nesting OFF on input line 6363.
-Package hyperref Info: Hyper index ON on input line 6366.
-Package hyperref Info: backreferencing OFF on input line 6373.
-Package hyperref Info: Link coloring OFF on input line 6378.
-Package hyperref Info: Link coloring with OCG OFF on input line 6383.
-Package hyperref Info: PDF/A mode OFF on input line 6388.
-LaTeX Info: Redefining \ref on input line 6428.
-LaTeX Info: Redefining \pageref on input line 6432.
+Package hyperref Info: Hyper figures OFF on input line 6369.
+Package hyperref Info: Link nesting OFF on input line 6374.
+Package hyperref Info: Hyper index ON on input line 6377.
+Package hyperref Info: backreferencing OFF on input line 6384.
+Package hyperref Info: Link coloring OFF on input line 6389.
+Package hyperref Info: Link coloring with OCG OFF on input line 6394.
+Package hyperref Info: PDF/A mode OFF on input line 6399.
+LaTeX Info: Redefining \ref on input line 6439.
+LaTeX Info: Redefining \pageref on input line 6443.
 \Hy@abspage=\count112
 \c@Item=\count113
 \c@Hfootnote=\count114
 )
-
-Package hyperref Message: Driver (autodetected): hpdftex.
+Package hyperref Info: Driver (autodetected): hpdftex.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
-File: hpdftex.def 2017/03/14 v6.85a Hyperref driver for pdfTeX
+File: hpdftex.def 2018/02/06 v6.86b Hyperref driver for pdfTeX
 \Fld@listcount=\count115
 \c@bookmark@seq@number=\count116
 
@@ -499,117 +498,95 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/sc' undefined
-(Font)              using `OT1/cmr/bx/n' instead on input line 105.
+(Font)              using `OT1/cmr/bx/n' instead on input line 106.
 
 [2]
-Underfull \hbox (badness 3281) in paragraph at lines 156--157
+Underfull \hbox (badness 3281) in paragraph at lines 157--158
 \OT1/cmr/m/n/10 tion al-go-rithm, such as Se-quen-tial Least Squares
  []
 
 <simple_example.png, id=141, 485.56406pt x 523.20468pt>
 File: simple_example.png Graphic file (type png)
 <use simple_example.png>
-Package pdftex.def Info: simple_example.png  used on input line 162. on input l
-ine 162.
-Package pdftex.def Info: Requested size: 184.5pt x 198.79588pt on input line 16
-2.
+Package pdftex.def Info: simple_example.png  used on input line 163.
+(pdftex.def)             Requested size: 184.5pt x 198.79588pt.
+<x2.png, id=147, 1156.32pt x 578.16pt>
+File: x2.png Graphic file (type png)
+<use x2.png>
+Package pdftex.def Info: x2.png  used on input line 191.
+(pdftex.def)             Requested size: 510.0pt x 254.9999pt.
+<y2.png, id=150, 1156.32pt x 578.16pt>
+File: y2.png Graphic file (type png)
+<use y2.png>
+Package pdftex.def Info: y2.png  used on input line 197.
+(pdftex.def)             Requested size: 510.0pt x 254.9999pt.
+<2Q.png, id=153, 1156.32pt x 578.16pt>
+File: 2Q.png Graphic file (type png)
+<use 2Q.png>
+Package pdftex.def Info: 2Q.png  used on input line 214.
+(pdftex.def)             Requested size: 510.0pt x 254.9999pt.
 [3pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.184 \begin{equation}
-                      \label{eq:1Qham} <./simple_example.png>]
-<x2.png, id=161, 1156.32pt x 578.16pt>
-File: x2.png Graphic file (type png)
-<use x2.png>
-Package pdftex.def Info: x2.png  used on input line 190. on input line 190.
-Package pdftex.def Info: Requested size: 510.0pt x 254.9999pt on input line 190
-.
-<y2.png, id=164, 1156.32pt x 578.16pt>
-File: y2.png Graphic file (type png)
-<use y2.png>
-Package pdftex.def Info: y2.png  used on input line 196. on input line 196.
-Package pdftex.def Info: Requested size: 510.0pt x 254.9999pt on input line 196
-.
-<2Q.png, id=167, 1156.32pt x 578.16pt>
-File: 2Q.png Graphic file (type png)
-<use 2Q.png>
-Package pdftex.def Info: 2Q.png  used on input line 213. on input line 213.
-Package pdftex.def Info: Requested size: 510.0pt x 254.9999pt on input line 213
-.
-<pulseshapes.png, id=171, 376.40625pt x 252.945pt>
-File: pulseshapes.png Graphic file (type png)
-<use pulseshapes.png>
-Package pdftex.def Info: pulseshapes.png  used on input line 222. on input line
- 222.
-Package pdftex.def Info: Requested size: 184.5pt x 123.98659pt on input line 22
-2.
-<example.png, id=176, 1336.995pt x 758.835pt>
-File: example.png Graphic file (type png)
-<use example.png>
-Package pdftex.def Info: example.png  used on input line 231. on input line 231
-.
-Package pdftex.def Info: Requested size: 184.5pt x 104.70776pt on input line 23
-1.
- [4pdfTeX warning (ext4): destination with the same identifier (name{figure.5})
- has been already used, duplicate ignored
+l.217 
+       <./simple_example.png>] [4pdfTeX warning (ext4): destination with the sa
+me identifier (name{figure.2}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.235 
-       <./pulseshapes.png>] [5pdfTeX warning (ext4): destination with the same 
-identifier (name{figure.2}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.235 
+l.217 
       pdfTeX warning (ext4): destination with the same identifier (name{figure.
 3}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.235 
+l.217 
        <./x2.png> <./y2.png>]
 
-LaTeX Warning: A float is stuck (cannot be placed); try class option [floatfix]
- on input line 235.
+LaTeX Warning: Reference `fig:pulseshapes' on page 5 undefined on input line 22
+2.
 
-(./decorrelation.bbl [6pdfTeX warning (ext4): destination with the same identif
-ier (name{figure.4}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.80   and\ \citenamefont {Martinis}}]{Kelly2018}
-                                                 %pdfTeX warning (ext4): destin
-ation with the same identifier (name{figure.6}) has been already used, duplicat
-e ignored
+<example.png, id=183, 1336.995pt x 758.835pt>
+File: example.png Graphic file (type png)
+<use example.png>
+Package pdftex.def Info: example.png  used on input line 226.
+(pdftex.def)             Requested size: 184.5pt x 104.70776pt.
+(./decorrelation.bbl [5pdfTeX warning (ext4): destination with the same identif
+ier (name{figure.5}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.80   and\ \citenamefont {Martinis}}]{Kelly2018}
-                                                 % <./2Q.png> <./example.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 101--106
+l.59 ...namefont {J.}~\bibnamefont {Preskill}},\ }
+                                                  \href <./example.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 101--108
  []\OT1/cmr/m/n/9 R. Blume-Kohout, J. K. Gam-ble, E. Nielsen,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 117--122
+Underfull \hbox (badness 10000) in paragraph at lines 131--136
  []\OT1/cmr/m/n/9 E. Camp-bell, [][]Phys-i-cal Re-view A \OT1/cmr/bx/n/9 95 \OT
 1/cmr/m/n/9 (2017),
  []
 
 
-Underfull \hbox (badness 1400) in paragraph at lines 222--227
+Underfull \hbox (badness 1400) in paragraph at lines 236--241
  \OT1/cmr/m/n/9 Cory, [][]Phys-i-cal Re-view A \OT1/cmr/bx/n/9 87 \OT1/cmr/m/n/
 9 (2013), 10.1103/phys-
  []
 
-) [7]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 247.
+) [6pdfTeX warning (ext4): destination with the same identifier (name{figure.4}
+) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.242 \end{document}
+                     <./2Q.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 242.
  (./decorrelation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 247.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 247.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 242.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 242.
 Package rerunfilecheck Info: File `decorrelation.out' has not changed.
 (rerunfilecheck)             Checksum: 6DAD34515A8B30B89EE0B1223015A6C0;949.
 
@@ -617,17 +594,20 @@ Package rerunfilecheck Info: File `decorrelation.out' has not changed.
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
+LaTeX Warning: There were undefined references.
+
+
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 9001 strings out of 494813
- 125845 string characters out of 6178109
- 234680 words of memory out of 5000000
- 12126 multiletter control sequences out of 15000+600000
+ 9001 strings out of 492982
+ 125878 string characters out of 6134896
+ 247136 words of memory out of 5000000
+ 12370 multiletter control sequences out of 15000+600000
  18806 words of font info for 69 fonts, out of 8000000 for 9000
- 81 hyphenation exceptions out of 8191
- 32i,20n,28p,1213b,489s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 1141 hyphenation exceptions out of 8191
+ 32i,20n,28p,1213b,475s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texli
@@ -650,10 +630,10 @@ ic/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9
 .pfb>
-Output written on decorrelation.pdf (7 pages, 1425632 bytes).
+Output written on decorrelation.pdf (6 pages, 1386419 bytes).
 PDF statistics:
- 332 PDF objects out of 1000 (max. 8388607)
- 281 compressed objects within 3 object streams
- 58 named destinations out of 1000 (max. 500000)
- 151 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 322 PDF objects out of 1000 (max. 8388607)
+ 274 compressed objects within 3 object streams
+ 57 named destinations out of 1000 (max. 500000)
+ 146 words of extra memory for PDF output out of 10000 (max. 10000000)
 

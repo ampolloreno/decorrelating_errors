@@ -6,7 +6,7 @@
 %Control: page (0) single
 %Control: year (1) truncated
 %Control: production of eprint (0) enabled
-\begin{thebibliography}{18}%
+\begin{thebibliography}{19}%
 \makeatletter
 \providecommand \@ifxundefined [1]{%
  \@ifx{#1\undefined}
@@ -102,6 +102,20 @@
   10.1038/ncomms14485} {\bibfield  {journal} {\bibinfo  {journal} {Nature
   Communications}\ }\textbf {\bibinfo {volume} {8}} (\bibinfo {year} {2017}),\
   10.1038/ncomms14485}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Puzzuoli}\ \emph {et~al.}(2014)\citenamefont
+  {Puzzuoli}, \citenamefont {Granade}, \citenamefont {Haas}, \citenamefont
+  {Criger}, \citenamefont {Magesan},\ and\ \citenamefont
+  {Cory}}]{Puzzuoli2014}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {D.}~\bibnamefont
+  {Puzzuoli}}, \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {Granade}},
+  \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Haas}}, \bibinfo {author}
+  {\bibfnamefont {B.}~\bibnamefont {Criger}}, \bibinfo {author} {\bibfnamefont
+  {E.}~\bibnamefont {Magesan}}, \ and\ \bibinfo {author} {\bibfnamefont
+  {D.~G.}\ \bibnamefont {Cory}},\ }\href {\doibase 10.1103/physreva.89.022306}
+  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review A}\ }\textbf
+  {\bibinfo {volume} {89}} (\bibinfo {year} {2014}),\
+  10.1103/physreva.89.022306}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Wallman}\ and\ \citenamefont
   {Emerson}(2016)}]{Wallman2016}%
   \BibitemOpen
