@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.7.30)  31 JUL 2018 23:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.7.30)  1 AUG 2018 00:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -400,19 +400,55 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 \ALG@tmplength=\skip58
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
+) (/usr/share/texlive/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2016/05/22 v1.1-161 Sub-captions (AR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 67.
+\captionmargin=\dimen123
+\captionmargin@=\dimen124
+\captionwidth=\dimen125
+\caption@tempdima=\dimen126
+\caption@indent=\dimen127
+\caption@parindent=\dimen128
+\caption@hangindent=\dimen129
+Package caption Info: Unknown document class (or package),
+(caption)             standard defaults will be used.
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 16.
+
+Package caption Warning: Unsupported document class (or package) detected,
+(caption)                usage of the caption package is not recommended.
+See the caption package documentation for explanation.
+
+Package caption Info: \@makecaption = \long macro:#1#2->\par \vskip \abovecapti
+onskip \begingroup \small \rmfamily \sbox \@tempboxa {\let \\\heading@cr \@make
+@capt@title {#1}{#2}}\@ifdim {\wd \@tempboxa >\hsize }{\begingroup \samepage \f
+lushing \let \footnote \@footnotemark@gobble \@make@capt@title {#1}{#2}\par \en
+dgroup }{\global \@minipagefalse \hb@xt@ \hsize {\hfil \unhbox \@tempboxa \hfil
+ }}\endgroup \vskip \belowcaptionskip .
+\c@ContinuedFloat=\count126
+Package caption Info: float package is loaded.
+Package caption Info: hyperref package is loaded.
+)
+\c@subfigure=\count127
+\c@subtable=\count128
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 17.
 Class revtex4-1 Info: Unrecognized array package. Please update this document c
-lass! (Proceeding with fingers crossed.) on input line 43.
+lass! (Proceeding with fingers crossed.) on input line 44.
 
 
 Class revtex4-1 Warning: Repair the float package.
 
-Class revtex4-1 Info: Robustifying \LaTeX's \boldmath command on input line 43.
+Class revtex4-1 Info: Robustifying \LaTeX's \boldmath command on input line 44.
 
-Class revtex4-1 Info: cite was not loaded (OK!) on input line 43.
-Class revtex4-1 Info: mcite was not loaded (OK!) on input line 43.
-Class revtex4-1 Info: multicol was not loaded (OK!) on input line 43.
+Class revtex4-1 Info: cite was not loaded (OK!) on input line 44.
+Class revtex4-1 Info: mcite was not loaded (OK!) on input line 44.
+Class revtex4-1 Info: multicol was not loaded (OK!) on input line 44.
 (./decorrelation.aux
 
 LaTeX Warning: Label `eq:2' multiply defined.
@@ -420,32 +456,32 @@ LaTeX Warning: Label `eq:2' multiply defined.
 )
 \openout1 = `decorrelation.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
  (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count126
-\scratchdimen=\dimen123
+\scratchcounter=\count129
+\scratchdimen=\dimen130
 \scratchbox=\box45
-\nofMPsegments=\count127
-\nofMParguments=\count128
+\nofMPsegments=\count130
+\nofMParguments=\count131
 \everyMPshowfont=\toks33
-\MPscratchCnt=\count129
-\MPscratchDim=\dimen124
-\MPnumerator=\count130
-\makeMPintoPDFobject=\count131
+\MPscratchCnt=\count132
+\MPscratchDim=\dimen131
+\MPnumerator=\count133
+\makeMPintoPDFobject=\count134
 \everyMPtoPDFconversion=\toks34
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -465,7 +501,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box46
-Package hyperref Info: Link coloring ON on input line 43.
+Package hyperref Info: Link coloring ON on input line 44.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -473,93 +509,106 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count132
+\c@section@level=\count135
 )
-LaTeX Info: Redefining \ref on input line 43.
-LaTeX Info: Redefining \pageref on input line 43.
-LaTeX Info: Redefining \nameref on input line 43.
+LaTeX Info: Redefining \ref on input line 44.
+LaTeX Info: Redefining \pageref on input line 44.
+LaTeX Info: Redefining \nameref on input line 44.
 
 (./decorrelation.out) (./decorrelation.out)
 \@outlinefile=\write4
 \openout4 = `decorrelation.out'.
 
-Class revtex4-1 Info: Taking \maketitle back from hyperref on input line 43.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+Class revtex4-1 Info: Taking \maketitle back from hyperref on input line 44.
 \openout3 = `decorrelationNotes.bib'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 62.
+ (./decorrelation.toc)
+\tf@toc=\write5
+\openout5 = `decorrelation.toc'.
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 64.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 62.
+LaTeX Font Info:    Try loading font information for U+msb on input line 64.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+<simple_example.png, id=123, 485.56406pt x 523.20468pt>
+File: simple_example.png Graphic file (type png)
+<use simple_example.png>
+Package pdftex.def Info: simple_example.png  used on input line 115.
+(pdftex.def)             Requested size: 184.5pt x 198.79588pt.
+
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/sc' undefined
-(Font)              using `OT1/cmr/bx/n' instead on input line 106.
+(Font)              using `OT1/cmr/bx/n' instead on input line 130.
 
-[2]
-Underfull \hbox (badness 3281) in paragraph at lines 157--158
+[2 <./simple_example.png>]
+
+LaTeX Warning: Reference `GRAPE' on page 3 undefined on input line 150.
+
+
+Underfull \hbox (badness 3281) in paragraph at lines 180--181
 \OT1/cmr/m/n/10 tion al-go-rithm, such as Se-quen-tial Least Squares
  []
 
-<simple_example.png, id=141, 485.56406pt x 523.20468pt>
-File: simple_example.png Graphic file (type png)
-<use simple_example.png>
-Package pdftex.def Info: simple_example.png  used on input line 163.
-(pdftex.def)             Requested size: 184.5pt x 198.79588pt.
-<x2.png, id=147, 1156.32pt x 578.16pt>
-File: x2.png Graphic file (type png)
-<use x2.png>
-Package pdftex.def Info: x2.png  used on input line 191.
-(pdftex.def)             Requested size: 510.0pt x 254.9999pt.
-<y2.png, id=150, 1156.32pt x 578.16pt>
-File: y2.png Graphic file (type png)
-<use y2.png>
-Package pdftex.def Info: y2.png  used on input line 197.
-(pdftex.def)             Requested size: 510.0pt x 254.9999pt.
-<2Q.png, id=153, 1156.32pt x 578.16pt>
-File: 2Q.png Graphic file (type png)
-<use 2Q.png>
-Package pdftex.def Info: 2Q.png  used on input line 214.
-(pdftex.def)             Requested size: 510.0pt x 254.9999pt.
-[3pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
-has been already used, duplicate ignored
+<1q0.png, id=154, 1156.32pt x 578.16pt>
+File: 1q0.png Graphic file (type png)
+<use 1q0.png>
+Package pdftex.def Info: 1q0.png  used on input line 188.
+(pdftex.def)             Requested size: 255.0pt x 127.49553pt.
+<1q1.png, id=155, 1156.32pt x 578.16pt>
+File: 1q1.png Graphic file (type png)
+<use 1q1.png>
+Package pdftex.def Info: 1q1.png  used on input line 193.
+(pdftex.def)             Requested size: 255.0pt x 127.49553pt.
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.217 
-       <./simple_example.png>] [4pdfTeX warning (ext4): destination with the sa
-me identifier (name{figure.2}) has been already used, duplicate ignored
+Overfull \hbox (4.11108pt too wide) in paragraph at lines 187--197
+ [][]  [] 
+ []
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.217 
-      pdfTeX warning (ext4): destination with the same identifier (name{figure.
-3}) has been already used, duplicate ignored
+<control_dpn_all0.png, id=156, 1156.32pt x 578.16pt>
+File: control_dpn_all0.png Graphic file (type png)
+<use control_dpn_all0.png>
+Package pdftex.def Info: control_dpn_all0.png  used on input line 204.
+(pdftex.def)             Requested size: 255.0pt x 127.49553pt.
+<control_dpn_all2.png, id=157, 1156.32pt x 578.16pt>
+File: control_dpn_all2.png Graphic file (type png)
+<use control_dpn_all2.png>
+Package pdftex.def Info: control_dpn_all2.png  used on input line 209.
+(pdftex.def)             Requested size: 255.0pt x 127.49553pt.
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.217 
-       <./x2.png> <./y2.png>]
+Overfull \hbox (4.11108pt too wide) in paragraph at lines 203--213
+ [][]  [] 
+ []
 
-LaTeX Warning: Reference `fig:pulseshapes' on page 5 undefined on input line 22
-2.
+[3]
 
-<example.png, id=183, 1336.995pt x 758.835pt>
-File: example.png Graphic file (type png)
-<use example.png>
-Package pdftex.def Info: example.png  used on input line 226.
-(pdftex.def)             Requested size: 184.5pt x 104.70776pt.
-(./decorrelation.bbl [5pdfTeX warning (ext4): destination with the same identif
-ier (name{figure.5}) has been already used, duplicate ignored
+Package caption Warning: \label without proper reference on input line 196.
+See the caption package documentation for explanation.
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.59 ...namefont {J.}~\bibnamefont {Preskill}},\ }
-                                                  \href <./example.png>]
+
+LaTeX Warning: Reference `fig:1qnum' on page 4 undefined on input line 222.
+
+
+LaTeX Warning: Reference `1qnum' on page 4 undefined on input line 236.
+
+
+LaTeX Warning: Reference `fig2num' on page 4 undefined on input line 236.
+
+[4 <./1q0.png> <./1q1.png> <./control_dpn_all0.png> <./control_dpn_all2.png>]
+<placeholder_rb.png, id=196, 1521.2835pt x 769.6755pt>
+File: placeholder_rb.png Graphic file (type png)
+<use placeholder_rb.png>
+Package pdftex.def Info: placeholder_rb.png  used on input line 246.
+(pdftex.def)             Requested size: 246.0pt x 124.45421pt.
+
+(./decorrelation.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 101--108
  []\OT1/cmr/m/n/9 R. Blume-Kohout, J. K. Gam-ble, E. Nielsen,
  []
@@ -570,25 +619,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 131--136
 1/cmr/m/n/9 (2017),
  []
 
-
-Underfull \hbox (badness 1400) in paragraph at lines 236--241
+[5 <./placeholder_rb.png>]
+Underfull \hbox (badness 1400) in paragraph at lines 263--269
  \OT1/cmr/m/n/9 Cory, [][]Phys-i-cal Re-view A \OT1/cmr/bx/n/9 87 \OT1/cmr/m/n/
 9 (2013), 10.1103/phys-
  []
 
-) [6pdfTeX warning (ext4): destination with the same identifier (name{figure.4}
-) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.242 \end{document}
-                     <./2Q.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 242.
+) [6]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 262.
  (./decorrelation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 242.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 242.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 262.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 262.
 Package rerunfilecheck Info: File `decorrelation.out' has not changed.
-(rerunfilecheck)             Checksum: 6DAD34515A8B30B89EE0B1223015A6C0;949.
+(rerunfilecheck)             Checksum: 0899396DAD2698877A452B590E84A133;942.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -601,13 +644,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 9001 strings out of 492982
- 125878 string characters out of 6134896
- 247136 words of memory out of 5000000
- 12370 multiletter control sequences out of 15000+600000
+ 10113 strings out of 492982
+ 146287 string characters out of 6134896
+ 259847 words of memory out of 5000000
+ 13467 multiletter control sequences out of 15000+600000
  18806 words of font info for 69 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 32i,20n,28p,1213b,475s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,20n,40p,1024b,527s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texli
@@ -624,16 +667,15 @@ sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share
 /texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-d
 ist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9
-.pfb>
-Output written on decorrelation.pdf (6 pages, 1386419 bytes).
+nts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmti9.pfb>
+Output written on decorrelation.pdf (6 pages, 1396144 bytes).
 PDF statistics:
- 322 PDF objects out of 1000 (max. 8388607)
- 274 compressed objects within 3 object streams
- 57 named destinations out of 1000 (max. 500000)
- 146 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 333 PDF objects out of 1000 (max. 8388607)
+ 287 compressed objects within 3 object streams
+ 59 named destinations out of 1000 (max. 500000)
+ 151 words of extra memory for PDF output out of 10000 (max. 10000000)
 

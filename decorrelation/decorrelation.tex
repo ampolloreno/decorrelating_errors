@@ -13,6 +13,7 @@
 \usepackage{hyperref}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{subcaption}
 \hypersetup{colorlinks=true, pdfauthor=Kevin C. Young, pdftitle=}
 %\hypersetup{citecolor={blue}, colorlinks={true}, filecolor={blue},
 %   linkcolor={blue}, pdfauthor=, pdfkeywords= pdfsubject=, pdftitle=,
@@ -41,6 +42,7 @@
 
 %-------------Header begins here----------------------------------------
 \begin{document}
+\tableofcontents
 \title{Decorrelating Errors in Quantum Gates by Random Gate Synthesis}
 
 \author{Anthony Polloreno}
@@ -93,7 +95,29 @@ This techique can be used to turn coherent error into incoherent error therefore
 
 For example, randomized benchmarking and tomography will report incorrect answers without any syndrome \cite{Merkel2013}, and gateset tomography will report that the gateset failed to be Markovian, but will fail to diagnose in what way it was non-Markovian. Because BCSs change the error to a depolorizing channel, the correlations in the noise can be reduced, and the process can be made much closer to Markovian, and as we will show, this comes at no real cost to the fidelity of the implemented gate. Finally, unlike in \cite{Wallman2016, Campbell2017, Ware2018} we note that this method of coherent error mitigation is cheap to implement - it only requires a random choice of pulse definition at run time, in addition to the extra storage required to store the pulse shapes - no classical preprocessing or runtime frame tracking is required.
 
-\section{GRAPE}\label{GRAPE}
+
+\section{A Simple Example}
+As a somewhat trivial example, consider a single-qubit rotation-angle error, such as result from stochastic laser amplitude fluctuations. A BCS may consist of an $X_\pi$ pulse, as well as an $\bar X_\pi$ pulse (i.e., a clockwise and counter clockwise rotation of the qubit). In the case of excess amplitude, the $X_\pi$ pulse will result in an over-rotation error, while the $\bar X_\pi$ pulse results in an \emph{under}-rotation error. When it comes time to perform the target gate in a quantum circuit, one member of the BCS is chosen uniformly at random. This has the effect of decreasing the norm of the noise channel and decorrelating the over-rotation error (Figure \ref{fig:simple_example}). In this simple example, we can solve the minimization problem given by equation \ref{eq:minimization} analytically. In particular, if we choose the weights in \ref{eq:1} such that $\omega_i=1$, and we choose to represent our gates in the vectorized superoperator representation, then:
+
+\begin{equation}
+  \begin{gathered}
+    \frac{1}{2}(X^*_{\pi + \epsilon}\otimes X_{\pi + \epsilon} + \bar X^*_{\pi + \epsilon}\otimes \bar X_{\pi + \epsilon}) \\  
+    = (\sin^2{\frac{\pi + \epsilon}{2}}I\otimes I + \cos^2{\frac{\pi + \epsilon}{2}}X\otimes X)X\otimes X \\
+    \approx ((1 - \epsilon^2)I\otimes I + \epsilon^2X\otimes X)X\otimes X
+  \end{gathered}
+\end{equation}
+ 
+Therefore, for a rotational error of angle $\epsilon > 0$, we see that $X_\pi$ and  $\bar X_\pi$  form a BCS, with $\alpha\approx\epsilon^2$.
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.75\columnwidth]{simple_example.png}
+  \caption{An example of a BCS. The red path is a $\pi$ pulse over-rotating clockwise, while the blue path is a $\pi$ pulse over-rotating counter-clockwise. The purple path is the average of the two.}
+  \label{fig:simple_example}
+\end{figure}
+\section{Optimal Control Problems}\label{ocp}
+\subsection{Random Gate Synthesis}
 Generating BCSs can be done in a variety of ways, using any quantum optimal control technique \cite{Caneva2011, Machnes2018} to find a family of controls. For simplicity in this paper we use the GRAPE algorithm to generate candidate pulseshapes to approximate the target gate. First described in \cite{Khaneja2005}, the GRAPE (GRadient Ascent Pulse Engineering) algorithm is a technique for finding piecewise constant control sequences that approximate a desired unitary, $U_T$. Defining our uncontrolled Hamiltonian as $H_0$, our control Hamiltonians as $H_{i\neq 0}$, and our \textit{control matrix} $u_{ij}$ as containing control amplitude associated with the $i^{th}$ time step and the $j^{th}$ hamiltonian, we can write our approximate unitary at any timestep as
 \begin{equation}\label{eq:3}
   U_i = \exp\{-i\Delta t(H_0 + \sum_{j=1}^{n}u_{ij}H_{ij}\}
@@ -123,15 +147,6 @@ In general these gradients can be computed by propagating partial derivatives of
   \end{split}
 \end{equation}
 
-
-\section{Optimal Control Problem}\label{ocp}
-\subsection{Random Gate Synthesis}
-To explore the utility of BCSs, we consider the following Hamiltonian:
-\begin{equation}\label{eq:2}
-  H(t) = \delta_0H_0 + \sum_{i=1}^n (1 + \delta_i)c_i(t)H_i
-\end{equation}
-for control Hamiltonians $H_i$, free evolution Hamiltonian $H_0$ and random variables $\delta_i$, that model some small uncertainty in parameters in the Hamiltonian. Such a model might describe a superconducting qubit quantum processor where control amplitudes for the RF pulses vary over time, or a trapped ion quantum computer where the intensity, frequeny, and phase of the laser might drift over time. \needcite(Blueprint for a microwave trapped ion quantum computer) Correlations between different $\delta_i$ might arise if two of the controls have the same noise source. Examples of shared noise sources include $X$ and $Y$ gates in superconducting qubit architectures might use the same AWG and pulse envelope, and diurnal temperature drift of control electronics. \needcite
-
 Given such a Hamiltonian, a threshold approximation fidelity $\mathcal{F}$, and a target gate $U_T$, we can use the technique described in \ref{GRAPE} to generate candidate pulse sequences that enact unitaries $U_i$ that approximate $U_T$, such that $Tr(U_T^{\dagger}U_i) \ge \mathcal{F}$. 
 
 In this paper we have modified the update step in \ref{eq:update} to instead use approximately the following gradient:
@@ -140,8 +155,16 @@ In this paper we have modified the update step in \ref{eq:update} to instead use
 \end{align}
 with $p(\vec{\delta})$ Gaussian distributed. This technique has been used in previous works such as \cite{Goerz2014} to ensure that the optimal control results are robust over a wide range of errors, and we approximate this integral in this paper by using Gaussian quadrature.\needcite Doing this ensures that the family of controls produced by our routine, $U_i$, perform moderately well over a range of control errors that might occur.
 
-\subsection{Channel Approximation}
-After using GRAPE or another optimal control routine to synthesize a collection of controls, we must find the weights $w_i$ such that the collection of controls form a BCS as described in (\ref{eq:1}). To do this, for each control $U_i$ we find the unitary error channel $\mathcal{E}_i$ such that $\mathcal{E}_iU_i=U_T$, where $U_T$ is the target gate. If we consider the Pauli-Liouville representation of this error channel, the diagonal terms are the \textit{stochastic} terms that arise from classical uncertainty, while the off-diagonal terms may more generally arise from \textit{coherent} operations. In particular, we see that we can write a convex sum over these channels as:
+Concretely we consider a Hamiltonian of the following form:
+\begin{equation}\label{eq:2}
+  H(t) = \delta_0H_0 + \sum_{i=1}^n (1 + \delta_i)c_i(t)H_i
+\end{equation}
+for control Hamiltonians $H_i$, free evolution Hamiltonian $H_0$ and random variables $\delta_i$, that model some small uncertainty in parameters in the Hamiltonian. Such a model might describe a superconducting qubit quantum processor where control amplitudes for the RF pulses vary over time, or a trapped ion quantum computer where the intensity, frequency, and phase of the laser might drift over time.\cite{Lekitsch2017} Correlations between different $\delta_i$ might arise if two of the controls have the same noise source. Examples of shared noise sources include $X$ and $Y$ gates in superconducting qubit architectures might use the same AWG and pulse envelope, and diurnal temperature drift of control electronics. \needcite
+
+
+
+\subsection{BCS Approximation}
+After using GRAPE or another optimal control routine to synthesize a collection of controls, we must find the weights $w_i$ such that the collection of controls form a BCS as described in (\ref{eq:1}). To do this, for each control $U_i$ we find the unitary error channel $\mathcal{E}_i$ such that $\mathcal{E}_iU_i=U_T$, where $U_T$ is the target gate. If we consider the Pauli-Liouville representation\cite{Kimmel2014} of this error channel, the diagonal terms are the \textit{stochastic} terms that arise from classical uncertainty, while the off-diagonal terms may more generally arise from \textit{coherent} operations. In particular, we see that we can write a convex sum over these channels as:
 \begin{align}
  \frac{1}{N} \sum^N_{i=1} w_i \mathcal{E}^{\dagger} (U_T\rho U_T^{\dagger}) \mathcal{E}
 \end{align}
@@ -158,45 +181,45 @@ This can be solved with a constrained minimization algorithm, such as Sequential
 
 Previous authors have considered minimizing the diamond distance to the nearest Pauli or Clifford Channel \cite{Magesan2013}, and while this gives a good theoretical framework, it requires optimizing over the diamond norm, and in particular does not have the restriction that the optimal channel be decomposable into a given family of controls. Our routine, on the other hand, optimizes over an easy to compute sum. In the next section we give a simple example, followed by numerical results for one qubit and two qubits gates in sections \ref{1Q Gates} and \ref{2Q Gates}.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=.75\columnwidth]{simple_example.png}
-  \caption{An example of a BCS. The red path is a $\pi$ pulse over-rotating clockwise, while the blue path is a $\pi$ pulse over-rotating counter-clockwise. The purple path is the average of the two.}
-  \label{fig:simple_example}
-\end{figure}
 
-\section{A Simple Example}
-As a somewhat trivial example, consider a single-qubit rotation-angle error, such as result from stochastic laser amplitude fluctuations. A BCS may consist of an $X_\pi$ pulse, as well as an $\bar X_\pi$ pulse (i.e., a clockwise and counter clockwise rotation of the qubit). In the case of excess amplitude, the $X_\pi$ pulse will result in an over-rotation error, while the $\bar X_\pi$ pulse results in an \emph{under}-rotation error. When it comes time to perform the target gate in a quantum circuit, one member of the BCS is chosen uniformly at random. This has the effect of decreasing the norm of the noise channel and decorrelating the over-rotation error (Figure \ref{fig:simple_example}). In this simple example, we can solve the minimization problem given by equation \ref{eq:minimization} analytically. In particular, if we choose the weights in \ref{eq:1} such that $\omega_i=1$, and we choose to represent our gates in the vectorized superoperator representation, then:
-
-\begin{equation}
-  \begin{gathered}
-    \frac{1}{2}(X^*_{\pi + \epsilon}\otimes X_{\pi + \epsilon} + \bar X^*_{\pi + \epsilon}\otimes \bar X_{\pi + \epsilon}) \\  
-    = (\sin^2{\frac{\pi + \epsilon}{2}}I\otimes I + \cos^2{\frac{\pi + \epsilon}{2}}X\otimes X)X\otimes X \\
-    \approx ((1 - \epsilon^2)I\otimes I + \epsilon^2X\otimes X)X\otimes X
-  \end{gathered}
-\end{equation}
- 
-Therefore, for a rotational error of angle $\epsilon > 0$, we see that $X_\pi$ and  $\bar X_\pi$  form a BCS, with $\alpha\approx\epsilon^2$.
+\begin{figure*}
+\centering
+\begin{subfigure}[t]{.5\linewidth}
+\includegraphics[width=\textwidth]{1q0.png}
+\caption{This is one example of a 1D slice varying over one control.}
+\end{subfigure}%
+~
+\begin{subfigure}[t]{.5\linewidth}
+\includegraphics[width=\textwidth]{1q1.png}
+\caption{This is another example of a 1D slice varying over one control.}
+\end{subfigure}
+  \label{fig:1qnum}
+\end{figure*}
 
 
+
+\begin{figure*}
+\centering
+\begin{subfigure}[t]{.5\linewidth}
+\includegraphics[width=\textwidth]{control_dpn_all0.png}
+\caption{This is one example of a 1D slice varying over one control. There are five of these in total, but only one is interesting.}
+\end{subfigure}%
+~
+\begin{subfigure}[t]{.5\linewidth}
+\includegraphics[width=\textwidth]{control_dpn_all2.png}
+\caption{This is one example of a 1D slice varying over one control. There are five of these in total, but only one is interesting.}
+\end{subfigure}
+  \label{fig:2qnum}
+\end{figure*}
 \section{Numerical Results}\label{numerical}
 \subsection{1Q Gates}\label{1Q Gates}
  In this section, we present numerical results on generating one-qubit gates that together with $RZ(\theta$) rotations are universal for one-qubit computation. Our control Hamiltonian is given as: 
 \begin{equation}\label{eq:1Qham}
   H = \epsilon\sigma_z + (1 + \delta)(c_x(t)\sigma_x + c_y(t)\sigma_y)
 \end{equation}
-where $\epsilon \sim \delta \sim \mathcal{N}(0, .001)$ We assume that the errors on $\sigma_x$ and $\sigma_y$ are perfecly correlated, as mentioned in Section \ref{ocp}. In our simulation we chose an total evolution time of $T=\pi$, and a number of steps $N=100$, with a threshold infidelity of $1E-3$.
-\begin{figure*}
-\centering
-\includegraphics[width=\textwidth]{x2.png}
-\caption{In the above we have used our method to produce a BCS for a $RX(\frac{\pi}{2})$ pulse, with the Hamiltonian given in \ref{eq:1Qham}. A) shows the sum of the squared norms of the off diagonal terms in the Pauli Transfer Matrix of $\mathcal{E}$. B) gives the corresponding infidelity for each member of the BCS, and the optimal choice of weights.}
-\end{figure*}
+where $\epsilon \sim \delta \sim \mathcal{N}(0, .001)$ We assume that the errors on $\sigma_x$ and $\sigma_y$ are perfecly correlated, as mentioned in Section \ref{ocp}. In our simulation we chose an total evolution time of $T=\pi$, and a number of steps $N=100$, with a threshold infidelity of $1E-3$.  
 
-\begin{figure*}
-\centering
-\includegraphics[width=\textwidth]{y2.png}
-\caption{In the above we have used our method to produce a BCS for a $RY(\frac{\pi}{2})$ pulse, with the Hamiltonian given in \ref{eq:1Qham}. A) shows the sum of the squared norms of the off diagonal terms in the Pauli Transfer Matrix of $\mathcal{E}$. B) gives the corresponding infidelity for each member of the BCS, and the optimal choice of weights.}
-\end{figure*}
+The results can be seen in \ref{fig:1qnum}, where we have plotted each control as a function of one detuning value, fixing the others to zero. In the top half of each plot, we show the variation in the sum of the absolute valua of the off diagonal elements of the Pauli-Liouville Representation, while in the lower plot we see the variation in fidelity. While the controls were optimized by considering Gaussian noise with $\sigma=.001$ for each control, we have plotted the performance of the controls over a wider range to show more structure. We see over an order of magnitude improvement in the sum of the absolute values of the off-diagonal elements, while the fidelity remains above the specified target.
 
 
 
@@ -209,23 +232,20 @@ H = &\sum_{j=1}^2(\epsilon_j\sigma_z^j + (1 + \delta_j)(c_x^jx(t)\sigma_x^j + c_
 \end{split}
 \end{equation}
 We again assume that the standard deviations are $.001$ on all parameters $\delta_j$ and $c^j_i$ and that errors on the single qubit $\sigma_x$ and $\sigma_y$ rotations are perfectly correlated. In this simulation we again had a threshold infidelity of $1E-3$, but we increased the total evolution time to $T=4\pi$, and increased the number of steps to $N=400$ so that the size of each time step was the same as in the one qubit example, however the total evolution time was greater to allow GRAPE more opportunities to find non-trivial pulseshapes. 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{2Q.png}
-\caption{In the above we have used our method to produce a BCS for a ZZ($\frac{\pi}{2}$) entangling gate with controls given by \ref{eq:2Qham}. A) shows the sum of the squared norms of the off diagonal terms in the Pauli Transfer Matrix of $\mathcal{E}$. B) gives the corresponding infidelity for each member of the BCS, and the optimal choice of weights.}
-\end{figure*}
+
+As in \ref{1qnum}, the results of these numerics can be visualized in \ref{fig2num}. Notably, even in the two qubit case where optimization over many controls becomes more difficult, we see a decrease in the magnitude of the off-diagonal terms by over an order of magnitude.
 
 
 \section{Experimental Results}\label{experimental}
-To demonstrate the realizability of this routine, we implemented it on a superconducting qubit, to calibrate an $RX(\frac{\pi}{2})$ pulse. The qubit being used had a 20.5 $\mu$s T1, and a 11.00 $\mu$s T2, and the pulse shapes being considered were 30ns long top hat pulse sequences, generated via a set-and-hold signal generator using the amplitudes shown in 
+To demonstrate the realizability of this routine, we implemented it on a superconducting qubit, to calibrate an $RX(\frac{\pi}{2})$ pulse. The qubit being used had a FILL IN $\mu$s T1, and a FILL IN $\mu$s T2.
 
-In this example we generated 10 candidate pulses using the GRAPE algorithm with a high convergence tolerance, with the intention that the optimizer would find solutions with some degree of noticeable coherent error. For each pulseshape, which enacts some unitary $U_i$, we performed an RPE-like experiment\cite{Kimmel2015} where the $\sigma_y$ and $\sigma_z$ expectations values were measured at the end of a sequence of $n$ applications of $U_i$, where n ranged from 1 to 100, and each circuit was sampled 1000 times. The results are plotted in [REF SUBPLOTS OF \ref{fig:rebit}]. Then, using the same optimization tool chain as in \ref{numerical}, we picked out the coeffients $p_i$ such that $p_i, U_i$ are a BCS, and performed the same experiment, but where for each shot of the experiment, we precompiled a different circuit. In particular, in our sampling procedure, circuit $U_{i_0}, U_{i_1}, ..., U_{i_{n-1}}$ occurs with probability $p_{i_0}p_{i_1}...p_{i_{n-1}}$. While in this example high fidelity, low coherent error controls can be produced [REFERENCE SUBPLOT OF \ref{fig:pulseshapes}], this demonstrates that this method can reduce coherent errors drastically.
+In this example we intentionally over and under-calibrated four pulseshapes. For each of these pulseshapes, in addition to their BCS and the calibrated pulse, we then ran a randomized benchmarking experiment.\needcite The results are plotted in \ref{fig:rb}. In each case, our Clifford sequences were decomposed into RX($\frac{\pi}{2})$) and RY($\frac{\pi}{2})$) pulses.  In the superconducting qubit architecture used, these gates are implemented using the same pulse envelope definition. It was shown in \cite{Ball2016} that for a particular error model, non-Markovian, or \textit{quasi-static}, noise can result in more general Gamma Distributed noise, while Markovian noise, such as depolarizing noise, should result in Gaussian distributed fidelity estimates for each randomized benchmarking sequence depth. Our results are consistent with this, as demonstrated by the long tails in the four leftmost plots that vanish in the bottom right plot.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=.75\columnwidth]{example.png}
-  \caption{An experimental implementation of our routine. We should include an array of images, maybe similar to this one, and then comment that in the image representing the BCS (above) that the noise is dominantly incoherent. The colors, ranging from purple to red, correspond to the depth into the sequence, where the darkest purple point is at the top of the rebit at $\ket{0}$. As the color becomes more red, the gate is applied more times, and consequently in the BCS example, moves the qubit's state vector closer to the maximally mixed state at the origin. The angle was computed by taking the arctangent of the $\sigma_y$ and $\sigma_z$ expectations, while the ther radius was computed by adding the two expectations in quadrature.}
-  \label{fig:rebit}
+  \includegraphics[width=\columnwidth]{placeholder_rb.png}
+  \caption{Randomized benchmarking experiments ran using different pulse definitions. The four plots on the left are from the incorrectly calibrated pulse, while the top right is the calibrated pulse, and the bottom right is the BCS.}
+  \label{fig:rb}
 \end{figure}
 
 \section{Conclusion}
