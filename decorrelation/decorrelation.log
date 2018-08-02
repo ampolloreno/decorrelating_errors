@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.7.30)  1 AUG 2018 10:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.7.30)  1 AUG 2018 23:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -598,7 +598,7 @@ LaTeX Warning: Reference `1qnum' on page 4 undefined on input line 220.
 LaTeX Warning: Reference `fig2num' on page 4 undefined on input line 220.
 
 [4 <./1q0.png> <./1q1.png> <./control_dpn_all0.png> <./control_dpn_all2.png>]
-<placeholder_rb.png, id=201, 1521.2835pt x 769.6755pt>
+<placeholder_rb.png, id=203, 1521.2835pt x 769.6755pt>
 File: placeholder_rb.png Graphic file (type png)
 <use placeholder_rb.png>
 Package pdftex.def Info: placeholder_rb.png  used on input line 230.
@@ -621,13 +621,24 @@ Underfull \hbox (badness 1400) in paragraph at lines 263--269
 9 (2013), 10.1103/phys-
  []
 
-) [5 <./placeholder_rb.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 246.
+
+Underfull \hbox (badness 1852) in paragraph at lines 274--280
+ []\OT1/cmr/m/n/9 E. Mage-san, J. M. Gam-betta,  and J. Emer-son,
+ []
+
+
+Underfull \hbox (badness 1783) in paragraph at lines 274--280
+ [][]\OT1/cmr/m/n/9 Phys-i-cal Re-view Let-ters \OT1/cmr/bx/n/9 106 \OT1/cmr/m/
+n/9 (2011), 10.1103/phys-
+ []
+
+[5 <./placeholder_rb.png>]) [6]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 247.
  (./decorrelation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 246.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 246.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 247.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 247.
 Package rerunfilecheck Info: File `decorrelation.out' has not changed.
-(rerunfilecheck)             Checksum: 0899396DAD2698877A452B590E84A133;942.
+(rerunfilecheck)             Checksum: EF6B5F4D431278A992DE17B450FFCC44;958.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -640,13 +651,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 10112 strings out of 492982
- 146288 string characters out of 6134896
- 268693 words of memory out of 5000000
- 13466 multiletter control sequences out of 15000+600000
+ 10134 strings out of 492982
+ 146627 string characters out of 6134896
+ 259076 words of memory out of 5000000
+ 13483 multiletter control sequences out of 15000+600000
  18806 words of font info for 69 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 42i,20n,40p,1024b,510s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,20n,40p,1024b,547s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texli
@@ -668,10 +679,10 @@ e1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
 ic/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmti9.pfb>
-Output written on decorrelation.pdf (5 pages, 1396347 bytes).
+Output written on decorrelation.pdf (6 pages, 1399408 bytes).
 PDF statistics:
- 332 PDF objects out of 1000 (max. 8388607)
- 287 compressed objects within 3 object streams
- 59 named destinations out of 1000 (max. 500000)
+ 353 PDF objects out of 1000 (max. 8388607)
+ 306 compressed objects within 4 object streams
+ 64 named destinations out of 1000 (max. 500000)
  151 words of extra memory for PDF output out of 10000 (max. 10000000)
 

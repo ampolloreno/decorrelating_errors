@@ -12,6 +12,6 @@
 \contentsline {subsection}{\numberline {A}1Q Gates}{3}{section*.13}
 \contentsline {subsection}{\numberline {B}2Q Gates}{4}{section*.14}
 \contentsline {section}{\numberline {V}Experimental Results}{4}{section*.15}
-\contentsline {section}{\numberline {VI}Conclusion}{5}{section*.17}
+\contentsline {section}{\numberline {VI}Conclusion and Future Work}{5}{section*.17}
 \contentsline {section}{\numberline {VII}Acknowledgements}{5}{section*.18}
 \contentsline {section}{\numberline {}References}{5}{section*.19}
