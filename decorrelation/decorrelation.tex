@@ -36,6 +36,10 @@
 \newcommand{\kcy}[1]{{\color{red}[#1]_{\rm{KCY}}}}
 \newcommand{\amp}[1]{{\color{red}[#1]_{\rm{AMP}}}}
 \setlength{\jot}{10pt}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\usepackage{lipsum}
+
 %-------------Header begins here----------------------------------------
 \begin{document}
 % \tableofcontents
@@ -92,10 +96,10 @@ where $\omega_i > 0$ and $DPN[\alpha](\rho)$ is a depolarizing noise channel, wi
 \end{equation}
 with $p_i$ summing to one. 
 
-Thus, following from the mixing lemma proven by Campbell and Hastings in \cite{Campbell2017} and \cite{1612.01011}, one property of BOCSs is that if each approximation of the target gate is correct to within $\epsilon$ in operator norm and $\alpha\leq\epsilon^2$, then the diamond distance of the BOCS to $U_T$ is also no larger than $\epsilon^2$. Because any sufficiently populated BOCS will have a set of controls that result in error of order $\mathcal{O}(\epsilon^2)$ on their balanced channel, it is then clear that in priniple BOCSs can always quadratically decrease the error in our approximation (in diamond norm). Moreover, in the setting where our system's performance is non-Markovian, e.g. drift, optimizing our BOCSs \textit{robustly} over a range of control parameters can reduce the non-Markovianity of the noise. 
+We will be interested in the case where $\alpha \approx \epsilon^2$, with $\epsilon$ being the infidelity of each $U_i$ to $U_T$. Indeed, from Lemma 2 in \cite{Campbell2017}, if $0\in $ Conv$[\{H_i\}]$, where Conv is the convex hull of its arguments and $H_i$ are the generating Hamiltonians for the controls, then we know such a balanced channel exists. In this case, following from the mixing lemma proven by Campbell and Hastings in \cite{Campbell2017} and \cite{1612.01011}, we can bound the the diamond distance from a BOCS to $U_T$ by $\epsilon^2$. Thus for suitable BOCSs, we can quadratically decrease the error in our approximation in diamond norm. 
 
 \section{A Simple Example}
-As a somewhat trivial example, consider a single-qubit rotation-angle error, such as from stochastic laser amplitude fluctuations. A BOCS may consist of an $X_\pi$ pulse, as well as an $X_{-\pi}$ pulse (i.e., a clockwise and counter clockwise rotation of the qubit). In the case of excess amplitude, the $X_\pi$ pulse will result in an over-rotation error, while the $X_{-\pi}$ pulse will result in an \emph{under}-rotation error. When it comes time to perform the target gate in a quantum circuit, one member of the BOCS is chosen uniformly at random. This has the effect of decreasing the norm of the noise channel and decorrelating the over-rotation error (Figure \ref{fig:simple_example}). In this simple example, we can analytically find a solution to Equation \ref{eq:1}. Specifically, by choosing weights $\omega_i=1$, we see:
+As a trivial example, consider a single-qubit rotation-angle error, such as from stochastic laser amplitude fluctuations. A BOCS may consist of an $X_\pi$ pulse, as well as an $X_{-\pi}$ pulse (i.e., a clockwise and counter clockwise rotation of the qubit). In the case of excess amplitude, the $X_\pi$ pulse will result in an over-rotation error, while the $X_{-\pi}$ pulse will result in an \emph{under}-rotation error. When it comes time to perform the target gate in a quantum circuit, one member of the BOCS is chosen uniformly at random. This has the effect of decreasing the norm of the noise channel and decorrelating the over-rotation error (Figure \ref{fig:simple_example}). In this simple example, we can analytically find a solution to Equation \ref{eq:1}. Specifically, by choosing weights $\omega_i=1$, we see:
 
 \begin{equation}
   \begin{gathered}
@@ -107,6 +111,15 @@ As a somewhat trivial example, consider a single-qubit rotation-angle error, suc
 
 Therefore, for a rotational error of angle $\epsilon > 0$, we see that $X_\pi$ and  $X_{-\pi}$  form a BOCS, with $\alpha\approx\epsilon^2$.
 
+Moreover, if we consider the amplitudes to not only be miscalibrated, but also non-Markovian (i.e. such that for each circuit the error map can be approximated by $X(\epsilon \pm \delta$, where $\delta\sim\mathcal{N}(0, \sigma^2)$), we see that for correlated noise we get a reduction on the impact of $\delta$. Indeed, we see that the error is a $X\otimes X$ term with  coefficient:
+
+\begin{equation}
+  \begin{gathered}
+  2\epsilon^2 + 4\delta\epsilon + 2\delta^2
+  \end{gathered}
+\end{equation}
+
+Thus, the drift in controls can also be supressed by a quadratic factor in some cases.
 
 
 \section{Optimal Control Problems}\label{ocp}
