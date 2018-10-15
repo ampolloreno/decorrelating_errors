@@ -6,3 +6,6 @@
 /decorrelation/decorrelation.aux
 /decorrelation/decorrelation.blg
 /decorrelation/decorrelation.bbl
+__pycache__
+.ipynb_checkpoints
+/data/.ipynb_checkpoints
