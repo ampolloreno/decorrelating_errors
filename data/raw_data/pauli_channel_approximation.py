@@ -78,8 +78,7 @@ class PCA(object):
 
     def __init__(self, num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
                  num_steps, time, threshold, detunings):
-        #self.seed = 138
-        self.seed = np.random.randint(1000)
+        self.seed = 139
         np.random.seed(self.seed)
         self.start = timemod.time()
         controlset = []
@@ -98,20 +97,14 @@ class PCA(object):
                            num_steps, time, threshold, random_detunings)
             controlset.append(result.reshape(-1, len(control_hamiltonians)))
             # controlset.append(np.array([1] * num_steps).reshape(-1, 1))
-        # self.controlset = np.array(controlset) + np.random.normal(0, .001,
-        #                                                           size=(np.array(controlset).shape))
-        controlset = np.array(controlset)
-        nums = np.array([.06, .04, -.04, -.06]) - .0093
-        a = np.array([np.array([[nums[0]/controlset.shape[1]] * controlset.shape[1], [nums[1]/controlset.shape[1]] * controlset.shape[1],
-                                                  [nums[2] / controlset.shape[1]] * controlset.shape[1], [nums[3] / controlset.shape[1]] * controlset.shape[1]]).T]).T
-        self.controlset = controlset + a
+        self.controlset = controlset
 
         self.detunings = detunings
         self.target_operator = target_operator
         self.dt = dt
         self.ambient_hamiltonian = ambient_hamiltonian
         self.control_hamiltonians = control_hamiltonians
-        self.assign_probs()
+        #self.assign_probs()
 
     def assign_probs(self):
         # Initialize random probabilities
@@ -193,189 +186,18 @@ class PCA(object):
         print(new_probs)
         return res.fun
 
-    # def plot_everything(self, num_processors=6, num_points=10):
-    #     """Plots the depolarizing noise and gate fidelity over all detunings, varying over the list
-    #      provided by itertools."""
-    #
-    #     values_to_plot = []
-    #     corr = []
-    #     import time
-    #     start = time.time()
-    #     for i, detuning in enumerate(self.detunings):
-    #         # values = (np.geomspace(1, 2**(num_points - 1), num_points) - 1)/(2**(num_points-1) -
-    #         #                                                                  1) * detuning[0]*200
-    #         # values = [-value for value in values[::-1]] + list(values[1:])
-    #         values = np.linspace(-detuning[0]*3, detuning[0]*3, num_points)
-    #         # print(values)
-    #         values_to_plot.append(values)
-    #         corr.append(i)
-    #     combinations = itertools.product(*values_to_plot)
-    #     new_combinations = []
-    #     for combo in combinations:
-    #         new_combo = []
-    #         for index in corr:
-    #             new_combo.append(combo[index])
-    #         new_combinations.append(new_combo)
-    #     combinations = new_combinations
-    #     pool = multiprocessing.Pool(num_processors)
-    #     lst = [(self.controlset, self.ambient_hamiltonian, combo, self.dt,
-    #             self.control_hamiltonians, self.target_operator, self.probs)
-    #            for combo in combinations]
-    #     projs_fidelities_sops = pool.map(compute_dpn_and_fid, lst)
-    #     pool.close()
-    #     projs = [pf[0] for pf in projs_fidelities_sops]
-    #     fidelities = [pf[1] for pf in projs_fidelities_sops]
-    #     sops = [pf[2] for pf in projs_fidelities_sops]
-    #
-    #     print(fidelities)
-    #
-    #     # projs2 = []
-    #     # for proj in projs:
-    #     #     from numbers import Number
-    #     #     if not isinstance(proj, Number):
-    #     #         projs2.append(proj)
-    #     #
-    #     # projs = projs2
-    #     projs = np.vstack(projs).T
-    #     fidelities = np.vstack(fidelities).T
-    #     plt.figure(1,  figsize=(16, 8))  # the first figure
-    #     plt.subplot(211)  # the first subplot in the first figure
-    #
-    #     tuple_length = len(combinations[0])
-    #     standard_ordering = list(range(tuple_length))
-    #     ordering = standard_ordering
-    #     # Switch first index
-    #
-    #     #ordering[0], ordering[1] = ordering[1], ordering[0]
-    #     print(tuple_length)
-    #
-    #     indices = generate_indices(len(values), ordering)
-    #
-    #     for i, row in enumerate(projs[:-1, :]):
-    #         reordered_row = np.array([row[j] for j in indices])
-    #         plt.plot(range(len(row)), reordered_row)
-    #     plt.plot(range(len(projs[-1, :])), [projs[-1, :][i] for i in indices], label="min", color='k', linewidth=2, zorder=10)
-    #     plt.legend()
-    #     plt.ylabel("Absolute Sum of Off Diagonal Elements")
-    #     plt.semilogy()
-    #
-    #     plt.subplot(212)  # the second subplot in the first figure
-    #     for i, row in enumerate(fidelities[:-1, :]):
-    #         reordered_row = np.array([row[j] for j in indices])
-    #         plt.plot(range(len(row)), -np.log(1 - reordered_row))
-    #     plt.plot(range(len(fidelities[-1, :])), [-np.log(1 - fidelities[-1, :][i]) for i in indices], label="min", color='k', linewidth=2, zorder=10)
-    #     plt.legend()
-    #     plt.ylabel("f")
-    #     samples = np.linspace(plt.ylim()[0], plt.ylim()[1], 11)
-    #     labels = -(np.exp(-samples) - 1)
-    #     plt.xlabel("Sample Index")
-    #     plt.tight_layout()
-    #     plt.yticks(samples, labels)
-    #     plt.tight_layout()
-    #     import numpy
-    #     numpy.set_printoptions(threshold=numpy.nan)
-    #     with open("code.txt", 'w') as code:
-    #         code.write('sample_points = {combinations}\nfidelities = {fidelities}\nprojs = {'
-    #                    'projs}\nsops = {sops}'.format(
-    #             combinations=repr(combinations),
-    #             fidelities=repr(fidelities),
-    #             projs=repr(projs),
-    #             sops=repr(sops)))
-    #     stop = time.time()
-    #     print(stop - start)
-
- #
- # def plot_everything(self, num_processors=6, num_points=3):
- #        """Plots the depolarizing noise and gate fidelity over all detunings, varying over the list
- #         provided by itertools."""
- #
- #        values_to_plot = []
- #        corr = []
- #        for i, detuning in enumerate(self.detunings):
- #            values = (np.geomspace(1, 2**(num_points - 1), num_points) - 1)/(2**(num_points-1) - 1) * detuning[0]
- #            values = [-value for value in values[::-1]] + list(values[1:])
- #            # values = np.linspace(-detuning[0], detuning[0], num_points)
- #            # print(values)
- #            values_to_plot.append(values)
- #            corr.append(i)
- #        combinations = itertools.product(*values_to_plot)
- #        new_combinations = []
- #        for combo in combinations:
- #            new_combo = []
- #            for index in corr:
- #                new_combo.append(combo[index])
- #            new_combinations.append(new_combo)
- #        combinations = new_combinations
- #        pool = multiprocessing.Pool(num_processors)
- #        lst = [(self.controlset, self.ambient_hamiltonian, combo, self.dt,
- #                self.control_hamiltonians, self.target_operator, self.probs)
- #               for combo in combinations]
- #        projs_fidelities = pool.map(compute_dpn_and_fid, lst)
- #        pool.close()
- #        projs = [pf[0] for pf in projs_fidelities]
- #        fidelities = [pf[1] for pf in projs_fidelities]
- #
- #        # projs2 = []
- #        # for proj in projs:
- #        #     from numbers import Number
- #        #     if not isinstance(proj, Number):
- #        #         projs2.append(proj)
- #        #
- #        # projs = projs2
- #        projs = np.vstack(projs).T
- #        fidelities = np.vstack(fidelities).T
- #        plt.figure(1,  figsize=(16, 8))  # the first figure
- #        plt.subplot(211)  # the first subplot in the first figure
- #
- #        tuple_length = len(combinations[0])
- #        standard_ordering = list(range(tuple_length))
- #        ordering = standard_ordering
- #        # Switch first index
- #
- #        #ordering[0], ordering[1] = ordering[1], ordering[0]
- #        print(tuple_length)
- #
- #        indices = generate_indices(len(values), ordering)
- #
- #        for i, row in enumerate(projs[:-1, :]):
- #            reordered_row = np.array([row[j] for j in indices])
- #            plt.plot(range(len(row)), reordered_row)
- #        plt.plot(range(len(projs[-1, :])), [projs[-1, :][i] for i in indices], label="min", color='k', linewidth=2, zorder=10)
- #        plt.legend()
- #        plt.ylabel("Absolute Sum of Off Diagonal Elements")
- #        plt.semilogy()
- #
- #        plt.subplot(212)  # the second subplot in the first figure
- #        for i, row in enumerate(fidelities[:-1, :]):
- #            reordered_row = np.array([row[j] for j in indices])
- #            plt.plot(range(len(row)), -np.log(1 - reordered_row))
- #        plt.plot(range(len(fidelities[-1, :])), [-np.log(1 - fidelities[-1, :][i]) for i in indices], label="min", color='k', linewidth=2, zorder=10)
- #        plt.legend()
- #        plt.ylabel("f")
- #        samples = np.linspace(plt.ylim()[0], plt.ylim()[1], 11)
- #        labels = -(np.exp(-samples) - 1)
- #        plt.xlabel("Sample Index")
- #        plt.tight_layout()
- #        plt.yticks(samples, labels)
- #        plt.tight_layout()
- #
-
-
-    def plot_everything(self, num_processors=6, num_points=50.0, index=0):
+    def plot_everything(self, num_processors=70, num_points=3):
         """Plots the depolarizing noise and gate fidelity over all detunings, varying over the list
          provided by itertools."""
+
         values_to_plot = []
         corr = []
         for i, detuning in enumerate(self.detunings):
-            # values = (np.geomspace(1, 2**(num_points - 1), num_points) - 1)/(2**(num_points-1) -
-            #  1) * detuning[0]*1000
-            # values = [-value for value in values[::-1]] + list(values[1:])
-            values = np.linspace(-detuning[0]*100, detuning[0]*100, num_points)
-            print(values)
-            if i == index:
-                values_to_plot.append(values)
-            else:
-                values_to_plot.append([0])
+            values = (np.geomspace(1, 2**(num_points - 1), num_points) - 1)/(2**(num_points-1) - 1) * detuning[0]
+            values = [-value for value in values[::-1]] + list(values[1:])
+            # values = np.linspace(-detuning[0], detuning[0], num_points)
+            # print(values)
+            values_to_plot.append(values)
             corr.append(i)
         combinations = itertools.product(*values_to_plot)
         new_combinations = []
@@ -414,12 +236,12 @@ class PCA(object):
         #ordering[0], ordering[1] = ordering[1], ordering[0]
         print(tuple_length)
 
-        #indices = generate_indices(len(values), ordering)
-        indices = list(range(len(values)))
+        indices = generate_indices(len(values), ordering)
+
         for i, row in enumerate(projs[:-1, :]):
             reordered_row = np.array([row[j] for j in indices])
-            plt.plot(values, reordered_row)
-        plt.plot(values, [projs[-1, :][i] for i in indices], label="min", color='k', linewidth=2, zorder=10)
+            plt.plot(range(len(row)), reordered_row)
+        plt.plot(range(len(projs[-1, :])), [projs[-1, :][i] for i in indices], label="min", color='k', linewidth=2, zorder=10)
         plt.legend()
         plt.ylabel("Absolute Sum of Off Diagonal Elements")
         plt.semilogy()
@@ -427,8 +249,8 @@ class PCA(object):
         plt.subplot(212)  # the second subplot in the first figure
         for i, row in enumerate(fidelities[:-1, :]):
             reordered_row = np.array([row[j] for j in indices])
-            plt.plot(values, -np.log(1 - reordered_row))
-        plt.plot(values, [-np.log(1 - fidelities[-1, :][i]) for i in indices], label="min", color='k', linewidth=2, zorder=10)
+            plt.plot(range(len(row)), -np.log(1 - reordered_row))
+        plt.plot(range(len(fidelities[-1, :])), [-np.log(1 - fidelities[-1, :][i]) for i in indices], label="min", color='k', linewidth=2, zorder=10)
         plt.legend()
         plt.ylabel("f")
         samples = np.linspace(plt.ylim()[0], plt.ylim()[1], 11)
@@ -437,7 +259,6 @@ class PCA(object):
         plt.tight_layout()
         plt.yticks(samples, labels)
         plt.tight_layout()
-
 
 
 def compute_dpn_and_fid(data):
@@ -489,7 +310,7 @@ def compute_dpn_and_fid(data):
     fidelities = np.array(fidelities).T
     projs = np.array(projs).T
 
-    return projs, fidelities, sops + [avg_sop]
+    return projs, fidelities
 
 # #Deprecated
 #     def plot_control_fidelity(self, cnum):
@@ -623,15 +444,10 @@ def generate_report(filename):
     except AttributeError:
         pass
     image_locs = []
-    import time
-    start = time.time()
-    for index in [0, 1, 2, 3, 4]:
-        pca.plot_everything(index=index)
-        image_locs.append(report_dir + "/control_dpn_all.png")
-        plt.savefig(report_dir + "/control_dpn_all{}.png".format(index))
-        plt.clf()
-    stop = time.time()
-    print(stop - start)
+    pca.plot_everything()
+    image_locs.append(report_dir + "/control_dpn_all.png")
+    plt.savefig(report_dir + "/control_dpn_all.png")
+    plt.clf()
     #
     # for i in range(len(pca.control_hamiltonians) + 1):
     #     pca.plot_control_fidelity(i - 1)
@@ -708,7 +524,7 @@ def subsample(filename, num_iters=5):
             fh.close()
 
 
-def pick_best_controls(filename, num_best, num_points=4, num_processors=36):
+def pick_best_controls(filename, num_best, num_points=2, num_processors=36):
     from copy import deepcopy
     with open(filename, 'rb') as filep:
         pca = dill.load(filep)
@@ -717,9 +533,9 @@ def pick_best_controls(filename, num_best, num_points=4, num_processors=36):
     for i, detuning in enumerate(pca.detunings):
         values = (np.geomspace(1, 2 ** (num_points - 1), num_points) - 1) / (
         2 ** (num_points - 1) - 1) * detuning[0]
-        #values = [-value for value in values[::-1]] + list(values[1:])
+        values = [-value for value in values[::-1]] + list(values[1:])
         # values = np.linspace(-detuning[0], detuning[0], num_points)
-        print(values)
+        # print(values)
         values_to_plot.append(values)
         corr.append(i)
     combinations = itertools.product(*values_to_plot)
@@ -762,36 +578,36 @@ def pick_best_controls(filename, num_best, num_points=4, num_processors=36):
         fh.close()
 
 #
-# if __name__ == "__main__":
-#     from mpi4py import MPI
-#     COMM = MPI.COMM_WORLD
-#     I = np.eye(2)
-#     X = np.array([[0, 1], [1, 0]])
-#     Y = np.array([[0, -1.j], [1.j, 0]])
-#     Z = np.array([[1, 0], [0, -1]])
-#     ambient_hamiltonian = [Z]
-#     control_hamiltonians = [X, Y]
-#     detunings = [(1E-3, 1), (1E-3,  2)]
-#     import scipy
-#     target_operator = scipy.linalg.sqrtm(Y)
-#     # time = 4 * np.pi
-#     # num_steps = 400
-#     time = np.pi
-#     num_steps = 100
-#     threshold = 1 - .001
-#     num_controls = 100
-#     pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
-#               num_steps, time, threshold, detunings)
-#
-#     if COMM.rank == 0:
-#         print("TOOK {}".format(pca.time))
-#         import os
-#         i = 0
-#         while os.path.exists("pickled_controls%s.pkl" % i):
-#             i += 1
-#         fh = open("pickled_controls%s.pkl" % i, "wb")
-#         dill.dump(pca, fh)
-#         fh.close()
+if __name__ == "__main__":
+    from mpi4py import MPI
+    COMM = MPI.COMM_WORLD
+    I = np.eye(2)
+    X = np.array([[0, 1], [1, 0]])
+    Y = np.array([[0, -1.j], [1.j, 0]])
+    Z = np.array([[1, 0], [0, -1]])
+    ambient_hamiltonian = [Z]
+    control_hamiltonians = [X, Y]
+    detunings = [(1E-4, 1), (1E-4,  2)]
+    import scipy
+    target_operator = scipy.linalg.sqrtm(Y)
+    # time = 4 * np.pi
+    # num_steps = 400
+    time = np.pi
+    num_steps = 100
+    threshold = 1 - .001
+    num_controls = 100
+    pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
+              num_steps, time, threshold, detunings)
+
+    if COMM.rank == 0:
+        #print("TOOK {}".format(pca.time))
+        import os
+        i = 0
+        while os.path.exists("pickled_controls%s.pkl" % i):
+            i += 1
+        fh = open("pickled_controls%s.pkl" % i, "wb")
+        dill.dump(pca, fh)
+        fh.close()
 
 #
 # if __name__ == "__main__":
@@ -811,53 +627,20 @@ def pick_best_controls(filename, num_best, num_points=4, num_processors=36):
 #     # applied multiplicatively
 #     ambient_hamiltonian = [IZ, ZI]
 #     control_hamiltonians = [IX, IY, XI, YI, ZZ]
-#     detunings = [(.001, 1), (.001, 1), (.001, 2), (.001, 2), (.001, 1)]
+#     detunings = [(0, 1), (0, 1), (0, 2), (0, 2), (0, 1)]
 #     target_operator = entangle_ZZ
-#     time = 4. * np.pi
-#     num_steps = 200
+#     time = 2. * np.pi
+#     num_steps = 75
 #     threshold = 1 - .001
-#     num_controls = 200
+#     num_controls = 100
 #     pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
 #               num_steps, time, threshold, detunings)
 #     if COMM.rank == 0:
-#         print("TOOK {}".format(pca.time))
+#         # print("TOOK {}".format(pca.time))
 #         import os
 #         i = 0
 #         while os.path.exists("pickled_controls%s.pkl" % i):
 #             i += 1
 #         fh = open("pickled_controls%s.pkl" % i, "wb")
-#         dill.dump(pca, fh)s
+#         dill.dump(pca, fh)
 #         fh.close()
-
-if __name__ == "__main__":
-    from mpi4py import MPI
-    COMM = MPI.COMM_WORLD
-    I = np.eye(2)
-    X = np.array([[0, 1], [1, 0]])
-    Y = np.array([[0, -1.j], [1.j, 0]])
-    Z = np.array([[1, 0], [0, -1]])
-    ambient_hamiltonian = [I]
-    control_hamiltonians = [X]
-    detunings = [(0, 1), (0, 1)]
-    import scipy
-    target_operator = scipy.linalg.sqrtm(X)
-    # time = 4 * np.pi
-    # num_steps = 400
-    time = 3.3405822619285139
-    #time = 1
-    num_steps = 10
-    threshold = 1 - .001
-    num_controls = 4
-    pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
-              num_steps, time, threshold, detunings)
-
-
-    if COMM.rank == 0:
-        print("TOOK {}".format(pca.time))
-        import os
-        i = 0
-        while os.path.exists("pickled_controls%s.pkl" % i):
-            i += 1
-        fh = open("pickled_controls%s.pkl" % i, "wb")
-        dill.dump(pca, fh)
-        fh.close()

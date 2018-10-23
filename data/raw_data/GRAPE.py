@@ -56,7 +56,7 @@ def control_unitaries(ambient_hamiltonian, control_hamiltonians, controls, dt):
     for row in controls:
         step_hamiltonian = [control * control_hamiltonians[i] for i, control in enumerate(row)]
         evolution = scipy.linalg.expm(
-            -1.j * dt * (np.sum(ambient_hamiltonian, axis=0) + np.sum(step_hamiltonian, axis=0)))
+            -1.j * dt * (sum(ambient_hamiltonian) + np.sum(step_hamiltonian, axis=0)))
         unitaries.append(evolution)
     return unitaries
 
@@ -83,7 +83,8 @@ def grape_perf(ambient_hamiltonian, control_hamiltonians, controls, dt, target_o
     unitaries = control_unitaries(ambient_hamiltonian, control_hamiltonians, controls, dt)
     final_unitary = reduce(np.dot, list(reversed(unitaries)), np.eye(unitaries[0].shape[0]))
     overlap = np.trace(adjoint(target_operator).dot(final_unitary))
-    return -overlap * np.conj(overlap)
+    perf = -overlap * np.conj(overlap)
+    return np.real(perf)
 
 
 def grape_gradient(ambient_hamiltonian, control_hamiltonians, controls, dt, target_operator):
@@ -147,7 +148,7 @@ def comp_avg_perf(pair):
 
 
 def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
-                       controls, detunings, dt, target_operator, deg=2, num_processors=7):
+                       controls, detunings, dt, target_operator, deg=3, num_processors=7):
     """
     Average the given func over noise using gaussian quadrature.
 
@@ -281,32 +282,16 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
                                            target_operator)
         grad = lambda controls: grape_gradient(ambient_hamiltonian, control_hamiltonians, controls,
                                                dt, target_operator)
+    import numpy as np
+    perf = lambda controls: grape_perf(ambient_hamiltonian*0, control_hamiltonians, controls, dt,
+                                       target_operator)
     dimension = np.shape(ambient_hamiltonian[0])[0]
     disp = True
     ftol = (1 - threshold)
     options = {"ftol": ftol,
                "disp": disp}
-
-
-    # num_samples = 10
-    # # We'll assume one control
-    # fwhm = 2.5
-    # ts = np.arange(num_samples)
-    # sigma = 0.5 * fwhm / np.sqrt(2.0 * np.log(2.0))
-    # vals = np.exp(-0.5 * (ts - 5) ** 2 / sigma ** 2)
-    # epsilon = 1
-
-    vals = [0.050226199732051155, 0.13199339787014291, 0.23855965632270518, 0.34398290898284473, 0.41077865874536323, 0.41077865874536329, 0.34398290898284478, 0.23855965632270532, 0.13199339787014291, 0.050226199732051197]
-
-
-    constraint = (min(vals), 1)
-    #
-    controls = np.reshape(vals, (1, len(vals)))
-               # + (np.random.rand(1, len(vals)) - .5)*epsilon \
-               # + (np.random.rand(1) - .6) * .1
-    # (np.random.rand(1) - .4) * .1
-
-    #controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0)
+    constraint = (-1, 1)
+    controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0)
     # pi_pulse = np.random.randint(2)
     # num_pi_steps = round(np.pi / dt)
     # print(num_pi_steps)
@@ -327,10 +312,51 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
     # for i in range(len(controls)):
     #     if np.random.randint(2):
     #         controls[i] = 0
+    import numpy as np
+    from scipy.misc import derivative
 
+    def partial(func, point, index, args):
+        f = lambda x: func([p if i != index else x for i, p in enumerate(point)])
+        return derivative(f, point[index], n=1, args=args)
 
-    result = optimize.minimize(fun=perf, x0=controls, jac=grad, method='tnc', options=options,
-                               bounds=bounds)
+    import numpy as np
+
+    def compute_partial(f, point, tup, args):
+        """Compute the derivative of f at point of order tup, order must be positive"""
+        if len(tup) == 1:
+            return partial(f, point, tup[0], args)
+        # I think this assumes everything is at 0
+        return compute_partial(lambda x: partial(f, x, tup[0], args), point, tup[1:], args)
+
+    from itertools import product
+
+    def compute_ith_derivative(f, point, args, i, matsize):
+        if i == 0:
+            return np.array(f(point, *args)).flatten().reshape(1, -1)
+        indices = list(range(len(point)))
+        tups = product(*[indices] * i)
+        res = np.zeros(tuple([len(point)] * i + [matsize]), dtype='complex')
+        for tup in tups:
+            res[tup] = compute_partial(f, point, tup, args).flatten()
+        return res
+
+        # returns the derivative at zero
+    def first_deriv(control):
+        f = lambda x: grape_perf(np.array(ambient_hamiltonian) * x[1],
+                         [ch * (1+x[0]) for ch in control_hamiltonians],
+                         control, dt,
+                         target_operator)
+        # second arg is being ignored
+        res = scipy.linalg.norm(compute_ith_derivative(f, np.array([0, 0]), tuple(), 1, 4))
+        print(res)
+        return res
+        # SLACK=.1
+        # return scipy.linalg.norm(compute_ith_derivative(f, np.array([0, 0]), tuple(), 3, 4)) + SLACK
+
+    constraints = ({'type': 'ineq', 'fun': lambda x: -first_deriv(x)})
+    #constraints = {}
+    result = optimize.minimize(fun=perf, x0=controls, method='COBYLA', options=options,
+                               bounds=bounds, constraints=constraints)
 
     # Verify that the controls meet requirements at zero.
     perf_at_zero = grape_perf(np.array(ambient_hamiltonian) * 0,
@@ -338,9 +364,12 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
                               result.x, dt,
                               target_operator)
 
-    print("PERF AT ZERO: {}".format(perf_at_zero))
+    avg_perf = perf(result.x)
 
-    #    check_perf = perf(result.x)
+    print("PERF AT ZERO: {}".format(perf_at_zero))
+    print("Avg perf: {}".format(avg_perf))
+
+
     print("PERFORMANCE IS: ", (-perf_at_zero) / dimension ** 2)
     import sys
     sys.stdout.flush()
@@ -348,16 +377,18 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
         print("RETRYING GRAPE FOR BETTER CONTROLS")
         sys.stdout.flush()
         controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .1
-        result = optimize.minimize(fun=perf, x0=controls, jac=grad, method='tnc', options=options,
-                                   bounds=bounds)
+        result = optimize.minimize(fun=perf, x0=controls, method='COBYLA', options=options,
+                                   bounds=bounds, constraints=constraints)
         # bounds=[constraint for _ in controls[0]], options=options)
         print("minimize finished, performance is  {}".format(-result.fun / dimension ** 2))
         perf_at_zero = grape_perf(ambient_hamiltonian * 0,
                                   control_hamiltonians,
                                   result.x, dt,
                                   target_operator)
-        # check_perf = perf(result.x)
+        check_perf = perf(result.x)
         print("PERFORMANCE IS: ", (-perf_at_zero) / dimension ** 2)
+        print("avg PERFORMANCE IS: ", (-check_perf) / dimension ** 2)
+
         sys.stdout.flush()
     return result.x
 
@@ -368,7 +399,7 @@ if __name__ == "__main__":
     X = np.array([[0, 1], [1, 0]])
     Y = np.array([[0, -1.j], [1.j, 0]])
     Z = np.array([[1, 0], [0, -1]])
-    ambient_hamiltonian = [I]
+    ambient_hamiltonian = [Z]
     control_hamiltonians = [X, Z]
     target_operator = X
     assert np.isclose(target_operator.dot(adjoint(target_operator)),
