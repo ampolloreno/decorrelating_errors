@@ -106,6 +106,7 @@ class PCA(object):
         self.derivs = derivs
         self.weights = weights
         self.weights_0 = weights_0
+        print("Assigned weights.")
 
 
 def compute_dpn_and_fid(data):
@@ -161,42 +162,41 @@ def compute_dpn_and_fid(data):
 
     return projs, fidelities
 
-#
-# if __name__ == "__main__":
-#     COMM = MPI.COMM_WORLD
-#     I = np.eye(2)
-#     X = np.array([[0, 1], [1, 0]])
-#     Y = np.array([[0, -1.j], [1.j, 0]])
-#     Z = np.array([[1, 0], [0, -1]])
-#     ambient_hamiltonian = [Z]
-#     control_hamiltonians = [X, Y]
-#     detunings = [(1E-3, 1), (1E-3,  2)]
-#     target_operator = scipy.linalg.sqrtm(X)
-#     time = np.pi
-#     num_steps = 25
-#     threshold = 1 - .001
-#     num_controls = 750
-#     pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
-#               num_steps, time, threshold, detunings)
-#
-#     if COMM.rank == 0:
-#         i = 0
-#         while os.path.exists("pickled_controls%s.pkl" % i):
-#             i += 1
-#         fh = open("pickled_controls%s.pkl" % i, "wb")
-#         dill.dump(pca, fh)
-#         pca.assign_weights()
-#         dill.dump(pca, fh)
-#         fh.close()
 
-
-if __name__ == "__main__":
+def gen_1q():
     COMM = MPI.COMM_WORLD
     I = np.eye(2)
     X = np.array([[0, 1], [1, 0]])
     Y = np.array([[0, -1.j], [1.j, 0]])
     Z = np.array([[1, 0], [0, -1]])
-    #CNOT = np.array([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
+    ambient_hamiltonian = [Z]
+    control_hamiltonians = [X, Y]
+    detunings = [(1E-3, 1), (1E-3,  2)]
+    target_operator = scipy.linalg.sqrtm(X)
+    time = np.pi
+    num_steps = 25
+    threshold = 1 - .001
+    num_controls = 750
+    pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
+              num_steps, time, threshold, detunings)
+
+    if COMM.rank == 0:
+        i = 0
+        while os.path.exists("pickled_controls%s.pkl" % i):
+            i += 1
+        fh = open("pickled_controls%s.pkl" % i, "wb")
+        dill.dump(pca, fh)
+        pca.assign_weights()
+        dill.dump(pca, fh)
+        fh.close()
+
+
+def gen_2q():
+    COMM = MPI.COMM_WORLD
+    I = np.eye(2)
+    X = np.array([[0, 1], [1, 0]])
+    Y = np.array([[0, -1.j], [1.j, 0]])
+    Z = np.array([[1, 0], [0, -1]])
     IZ = np.kron(I, Z)
     ZI = np.kron(Z, I)
     XI = np.kron(X, I)
@@ -205,7 +205,6 @@ if __name__ == "__main__":
     YI = np.kron(Y, I)
     ZZ = np.kron(Z, Z)
     entangle_ZZ = np.array([[1, 0, 0, 0], [0, 1.j, 0, 0], [0, 0, 1.j, 0], [0, 0, 0, 1]])
-    # applied multiplicatively
     ambient_hamiltonian = [IZ, ZI]
     control_hamiltonians = [IX, IY, XI, YI, ZZ]
     detunings = [(.001, 1), (.001, 1), (.001, 2), (.001, 2), (.001, 1)]
@@ -225,3 +224,7 @@ if __name__ == "__main__":
         fh = open("pickled_controls%s.pkl" % i, "wb")
         dill.dump(pca, fh)
         fh.close()
+
+
+if __name__ == '__main__':
+    gen_1q()

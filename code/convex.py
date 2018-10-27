@@ -20,7 +20,7 @@ def error(combo, controls, target_operator, control_hamiltonians, ambient_hamilt
         combo = combo + combo[-1:]
     else:
         assert len(combo) == 5
-        combo = combo[:2] + combo[2:3] * 2 + combo[3:4] * 2 + combo + combo[4:]
+        combo = combo[:2] + combo[2:3] * 2 + combo[3:4] * 2 + combo[4:]
         assert len(combo) == 7
     assert len(combo) == len(control_hamiltonians) + len(ambient_hamiltonian0)
     for cnum, value in enumerate(combo):
@@ -111,8 +111,8 @@ def optimal_weights_1st_order(derivs, l, tol=DEFAULT_TOL):
         for ham_const in equalities:
             constraints += [np.real(ham_const) * omega == 0]
             constraints += [np.imag(ham_const) * omega == 0]
-
-        first_order = compute_first_order_term(derivs)
+        first_order = ham_consts[-1]
+        #first_order = compute_first_order_term(derivs)
         objective = cp.Minimize(cp.norm(np.real(first_order) * omega) + cp.norm(np.imag(first_order) * omega) + t)
         prob = cp.Problem(objective, constraints)
         result = prob.solve(solver=cp.CVXOPT, abstol=tol, abstol_inacc=tol)
