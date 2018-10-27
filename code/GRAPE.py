@@ -2,9 +2,7 @@ import itertools
 import numpy as np
 import scipy
 import scipy.optimize as optimize
-import matplotlib.pyplot as plt
 from numpy.polynomial.hermite import hermgauss
-import multiprocessing
 from functools import reduce
 from mpi4py import MPI
 
@@ -17,7 +15,7 @@ def split(container, count):
     Order is not preserved but this is potentially an advantage depending on
     the use case.
     """
-    return [container[_i::count] for _i in range(count)]
+    return [list(container)[_i::count] for _i in range(count)]
 
 
 def adjoint(operator):
@@ -132,13 +130,6 @@ def comp_avg_perf(pair):
                     for row in controls]
     new_controls = np.array(new_controls).flatten()
     nonzero_detunings = np.array(detunings)[np.where(np.array(detunings) != 0)[0]]
-    # if func == grape_perf:
-    #     print("VALUE {}".format(func([ambient * combination[i][0] for i, ambient in enumerate(ambient_hamiltonian)], control_hamiltonians, new_controls, dt,
-    #                      target_operator)))
-    #     print(combination)
-    # average_perf = reduce(lambda a, b: a * b, [comb[1] for comb in combination]) * \
-    #                 func([ambient * combination[i][0] for i, ambient in enumerate(ambient_hamiltonian)], control_hamiltonians, new_controls, dt,
-    #                      target_operator) / (np.sqrt(np.pi) ** len(nonzero_detunings))
     average_perf = reduce(lambda a, b: a * b, [comb[1] for comb in combination]) * \
                    func([ambient * combination[i][0] for i, ambient in
                          enumerate(ambient_hamiltonian)], control_hamiltonians, new_controls, dt,
@@ -148,7 +139,7 @@ def comp_avg_perf(pair):
 
 
 def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
-                       controls, detunings, dt, target_operator, deg=3, num_processors=7):
+                       controls, detunings, dt, target_operator, deg=2):
     """
     Average the given func over noise using gaussian quadrature.
 
@@ -181,8 +172,6 @@ def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
         points, weights = hermgauss(deg)
         nonzero_detunings = np.where(np.array(detunings) != 0)[0]
         zero_detunings = np.where(np.array(detunings) == 0)[0]
-        # print([np.sqrt(detuning) * points for i, detuning in enumerate(np.array(detunings)[nonzero_detunings])])
-        # print([1/np.sqrt(detuning) * points for i, detuning in enumerate(np.array(detunings)[nonzero_detunings])])
 
         pairs = [list(zip(np.sqrt(detuning) * points, weights)) for i, detuning in
                  enumerate(np.array(detunings)[nonzero_detunings])]
@@ -207,13 +196,6 @@ def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
                     new_combo.append(pair)
                 new_combinations.append(new_combo)
             combinations = new_combinations
-        # pool = multiprocessing.Pool(num_processors)
-        #
-        lst = [(combination, controls, func, ambient_hamiltonian, control_hamiltonians, detunings,
-                dt, target_operator) for
-               combination in combinations]
-        # results = pool.map(comp_avg_perf, lst)
-        # pool.close()
         jobs = combinations
         # Split into however many cores are available.
         jobs = split(jobs, COMM.size)
@@ -269,22 +251,14 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
     :rtype: numpy.array
     """
     dt = time / num_steps
-    # deg = 1
-    if detunings is not None:
-        perf = lambda controls: average_over_noise(grape_perf, ambient_hamiltonian,
-                                                   control_hamiltonians, controls, detunings, dt,
-                                                   target_operator)  # , deg=deg)
-        grad = lambda controls: average_over_noise(grape_gradient, ambient_hamiltonian,
-                                                   control_hamiltonians, controls, detunings, dt,
-                                                   target_operator)  # , deg=deg)
-    else:
-        perf = lambda controls: grape_perf(ambient_hamiltonian, control_hamiltonians, controls, dt,
-                                           target_operator)
-        grad = lambda controls: grape_gradient(ambient_hamiltonian, control_hamiltonians, controls,
-                                               dt, target_operator)
-    import numpy as np
-    perf = lambda controls: grape_perf(ambient_hamiltonian*0, control_hamiltonians, controls, dt,
-                                       target_operator)
+
+    perf = lambda controls: average_over_noise(grape_perf, ambient_hamiltonian,
+                                               control_hamiltonians, controls, detunings, dt,
+                                               target_operator)
+    grad = lambda controls: average_over_noise(grape_gradient, ambient_hamiltonian,
+                                               control_hamiltonians, controls, detunings, dt,
+                                               target_operator)
+
     dimension = np.shape(ambient_hamiltonian[0])[0]
     disp = True
     ftol = (1 - threshold)
@@ -292,71 +266,12 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
                "disp": disp}
     constraint = (-1, 1)
     controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0)
-    # pi_pulse = np.random.randint(2)
-    # num_pi_steps = round(np.pi / dt)
-    # print(num_pi_steps)
     import sys
     sys.stdout.flush()
     bounds = [constraint for _ in controls[0]]
-    # for i in range(num_pi_steps):
-    #     print("PI_PULSE", pi_pulse)
-    #     import sys
-    #     sys.stdout.flush()
-    #     if pi_pulse != -2:
-    #         controls[0][i*len(control_hamiltonians)] = pi_pulse
-    #         controls[0][i*len(control_hamiltonians) + 1] = 0
-    #         bounds[i*len(control_hamiltonians)] = (pi_pulse, pi_pulse)
-    #         bounds[i*len(control_hamiltonians) + 1] = (0, 0)
-    # Start with a pi pulse
 
-    # for i in range(len(controls)):
-    #     if np.random.randint(2):
-    #         controls[i] = 0
-    import numpy as np
-    from scipy.misc import derivative
-
-    def partial(func, point, index, args):
-        f = lambda x: func([p if i != index else x for i, p in enumerate(point)])
-        return derivative(f, point[index], n=1, args=args)
-
-    import numpy as np
-
-    def compute_partial(f, point, tup, args):
-        """Compute the derivative of f at point of order tup, order must be positive"""
-        if len(tup) == 1:
-            return partial(f, point, tup[0], args)
-        # I think this assumes everything is at 0
-        return compute_partial(lambda x: partial(f, x, tup[0], args), point, tup[1:], args)
-
-    from itertools import product
-
-    def compute_ith_derivative(f, point, args, i, matsize):
-        if i == 0:
-            return np.array(f(point, *args)).flatten().reshape(1, -1)
-        indices = list(range(len(point)))
-        tups = product(*[indices] * i)
-        res = np.zeros(tuple([len(point)] * i + [matsize]), dtype='complex')
-        for tup in tups:
-            res[tup] = compute_partial(f, point, tup, args).flatten()
-        return res
-
-        # returns the derivative at zero
-    def first_deriv(control):
-        f = lambda x: grape_perf(np.array(ambient_hamiltonian) * x[1],
-                         [ch * (1+x[0]) for ch in control_hamiltonians],
-                         control, dt,
-                         target_operator)
-        # second arg is being ignored
-        res = scipy.linalg.norm(compute_ith_derivative(f, np.array([0, 0]), tuple(), 1, 4))
-        print(res)
-        return res
-        # SLACK=.1
-        # return scipy.linalg.norm(compute_ith_derivative(f, np.array([0, 0]), tuple(), 3, 4)) + SLACK
-
-    constraints = ({'type': 'ineq', 'fun': lambda x: -first_deriv(x)})
-    #constraints = {}
-    result = optimize.minimize(fun=perf, x0=controls, method='COBYLA', options=options,
-                               bounds=bounds, constraints=constraints)
+    result = optimize.minimize(fun=perf, x0=controls, jac=grad, method='tnc', options=options,
+                               bounds=bounds)
 
     # Verify that the controls meet requirements at zero.
     perf_at_zero = grape_perf(np.array(ambient_hamiltonian) * 0,
@@ -366,29 +281,23 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
 
     avg_perf = perf(result.x)
 
-    print("PERF AT ZERO: {}".format(perf_at_zero))
-    print("Avg perf: {}".format(avg_perf))
+    print("PERF AT ZERO: {}".format(perf_at_zero/(dimension ** 2)))
+    print("Avg perf: {}".format(-avg_perf/(dimension ** 2)))
 
-
-    print("PERFORMANCE IS: ", (-perf_at_zero) / dimension ** 2)
     import sys
     sys.stdout.flush()
-    while (-perf_at_zero) / dimension ** 2 < threshold:
-        print("RETRYING GRAPE FOR BETTER CONTROLS")
-        sys.stdout.flush()
+
+    while -perf_at_zero/(dimension ** 2) < threshold:
         controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .1
-        result = optimize.minimize(fun=perf, x0=controls, method='COBYLA', options=options,
-                                   bounds=bounds, constraints=constraints)
-        # bounds=[constraint for _ in controls[0]], options=options)
-        print("minimize finished, performance is  {}".format(-result.fun / dimension ** 2))
+        result = optimize.minimize(fun=perf, x0=controls, jac=grad, method='tnc', options=options,
+                                   bounds=bounds)
         perf_at_zero = grape_perf(ambient_hamiltonian * 0,
                                   control_hamiltonians,
                                   result.x, dt,
                                   target_operator)
-        check_perf = perf(result.x)
-        print("PERFORMANCE IS: ", (-perf_at_zero) / dimension ** 2)
-        print("avg PERFORMANCE IS: ", (-check_perf) / dimension ** 2)
-
+        avg_perf = perf(result.x)
+        print("PERF AT ZERO: {}".format(perf_at_zero / (dimension ** 2)))
+        print("Avg perf: {}".format(-avg_perf / (dimension ** 2)))
         sys.stdout.flush()
     return result.x
 
@@ -405,62 +314,13 @@ if __name__ == "__main__":
     assert np.isclose(target_operator.dot(adjoint(target_operator)),
                       np.eye(target_operator.shape[0])).all()
     time = 2 * np.pi
-    num_steps = 20
+    num_steps = 10
     x = GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps, time,
               detunings=[.0001] * (len(control_hamiltonians) + len(ambient_hamiltonian)),
               threshold=.9)
     controls = x.reshape(-1, len(control_hamiltonians))
     print(reduce(lambda a, b: a.dot(b),
-                 control_unitaries(ambient_hamiltonian, control_hamiltonians, controls,
-                                   time / num_steps)))
+                 control_unitaries(ambient_hamiltonian, control_hamiltonians, controls, time / num_steps)))
+    import matplotlib.pyplot as plt
     plt.step(list(range(len(controls.flatten()))), controls.flatten())
     plt.show()
-    from scipy.integrate import ode
-    from numpy import real, array, pi, dot, reshape, conjugate
-
-    sigI = [[1., 0], [0, 1.]]
-    sigX = [[0, 1.], [1., 0]]
-    sigY = [[0, -1.j], [1.j, 0]]
-    sigZ = [[1., 0], [0, -1.]]
-
-
-    def ham(t):
-        dt = time / num_steps
-        x = controls
-        return np.sum(
-            [control * control_hamiltonians[i] for i, control in enumerate(x[int(t / dt)])], axis=0)
-
-
-    def schrodinger(t, y):
-        return -1.j * dot(ham(t), y)
-
-
-    def jacobian(t, y):
-        return -1.j * ham(t)
-
-
-    def expect(op, psi):
-        psi = reshape(psi, [2, 1])
-        return dot(dot(conjugate(psi.T), op), psi)[0, 0]
-
-
-    t0 = 0
-    psi0 = array([[1.], [0.]])
-
-    r = ode(schrodinger, jacobian).set_integrator('zvode', method='adams',
-                                                  with_jacobian=True).set_initial_value(psi0, t0)
-    t1 = time
-    dt = 0.0001
-    expectations = []
-    while r.successful() and r.t < t1:
-        try:
-            r.integrate(r.t + dt)
-            expectations += [[expect(op, r.y) for op in [sigX, sigY, sigZ]]]
-        except:
-            pass
-
-    from qutip import Bloch
-
-    bloch = Bloch()
-    bloch.add_points(real(list(zip(*expectations))), 'l')
-    bloch.show()
