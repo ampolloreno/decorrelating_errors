@@ -8,6 +8,7 @@ import cvxpy as cp
 import numpy as np
 
 DEFAULT_TOL = 1e-8
+# Not being used right now.
 
 
 def error(combo, controls, target_operator, control_hamiltonians, ambient_hamiltonian0, dt):
@@ -100,6 +101,8 @@ def optimal_weights_1st_order(derivs, l, tol=DEFAULT_TOL):
     mini = float('inf')
     res = None
     for i in range(len(derivs[0])):
+        if i % 100:
+            print(f"Done with convex problem {i} out of {len(derivs[0])}")
         ham_consts = []
         for deriv in derivs:
             ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
@@ -115,7 +118,7 @@ def optimal_weights_1st_order(derivs, l, tol=DEFAULT_TOL):
         #first_order = compute_first_order_term(derivs)
         objective = cp.Minimize(cp.norm(np.real(first_order) * omega) + cp.norm(np.imag(first_order) * omega) + t)
         prob = cp.Problem(objective, constraints)
-        result = prob.solve(solver=cp.CVXOPT, abstol=tol, abstol_inacc=tol)
+        result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER)# abstol=tol, abstol_inacc=tol)
         if result < mini and omega.value is not None:
             mini = result
             res = omega.value
@@ -148,6 +151,8 @@ def optimal_weights(derivs, l, tol=DEFAULT_TOL):
     mini = float('inf')
     res = None
     for i in range(len(derivs[0])):
+        if i % 100:
+            print(f"Done with convex problem {i} out of {len(derivs[0])}")
         ham_consts = []
         for deriv in derivs:
             ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
@@ -161,7 +166,7 @@ def optimal_weights(derivs, l, tol=DEFAULT_TOL):
             constraints += [np.imag(ham_const)*omega == 0]
         objective = cp.Minimize(cp.norm(np.real(ham_consts[-1])*omega) + cp.norm(np.imag(ham_consts[-1])*omega) + t)
         prob = cp.Problem(objective, constraints)
-        result = prob.solve(solver=cp.CVXOPT, abstol=tol, abstol_inacc=tol)
+        result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER)# abstol=tol, abstol_inacc=tol)
         if result < mini and omega.value is not None:
             mini = result
             res = omega.value

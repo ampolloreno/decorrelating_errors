@@ -184,9 +184,11 @@ def gen_1q():
         i = 0
         while os.path.exists("pickled_controls%s.pkl" % i):
             i += 1
-        fh = open("pickled_controls%s.pkl" % i, "wb")
+        fh = open("just_pickled_controls%s.pkl" % i, "wb")
         dill.dump(pca, fh)
         pca.assign_weights()
+        fh.close()
+        fh = open("pickled_controls%s.pkl" % i, "wb")
         dill.dump(pca, fh)
         fh.close()
 
@@ -210,21 +212,23 @@ def gen_2q():
     detunings = [(.001, 1), (.001, 1), (.001, 2), (.001, 2), (.001, 1)]
     target_operator = entangle_ZZ
     time = 2. * np.pi
-    num_steps = 50
+    num_steps = 40
     threshold = 1 - .001
-    num_controls = 1
+    num_controls = 200
     pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
               num_steps, time, threshold, detunings)
     if COMM.rank == 0:
-        # print("TOOK {}".format(pca.time))
-        import os
         i = 0
         while os.path.exists("pickled_controls%s.pkl" % i):
             i += 1
+        fh = open("just_pickled_controls%s.pkl" % i, "wb")
+        dill.dump(pca, fh)
+        pca.assign_weights()
+        fh.close()
         fh = open("pickled_controls%s.pkl" % i, "wb")
         dill.dump(pca, fh)
         fh.close()
 
 
 if __name__ == '__main__':
-    gen_1q()
+    gen_2q()
