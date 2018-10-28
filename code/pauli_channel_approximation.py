@@ -176,7 +176,7 @@ def gen_1q():
     time = np.pi
     num_steps = 25
     threshold = 1 - .001
-    num_controls = 750
+    num_controls = 10
     pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
               num_steps, time, threshold, detunings)
 
@@ -231,4 +231,4 @@ def gen_2q():
 
 
 if __name__ == '__main__':
-    gen_2q()
+    gen_1q()
