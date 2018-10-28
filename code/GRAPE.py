@@ -139,7 +139,7 @@ def comp_avg_perf(pair):
 
 
 def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
-                       controls, detunings, dt, target_operator, deg=2):
+                       controls, detunings, dt, target_operator, deg=3):
     """
     Average the given func over noise using gaussian quadrature.
 
@@ -216,7 +216,7 @@ def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
                                      detunings, dt, target_operator)))
     # Gather results on rank 0.
     results = MPI.COMM_WORLD.allgather(results)
-
+    #print(f"Number of results on {COMM.rank} is now {len(results)}")
     # if COMM.rank == 0:
     #     # Flatten list of lists.
     results = [_i for temp in results for _i in temp]
