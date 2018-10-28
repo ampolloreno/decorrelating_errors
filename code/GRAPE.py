@@ -209,7 +209,8 @@ def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
     # exchanged over MPI.
     results = []
     for job in jobs:
-        # print("{} has {} jobs, doing job {}".format(COMM.rank, len(jobs), job[0]))
+
+        #print("{} has {} jobs, doing job {}".format(COMM.rank, len(jobs), job[0]))
         results.append(comp_avg_perf((
                                      job, controls, func, ambient_hamiltonian, control_hamiltonians,
                                      detunings, dt, target_operator)))
