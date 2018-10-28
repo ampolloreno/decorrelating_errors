@@ -1,5 +1,6 @@
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-plt.switch_backend('agg')
 from GRAPE import GRAPE, control_unitaries, adjoint
 import numpy as np
 import dill
