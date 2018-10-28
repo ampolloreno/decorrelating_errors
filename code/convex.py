@@ -8,6 +8,7 @@ import cvxpy as cp
 import numpy as np
 
 DEFAULT_TOL = 1e-8
+# Not being used right now.
 
 
 def error(combo, controls, target_operator, control_hamiltonians, ambient_hamiltonian0, dt):
@@ -15,12 +16,19 @@ def error(combo, controls, target_operator, control_hamiltonians, ambient_hamilt
     adjoint_target = np.conj(target_operator.T)
     newcontrols = deepcopy(controls)
     ambient_hamiltonian = [deepcopy(ah).astype("float") for ah in ambient_hamiltonian0]
+    combo = list(combo)
+    if len(combo) == 2:
+        combo = combo + combo[-1:]
+    else:
+        assert len(combo) == 5
+        combo = combo[:2] + combo[2:3] * 2 + combo[3:4] * 2 + combo[4:]
+        assert len(combo) == 7
+    assert len(combo) == len(control_hamiltonians) + len(ambient_hamiltonian0)
     for cnum, value in enumerate(combo):
         cnum -= len(ambient_hamiltonian0)
         if cnum >= 0:
             newcontrols[:, cnum] = newcontrols[:, cnum] * (1 + value)
         if cnum < 0:
-            assert cnum == -1, "For one qubit, there is only one amb. term we consider."
             idx = len(ambient_hamiltonian) - abs(cnum)
             ambient_hamiltonian[idx] *= float(value)
     # just check the first one
@@ -32,7 +40,7 @@ def error(combo, controls, target_operator, control_hamiltonians, ambient_hamilt
                                        newcontrols,
                                        dt)
     for u in step_unitaries:
-        assert np.isclose(np.conj(u.T).dot(u), np.eye(2)).all(), np.conj(u.T).dot(u)
+        assert np.isclose(np.conj(u.T).dot(u), np.eye(int(np.sqrt(target_operator.size)))).all(), np.conj(u.T).dot(u)
     unitary = reduce(lambda a, b: a.dot(b), step_unitaries)
     error_gen = logm(adjoint_target.dot(unitary))
     entry = (error_gen[0, 0] - error_gen[1, 1])/2
@@ -43,8 +51,12 @@ def error(combo, controls, target_operator, control_hamiltonians, ambient_hamilt
 
 def deg_deriv(controlset, target, control_hamiltonians, ambient_hamiltonian0, dt, deg):
     ds = []
+    if target.shape == (2,2):
+        point = np.array([0, 0])
+    else:
+        point = np.array([0, 0, 0, 0, 0])
     for control in controlset:
-        d = compute_ith_derivative(lambda x:error(x,control, target, control_hamiltonians, ambient_hamiltonian0, dt) , np.array([0,0]), tuple(), deg, 4)
+        d = compute_ith_derivative(lambda x: error(x, control, target, control_hamiltonians, ambient_hamiltonian0, dt), point, tuple(), deg, target.size)
         ds.append(d)
     ds = np.array(ds)
     return ds
@@ -60,7 +72,7 @@ def all_derivs(controlset, target, control_hamiltonians, ambient_hamiltonian0, d
 
 def partial(func, point, index, args):
     def f(x):
-        return func([p if i!=index else x for i,p in enumerate(point)])
+        return func([p if i != index else x for i, p in enumerate(point)])
     return derivative(f, point[index], n=1, args=args,  dx=1.0/2**16)
 
 
@@ -89,6 +101,8 @@ def optimal_weights_1st_order(derivs, l, tol=DEFAULT_TOL):
     mini = float('inf')
     res = None
     for i in range(len(derivs[0])):
+        if i % 100:
+            print(f"Done with convex problem {i} out of {len(derivs[0])}")
         ham_consts = []
         for deriv in derivs:
             ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
@@ -100,11 +114,11 @@ def optimal_weights_1st_order(derivs, l, tol=DEFAULT_TOL):
         for ham_const in equalities:
             constraints += [np.real(ham_const) * omega == 0]
             constraints += [np.imag(ham_const) * omega == 0]
-
-        first_order = compute_first_order_term(derivs)
+        first_order = ham_consts[-1]
+        #first_order = compute_first_order_term(derivs)
         objective = cp.Minimize(cp.norm(np.real(first_order) * omega) + cp.norm(np.imag(first_order) * omega) + t)
         prob = cp.Problem(objective, constraints)
-        result = prob.solve(solver=cp.CVXOPT, abstol=tol, abstol_inacc=tol)
+        result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER)# abstol=tol, abstol_inacc=tol)
         if result < mini and omega.value is not None:
             mini = result
             res = omega.value
@@ -112,17 +126,18 @@ def optimal_weights_1st_order(derivs, l, tol=DEFAULT_TOL):
 
 
 def compute_first_order_term(derivs):
-    hdh = [np.matmul(derivs[0][i].reshape(2, 2), d.reshape((2, 2, -1))) for i, d in enumerate(derivs[1])]
+    dim = int(np.sqrt(derivs[0][0].shape[1]))
+    hdh = [np.matmul(derivs[0][i].reshape(dim, dim), d.reshape((dim, dim, -1))) for i, d in enumerate(derivs[1])]
     hdh = [[a[:, :, 0], a[:, :, 1]] for a in hdh]
 
-    dh = [d.reshape((2, 2, -1)) for d in derivs[1]]
+    dh = [d.reshape((dim, dim, -1)) for d in derivs[1]]
     dh = [[a[:, :, 0], a[:, :, 1]] for a in dh]
 
-    h = [d.reshape((2, 2, -1)) for d in derivs[0]]
+    h = [d.reshape((dim, dim, -1)) for d in derivs[0]]
 
     dhh = [[np.kron(h[i].T, el[0]), np.kron(h[i].T, el[1])] for i, el in enumerate(dh)]
-    hdh = [[np.kron(np.eye(2), el[0]), np.kron(np.eye(2), el[1])] for i, el in enumerate(hdh)]
-    dh = [[np.kron(np.eye(2), el[0]), np.kron(np.eye(2), el[1])] for el in dh]
+    hdh = [[np.kron(np.eye(dim), el[0]), np.kron(np.eye(dim), el[1])] for i, el in enumerate(hdh)]
+    dh = [[np.kron(np.eye(dim), el[0]), np.kron(np.eye(dim), el[1])] for el in dh]
 
     dhh = np.matrix(np.array(dhh).T.reshape(-1, len(derivs[0])))
     hdh = np.matrix(np.array(hdh).T.reshape(-1, len(derivs[0])))
@@ -136,6 +151,8 @@ def optimal_weights(derivs, l, tol=DEFAULT_TOL):
     mini = float('inf')
     res = None
     for i in range(len(derivs[0])):
+        if i % 100:
+            print(f"Done with convex problem {i} out of {len(derivs[0])}")
         ham_consts = []
         for deriv in derivs:
             ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
@@ -149,7 +166,7 @@ def optimal_weights(derivs, l, tol=DEFAULT_TOL):
             constraints += [np.imag(ham_const)*omega == 0]
         objective = cp.Minimize(cp.norm(np.real(ham_consts[-1])*omega) + cp.norm(np.imag(ham_consts[-1])*omega) + t)
         prob = cp.Problem(objective, constraints)
-        result = prob.solve(solver=cp.CVXOPT, abstol=tol, abstol_inacc=tol)
+        result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER)# abstol=tol, abstol_inacc=tol)
         if result < mini and omega.value is not None:
             mini = result
             res = omega.value
