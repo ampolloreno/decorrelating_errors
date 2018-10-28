@@ -54,7 +54,7 @@
 \date{\today}
 
 \begin{abstract}
-Thresholds for fault-tolerant quantum computation are often calculated assuming a noise model in which errors are uncorrelated. While convenient for simulation, these error models are often unphysical. Work by Preskill and others has shown that arbitrarily long computations may be performed even in the presence of spatial and temporal correlation, provided the correlation is sufficiently weak and decays sufficiently quickly, but at the cost of a significantly lower threshold. The success of algebraic decorrelation methods, such as dynamical decoupling, demonstrate that quantum control techniques are capable of reducing noise correlations. We propose to introduce similar methods at the physical gate synthesis level to effect the decorrelation of errors in quantum circuits, thereby increasing the threshold for fault-tolerant computation in such systems. We discuss and show numerically that these controls can be made robust to drift, and experimentally demonstrate our approach on a superconducting qubit.
+Coherent errors in quantum operations are ubiquitous. Whether arising from spurious environmental couplings or errors in control fields, such errors can accumulate rapidly and degrade the performance of a quantum circuit significantly more than an average gate fidelity may indicate. Furthermore, coherent errors are considerably more difficult to model than stochastic errors, and understanding their impact on a generic quantum circuit or algorithm can be challenging. In this talk, we discuss using robust optimal control techniques to construct many different implementations of a target gates, each with a different coherent error. As Hastings and Campbell have recently shown, randomly sampling over that ensemble yields an effective quantum channel that well approximates our target, but with dramatically suppressed coherent error. Our results extend those of Hastings and Campbell to include robustness to drifting external control parameters. We have implemented these constructions using a superconducting qubits and will discuss randomized benchmarking results consistent with a marked reduction in coherent error.
 \end{abstract}
 
 \pacs{}
@@ -62,19 +62,21 @@ Thresholds for fault-tolerant quantum computation are often calculated assuming 
 \maketitle
 
 \section{Introduction}
+\note{Point to work by Hastings and Cambell, discuss robust controls, what is the problem that we're trying to solve. Here's the basic idea. We're dealing with robust controls, and we implement them on the Rigetti 19Q-Acorn chip. Do we want to talk about threshold theorems? Read Laflamme and Flamia papers and see if they are relevant. Keep discussion of nonmarkovianty and correlation of errors. Include discussion of drift.}
 
-Steady progress has been made in the theory of quantum error correction, proving higher thresholds for increasingly general models of noise \cite{Aharonov2006, 1609.00510, https://doi.org/10.7907/z96m34sc, Kubica2018, Wang2003, Campbell2017}. These results show that quantum computation is feasible, however recent NISQ \cite{Preskill2018} devices have noise that is not only often above known thresholds, but that also violates fundamental assumptions made by the models used in these results\cite{Kelly2018, BlumeKohout2017, Klimov2018}, such as independence of errors\cite{Knill1998} and Markovianity \cite{Kitaev1997}. 
+
+Steady progress has been made in the theory of quantum error correction, proving higher thresholds for increasingly general models of noise \cite{Aharonov2006, 1609.00510, https://doi.org/10.7907/z96m34sc, Kubica2018, Wang2003, Campbell2017}. These results show that quantum computation is feasible, however recent NISQ \cite{Preskill2018} devices have noise that is not only often above known thresholds, but that also violates fundamental assumptions made by the models used in these results\cite{Kelly2018, BlumeKohout2017, Klimov2018}, such as independence of errors\cite{Knill1998} and Markovianity \cite{Kitaev1997}.
 
 When noise can be accurately modeled as Markovian, existing work often makes approximations to make problems tractable. For example, Pauli channels are often used to model systems due to their classical simulability\cite{quant-ph/9807006}, even in the absence of physical motivation\cite{Aliferis2007, Knill2005, Wang2011, DuclosCianci2010, Wootton2012, Bombin2012, Puzzuoli2014, aliferis2008accuracy}. One approach, then, would be to use these thresholds to give a loose lower bound for thresholds in other systems\cite{Puzzuoli2014}. Such an approach will produce overly-pessimistic bounds that may not be reflective of a system's actual performance.
 
-When noise is non-Markovian, the situation is much worse. Not only will the Markovian models used in threshold calculations be wrong, but assumptions that underpin characterization routines will be violated. Randomized benchmarking and tomography will report incorrect answers without any syndrome in the case of non-Markovian noise \cite{Merkel2013} and gate-set tomography will report that a system fails to be Markovian, but without saying in what way. 
+When noise is non-Markovian, the situation is much worse. Not only will the Markovian models used in threshold calculations be wrong, but assumptions that underpin characterization routines will be violated. Randomized benchmarking and tomography will report incorrect answers without any syndrome in the case of non-Markovian noise \cite{Merkel2013} and gate-set tomography will report that a system fails to be Markovian, but without saying in what way.
 
-An early proposal for fixing these problems is randomized decoupling\cite{Viola2005, Viola} -- by introducing classical randomness into quantum computations, both coherent and non-Markovian noise can be transformed to incoherent, independent, and Markovian noise. 
+An early proposal for fixing these problems is randomized decoupling\cite{Viola2005, Viola} -- by introducing classical randomness into quantum computations, both coherent and non-Markovian noise can be transformed to incoherent, independent, and Markovian noise.
 
 One particular way of realizing randomized decoupling is Frame Randomization\cite{Wallman2016, Ware2018}. Frame Randomization can be used to average over noise by twirling error over an appropriately selected unitary 2-design, by inserting an additional precompilation step in the execution of quantum circuits.\cite{roy2009unitary} This has been demonstrated in existing systems\cite{Ware2018}, but can require intensive use of classical processors and waveform memory.
 
 Another way of performing randomized deocupling is through mixing unitaries. In \cite{Campbell2017}, Campbell presents an algorithm that, given an oracle for generating unitaries close to a target, produces controls that are quadratically better in diamond norm than any of the individual controls generated by the oracle. In Campbell's work, he discusses such an oracle could be implemented via unitary synthesis approximations algorithms\cite{1612.01011}, and considers estimating and reducing resources costs that might arise during circuit compilation. In this paper we will we explore a different but related problem: synthesizing physical controls and making them robust to drift. Using optimal control routines as our oracle , we propose to inject additional decorrelating randomness into the system during physical gate synthesis through the use of \emph{robustly balanced controls} (RBCs).
- 
+
 \begin{figure}
   \centering
   \includegraphics[width=\columnwidth]{simple_example.pdf}
@@ -83,7 +85,8 @@ Another way of performing randomized deocupling is through mixing unitaries. In 
 \end{figure}
 
 \section{Robustly Balanced Controls}
- Consider the problem of trying to approximate a target unitary operation, $U_T$. Define a control solution $c_i(t)$ by  \begin{equation} 
+\note{Include the figure with the arrows and the derivation of the higher order terms and discussion that the optimal control that we're using is sufficient often to guarantee that the bare hamiltonian is asmall, so that we can take the expansion only to first order in delta in the easy way. Discuss the impact on diamond norm. We are going to use the mixing theorem from Campbell, so we'll have to quote that result. }
+ Consider the problem of trying to approximate a target unitary operation, $U_T$. Define a control solution $c_i(t)$ by  \begin{equation}
 \mathcal{T}e^{-i\int c_i(t)H(t, \vec{\delta})} = U_i \approx U_T
  \end{equation}
  where $\vec{\delta}$ are meant to be \textit{quasi-static}\cite{Ball2016} parameters of a Hamiltonian, $H(t, \vec{\delta})$. A family of control solutions is called a \emph{balanced control} if there is probability distribution $\vec{\omega}$ that satisfies the following for some small $\alpha$,
@@ -95,7 +98,7 @@ where $\vec{\omega}$ must be a proper probability distribution and $DPN[\alpha](
 \begin{equation}\label{eq:2}
   DPN[\alpha](\rho) \rightarrow (1-\alpha)\rho + \alpha\sum p_i \sigma_i\rho\sigma_i
 \end{equation}
-with $p_i$ summing to one. 
+with $p_i$ summing to one.
 
 This is equivalent to the condition given by Campbell in \cite{Campbell2017}, that there exist a weight such that
 
@@ -119,6 +122,7 @@ In all of the above, we will be interested in the case where $\alpha \approx \ep
 \end{equation}
 In this context, since we are assuming that the derivatives are all of norm $\epsilon$, the above condition guarantees that the error unitary be no worse than $\sum^n\epsilon^2\delta^n$ near the origin -- all orders can be quadratically supressed.
 \section{A Simple Example}
+\note{This particular instance is NOT robust, but we can construct one that IS. }
 As a trivial example, consider a single-qubit rotation-angle error, such as from stochastic laser amplitude fluctuations. An RBC may consist of an $X_\pi$ pulse, as well as an $X_{-\pi}$ pulse (i.e., a clockwise and counter clockwise rotation of the qubit). In the case of excess amplitude, the $X_\pi$ pulse will result in an over-rotation error, while the $X_{-\pi}$ pulse will result in an \emph{under}-rotation error. When it comes time to perform the target gate in a quantum circuit, one member of the RBC is chosen uniformly at random. This has the effect of decreasing the norm of the noise channel and decorrelating the over-rotation error (Figure \ref{fig:simple_example}). In this simple example, we can analytically find a solution to Equation \ref{eq:1}. Specifically, by choosing weights $\omega_i=\frac{1}{2}$, we see:
 
 \begin{equation}
@@ -177,9 +181,9 @@ Because we our trying to generate high-order RBCs, we want to generate controls 
 \frac{\partial \tilde J(U)}{\partial u_{ij}} =
 \int p(\vec{\delta})\frac{\partial J(U(\vec{\delta}))}{\partial u_{ij}} d\vec{\delta}
 \end{align}
-with $p(\vec{\delta})$ Gaussian distributed, as has been done in previous works \cite{Goerz2014} to ensure that the optimal control results are robust over a wide range of errors. To make this averaging tractable, we approximate this integral using Gaussian quadrature, approximating the cost functions as a low order polynomials\cite{abramowiz1972handbook}. 
+with $p(\vec{\delta})$ Gaussian distributed, as has been done in previous works \cite{Goerz2014} to ensure that the optimal control results are robust over a wide range of errors. To make this averaging tractable, we approximate this integral using Gaussian quadrature, approximating the cost functions as a low order polynomials\cite{abramowiz1972handbook}.
+\note{Discuss how this is a proxy for the higher-order derivatives being small. Discuss the difference between the step control functions and the cost function in the optimization.}
 
- 
 \subsection{RBC Approximation}
 After using GRAPE or another optimal control routine to synthesize a collection of controls, we must find the weights $\omega_i$ such that the collection of controls form an $\ell$RBC as described in Equation \ref{eq:RBC}. To do this, for each control $U_i(\vec{\delta})$ we find the unitary error channel $\mathcal{E}_i(\vec{\delta})$ such that $\mathcal{E}_i(\vec{\delta})U_i(\vec{\delta})=U_T$, where $U_T$ is the target gate. By taking the logarithm of these error maps, we then get a family of Hamiltonians $\tilde{H}_j(\delta)$, and conside the following quadratic program whose solutions satisfies the robustness conditions given in Equation \ref{eq:RBC}. Namely:
 \begin{equation}\label{eq:minimization}
@@ -187,7 +191,7 @@ After using GRAPE or another optimal control routine to synthesize a collection 
     &\textbf{minimize: } ||D_{\ell}^T\omega||\\
     &\textbf{subject to: } \forall i<\ell,\ D_i=0\\
    	&\phantom{\textbf{subject to: }}\sum \omega_j = 1\\
-   	&\phantom{\textbf{subject to: }}\sum 0 \le \omega_j \le 1    
+   	&\phantom{\textbf{subject to: }}\sum 0 \le \omega_j \le 1
   \end{split}
 \end{equation}
 %These constraints for each $P_i$ can be broken into $2_{\ell-1}$ constraints, one for the imaginary components, and one for the real component. Alternatively, one can express the Hamiltonians as vectors in $\mathbb{R}^{2^n}$
@@ -258,16 +262,16 @@ H(\vec{\epsilon}, \vec{\delta}, \eta, t) = &\sum_{j=1}^2(\epsilon_j\sigma_z^j + 
 \end{equation}
 We again consider $\epsilon_j, \delta_j, \eta \sim .001$, however and a threshold infidelity of $1E-3$, however we increased the total evolution time to $T=4\pi$, and increased the number of steps to $N=400$ so that the size of each time step was the same as in the one qubit example and so that the total evolution time was greater to allow GRAPE more opportunities to find non-trivial pulseshapes. The results also show a reduction of an order of magnitude in diamond norm about the origin, and for a wide neighborhood around it.
 
-%0.0507,  0.0307, -0.0493, -0.0693, with total area under the curve given by 0.7853981633974484, 
+%0.0507,  0.0307, -0.0493, -0.0693, with total area under the curve given by 0.7853981633974484,
 \section{Experimental Results}\label{experimental}
 Here we present experimental results from implementing our routine on a fixed-frequency superconducting transmon qubit. In particular we used qubit 8 on the Rigetti 19Q-Acorn chip, whose characterization can be found in \cite{1712.05771}. To implement a RBC on this qubit, four incorrectly calibrated approximately Gaussian pulses were produced by scaling the pulseshape for a calibrated 50$\mu$s $RX(\frac{\pi}{2})$ pulse by $106.4\%$,  $103.9\%$, $93.7\%$ and $91.2\%$.
 
  Using Equation \ref{eq:minimization}, we then generated the optimal weighting $\omega_i$. To benchmark the quality of the new balanced channel, we then performed six randomized benchmarking experiments: one for each over- and under-calibrated pulse, one for the calibrated pulse, and one for the balanced channel. We used $N=1000$ shots per experiment and $K=10$ sequences per sequence length, for sequence lengths up to $L=64$\cite{Magesan2011}. In each case, our Clifford operations were decomposed into RX($\frac{\pi}{2})$) and RY($\frac{\pi}{2})$) pulses. In our implementation, these gates are implemented using the same pulse envelope definitions and control electronics, phase shifted by $\frac{\pi}{2}$ radians, and are therefore subject to identical miscalibration errors. The results are shown in Figure \ref{fig:rb} for sequence lengths $L=64$.
 
-%with scipy's curve\_fit using the Trust Region Reflective method 
+%with scipy's curve\_fit using the Trust Region Reflective method
 In this experiment, fitting the randomized benchmarking data reports one-qubit gate fidelities of $99.4\%$ for the calibrated pulse, $98.8\%$ for Pulse1, $99.4\%$ for Pulse2, $98.9\%$ for Pulse3, $98.6\%$ for Pulse4, and $99.0\%$ for the Randomized pulse. However, as one can see from looking at Figure \ref{fig:rb}, despite all controls performing comparably to the Calibrated control, only the Randomized control has similarly tight error bars. In the cases of each miscalibrated pulse, the error bars extend significantly, in often asymmetric ways, making usage of chi-square statistics, and errors on the fit less straightforward.
 
-This is consistent with the result shown in \cite{Ball2016} that for particular non-Markovian error models, noise will manifest as gamma distributed points for each sequence length. On the other hand, Markovian noise, such as depolarizing noise, will result in Gaussian distributed fidelity estimates for each randomized benchmarking sequence length. We see that the coherently miscalibrated controls have long tails, consistent with gamma distributed random variables, while the calibrated and randomized implementations both have much shorter tails, consistent with Gaussian distributed random variables. 
+This is consistent with the result shown in \cite{Ball2016} that for particular non-Markovian error models, noise will manifest as gamma distributed points for each sequence length. On the other hand, Markovian noise, such as depolarizing noise, will result in Gaussian distributed fidelity estimates for each randomized benchmarking sequence length. We see that the coherently miscalibrated controls have long tails, consistent with gamma distributed random variables, while the calibrated and randomized implementations both have much shorter tails, consistent with Gaussian distributed random variables.
 
 \begin{figure}
   \centering
@@ -277,13 +281,13 @@ This is consistent with the result shown in \cite{Ball2016} that for particular 
 \end{figure}
 
 \section{Conclusion and Future Work}
-We have shown numerically that using RBCs can reduce non-Markovian, coherent error on a quantum channel by more than an order of magnitude in diamond norm, over a wide range of quasi-static values of noise. In addition, we have demonstrated that these approximate controls can be generated through optimal control (GRAPE), and that the minimization problem is tractable. 
+We have shown numerically that using RBCs can reduce non-Markovian, coherent error on a quantum channel by more than an order of magnitude in diamond norm, over a wide range of quasi-static values of noise. In addition, we have demonstrated that these approximate controls can be generated through optimal control (GRAPE), and that the minimization problem is tractable.
 
 %Contrasting with \cite{Ware2018}, we see that this method of non-Markovian and coherent error mitigation is cheap to implement - it only requires a random choice of pulse definition at run time, in addition to the extra storage required to store the pulse definitions. In particular, no classical preprocessing or runtime frame tracking is required.
 
-Future directions for this work include demonstrating the routine experimentally on a two-qubit gate, moving the random gate selection from a precompilation step to runtime logic onboard the FPGA, investigating other optimization routines such as CRAB \cite{Caneva2011} and GOAT\cite{Machnes2018}, and using more sophisticated benchmarking routines such as GST\cite{BlumeKohout2017} to quantitatively investigate the performance of our method. 
+Future directions for this work include demonstrating the routine experimentally on a two-qubit gate, moving the random gate selection from a precompilation step to runtime logic onboard the FPGA, investigating other optimization routines such as CRAB \cite{Caneva2011} and GOAT\cite{Machnes2018}, and using more sophisticated benchmarking routines such as GST\cite{BlumeKohout2017} to quantitatively investigate the performance of our method.
 
-Another interesting area of research would be using model-free approaches. The numerical work in the paper assumes access to a model of the system, however an experimentalist may not have a model readily available to describe the system, e.g. in the presence of unknown on-chip crosstalk, or an uncalibrated transfer function of the system. Moreover, even if a model is available, it might be computationally inconvenient to simulate, i.e. for more than a few qubits.%, or for non-adiabatic gates, where the timestep is required to be much smaller than the gate-time. 
+Another interesting area of research would be using model-free approaches. The numerical work in the paper assumes access to a model of the system, however an experimentalist may not have a model readily available to describe the system, e.g. in the presence of unknown on-chip crosstalk, or an uncalibrated transfer function of the system. Moreover, even if a model is available, it might be computationally inconvenient to simulate, i.e. for more than a few qubits.%, or for non-adiabatic gates, where the timestep is required to be much smaller than the gate-time.
 
 In these situations, one approach would be to use \textit{in-situ} optimal control techniques \cite{Wu2018, Kelly2014, Ferrie2015} to generate candidate controls, and then use an optimizer like Nealder-Mead to perform the minimization. While performing a complete optimization in this way would still be slow, requiring full process tomography, one could intead optimize via partial tomography. By selecting pre-- and post --rotations that correspond to measuring pauli moments of interest in the Hamiltonian, such as unwanted $Z\otimes Z$ crosstalk, one could perform optimization over fewer parameters.
 
