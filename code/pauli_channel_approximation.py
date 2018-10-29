@@ -222,8 +222,8 @@ def gen_2q():
     num_steps = 40
     threshold = 1 - .001
     num_controls = 200
-    pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
-              num_steps, time, threshold, detunings)
+    #pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
+    #          num_steps, time, threshold, detunings)
     dirname = None
     if COMM.rank == 0:
         i = 0
