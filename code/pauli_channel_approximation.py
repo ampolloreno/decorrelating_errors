@@ -75,7 +75,8 @@ class PCA(object):
      most like Pauli Channels."""
 
     def __init__(self, num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
-                 num_steps, time, threshold, detunings):
+                 num_steps, time, threshold, detunings, dirname):
+        COMM = MPI.COMM_WORLD
         self.seed = 138
         np.random.seed(self.seed)
         self.start = timemod.time()
@@ -92,6 +93,8 @@ class PCA(object):
             result = GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator,
                            num_steps, time, threshold, random_detunings)
             controlset.append(result.reshape(-1, len(control_hamiltonians)))
+            if COMM.rank == 0:
+                dill.dump(result.reshape(-1, len(control_hamiltonians)), open(os.path.join(dirname, f'control_{i}'), 'wb'))
         self.controlset = controlset
         self.detunings = detunings
         self.target_operator = target_operator
@@ -177,19 +180,22 @@ def gen_1q():
     time = np.pi
     num_steps = 25
     threshold = 1 - .001
-    num_controls = 10
-    pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
-              num_steps, time, threshold, detunings)
-
+    num_controls = 4
+    dirname = None
     if COMM.rank == 0:
         i = 0
         while os.path.exists("pickled_controls%s.pkl" % i):
             i += 1
-        fh = open("just_pickled_controls%s.pkl" % i, "wb")
+        dirname = f'controls_{i}'
+        os.mkdir(dirname)
+    pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
+              num_steps, time, threshold, detunings, dirname)
+    if COMM.rank == 0:
+        fh = open(os.path.join(dirname, "just_pickled_controls%s.pkl" % i), 'wb')
         dill.dump(pca, fh)
         pca.assign_weights()
         fh.close()
-        fh = open("pickled_controls%s.pkl" % i, "wb")
+        fh = open(os.path.join(dirname, "pickled_controls%s.pkl" % i), "wb")
         dill.dump(pca, fh)
         fh.close()
 
@@ -232,4 +238,4 @@ def gen_2q():
 
 
 if __name__ == '__main__':
-    gen_2q()
+    gen_1q()
