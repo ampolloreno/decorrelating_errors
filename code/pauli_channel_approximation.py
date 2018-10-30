@@ -91,7 +91,7 @@ class PCA(object):
             import sys
             sys.stdout.flush()
             result = GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator,
-                           num_steps, time, threshold, random_detunings)
+                           num_steps, time, threshold, random_detunings, i)
             controlset.append(result.reshape(-1, len(control_hamiltonians)))
             if COMM.rank == 0:
                 dill.dump(result.reshape(-1, len(control_hamiltonians)), open(os.path.join(dirname, f'control_{i}'), 'wb'))

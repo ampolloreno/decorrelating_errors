@@ -210,7 +210,7 @@ def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
     results = []
     for job in jobs:
 
-        print("{} has {} jobs, doing job {}".format(COMM.rank, len(jobs), job))
+        #print("{} has {} jobs, doing job {}".format(COMM.rank, len(jobs), job))
         results.append(comp_avg_perf((
                                      job, controls, func, ambient_hamiltonian, control_hamiltonians,
                                      detunings, dt, target_operator)))
@@ -226,7 +226,7 @@ def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
 
 
 def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps, time,
-          threshold=1 - 1E-3, detunings=None):
+          threshold=1 - 1E-3, detunings=None, iteration=0):
     """
     Perform the GRAPE algorithm to approximate target_gate in num_steps with time given by time,
     using ambient_hamiltonian as the uncontrolled hamiltonian and control_hamiltonians as the
@@ -289,6 +289,7 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
     sys.stdout.flush()
 
     while -perf_at_zero/(dimension ** 2) < threshold:
+        print(f"\n\n\nRetrying control {iteration}\n\n\n")
         controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .1
         result = optimize.minimize(fun=perf, x0=controls, jac=grad, method='tnc', options=options,
                                    bounds=bounds)
