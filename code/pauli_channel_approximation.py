@@ -84,7 +84,7 @@ class PCA(object):
         dt = time / num_steps
         self.num_controls = num_controls
         for i in tqdm(range(num_controls)):
-            print("CONTROL {}".format(i))
+            #print("CONTROL {}".format(i))
             random_detunings = []
             for detuning in detunings:
                 random_detunings.append((detuning[0], detuning[1]))
@@ -110,7 +110,7 @@ class PCA(object):
         self.derivs = derivs
         self.weights = weights
         self.weights_0 = weights_0
-        print("Assigned weights.")
+        #print("Assigned weights.")
 
 
 def compute_dpn_and_fid(data):
@@ -219,7 +219,7 @@ def gen_2q():
     detunings = [(.001, 1), (.001, 1), (.001, 2), (.001, 2), (.001, 1)]
     target_operator = entangle_ZZ
     time = 2. * np.pi
-    num_steps = 40
+    num_steps = 50
     threshold = 1 - .001
     num_controls = 200
     #pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
@@ -230,7 +230,8 @@ def gen_2q():
         while os.path.exists("pickled_controls%s.pkl" % i):
             i += 1
         dirname = f'controls_{i}'
-        os.mkdir(dirname)
+        if not os.path.exists(dirname):
+            os.mkdir(dirname)
     pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
               num_steps, time, threshold, detunings, dirname)
     if COMM.rank == 0:

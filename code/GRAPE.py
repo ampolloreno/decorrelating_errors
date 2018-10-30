@@ -139,7 +139,7 @@ def comp_avg_perf(pair):
 
 
 def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
-                       controls, detunings, dt, target_operator, deg=3):
+                       controls, detunings, dt, target_operator, deg=2):
     """
     Average the given func over noise using gaussian quadrature.
 
@@ -210,7 +210,7 @@ def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
     results = []
     for job in jobs:
 
-        #print("{} has {} jobs, doing job {}".format(COMM.rank, len(jobs), job[0]))
+        print("{} has {} jobs, doing job {}".format(COMM.rank, len(jobs), job))
         results.append(comp_avg_perf((
                                      job, controls, func, ambient_hamiltonian, control_hamiltonians,
                                      detunings, dt, target_operator)))
@@ -282,8 +282,8 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
 
     avg_perf = perf(result.x)
 
-    print("PERF AT ZERO: {}".format(perf_at_zero/(dimension ** 2)))
-    print("Avg perf: {}".format(-avg_perf/(dimension ** 2)))
+    #print("PERF AT ZERO: {}".format(perf_at_zero/(dimension ** 2)))
+    #print("Avg perf: {}".format(-avg_perf/(dimension ** 2)))
 
     import sys
     sys.stdout.flush()
@@ -297,8 +297,8 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
                                   result.x, dt,
                                   target_operator)
         avg_perf = perf(result.x)
-        print("PERF AT ZERO: {}".format(perf_at_zero / (dimension ** 2)))
-        print("Avg perf: {}".format(-avg_perf / (dimension ** 2)))
+        #print("PERF AT ZERO: {}".format(perf_at_zero / (dimension ** 2)))
+        #print("Avg perf: {}".format(-avg_perf / (dimension ** 2)))
         sys.stdout.flush()
     return result.x
 
@@ -320,8 +320,8 @@ if __name__ == "__main__":
               detunings=[.0001] * (len(control_hamiltonians) + len(ambient_hamiltonian)),
               threshold=.9)
     controls = x.reshape(-1, len(control_hamiltonians))
-    print(reduce(lambda a, b: a.dot(b),
-                 control_unitaries(ambient_hamiltonian, control_hamiltonians, controls, time / num_steps)))
+    #print(reduce(lambda a, b: a.dot(b),
+                 #control_unitaries(ambient_hamiltonian, control_hamiltonians, controls, time / num_steps)))
     import matplotlib.pyplot as plt
     plt.step(list(range(len(controls.flatten()))), controls.flatten())
     plt.show()
