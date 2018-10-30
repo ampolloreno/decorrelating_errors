@@ -224,18 +224,24 @@ def gen_2q():
     num_controls = 200
     pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
               num_steps, time, threshold, detunings)
+    dirname = None
     if COMM.rank == 0:
         i = 0
         while os.path.exists("pickled_controls%s.pkl" % i):
             i += 1
-        fh = open("just_pickled_controls%s.pkl" % i, "wb")
+        dirname = f'controls_{i}'
+        os.mkdir(dirname)
+    pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
+              num_steps, time, threshold, detunings, dirname)
+    if COMM.rank == 0:
+        fh = open(os.path.join(dirname, "just_pickled_controls%s.pkl" % i), 'wb')
         dill.dump(pca, fh)
         pca.assign_weights()
         fh.close()
-        fh = open("pickled_controls%s.pkl" % i, "wb")
+        fh = open(os.path.join(dirname, "pickled_controls%s.pkl" % i), "wb")
         dill.dump(pca, fh)
         fh.close()
 
 
 if __name__ == '__main__':
-    gen_1q()
+    gen_2q()
