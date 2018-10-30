@@ -261,7 +261,7 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
                                                target_operator)
 
     dimension = np.shape(ambient_hamiltonian[0])[0]
-    disp = True
+    disp = False
     ftol = (1 - threshold)
     options = {"ftol": ftol,
                "disp": disp}
