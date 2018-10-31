@@ -290,6 +290,7 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
 
     while -perf_at_zero/(dimension ** 2) < threshold:
         print(f"\n\n\nRetrying control {iteration}\n\n\n")
+        sys.stdout.flush()
         controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .1
         result = optimize.minimize(fun=perf, x0=controls, jac=grad, method='tnc', options=options,
                                    bounds=bounds)
