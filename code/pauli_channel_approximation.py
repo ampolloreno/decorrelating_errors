@@ -84,11 +84,10 @@ class PCA(object):
         dt = time / num_steps
         self.num_controls = num_controls
         for i in range(num_controls):
-            if (i + 1) // COMM.size != COMM.rank:
+            if (i % COMM.size) != COMM.rank:
                 continue
             print(f'{COMM.rank} doing control {i}')
             np.random.seed(self.seed + i)
-            print("CONTROL {}".format(i))
             random_detunings = []
             for detuning in detunings:
                 random_detunings.append((detuning[0], detuning[1]))
@@ -98,6 +97,7 @@ class PCA(object):
                            num_steps, time, threshold, random_detunings, i)
             controlset.append(result.reshape(-1, len(control_hamiltonians)))
             dill.dump(result.reshape(-1, len(control_hamiltonians)), open(os.path.join(dirname, f'control_{i}'), 'wb'))
+        print(f'controlset has {len(controlset)} members')
         controlset = MPI.COMM_WORLD.gather(controlset, root=0)
         if COMM.rank == 0:
             controlset = [item for sublist in controlset for item in sublist]
@@ -251,4 +251,4 @@ def gen_2q():
 
 
 if __name__ == '__main__':
-    gen_2q()
+    gen_1q()
