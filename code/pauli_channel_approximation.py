@@ -251,4 +251,4 @@ def gen_2q():
 
 
 if __name__ == '__main__':
-    gen_1q()
+    gen_2q()
