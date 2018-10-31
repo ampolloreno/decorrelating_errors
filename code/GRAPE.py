@@ -157,73 +157,71 @@ def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
     :rtype: rtype of func
     """
     controls = controls.reshape(-1, len(control_hamiltonians))
-
-    if COMM.rank == 0:
-        corr = []
-        if type(detunings[0]) != tuple:
-            pass
-        else:
-            new_detunings = []
-            for i, detune in enumerate(detunings):
-                new_detunings.append(detune[0])
-                for _ in range(detune[1]):
-                    corr.append(i)  # use the ith detuning more than once
-            detunings = new_detunings
-        points, weights = hermgauss(deg)
-        nonzero_detunings = np.where(np.array(detunings) != 0)[0]
-        zero_detunings = np.where(np.array(detunings) == 0)[0]
-
-        pairs = [list(zip(np.sqrt(detuning) * points, weights)) for i, detuning in
-                 enumerate(np.array(detunings)[nonzero_detunings])]
-        for index in zero_detunings:
-            pairs.insert(index, [(0, 1)])
-        combinations = itertools.product(*pairs)
-        # Expand them if there are correlations
-        if corr:
-            new_combinations = []
-            for combo in combinations:
-                new_combo = []
-                last_number = -1
-                for index in corr:
-                    if index == last_number:
-                        new_number = False
-                    else:
-                        new_number = True
-                    last_number = index
-                    pair = combo[index]
-                    if not new_number:
-                        pair = (pair[0], 1)
-                    new_combo.append(pair)
-                new_combinations.append(new_combo)
-            combinations = new_combinations
-        jobs = combinations
-        # Split into however many cores are available.
-        jobs = split(jobs, COMM.size)
+    #
+    # if COMM.rank == 0:
+    corr = []
+    if type(detunings[0]) != tuple:
+        pass
     else:
-        jobs = None
+        new_detunings = []
+        for i, detune in enumerate(detunings):
+            new_detunings.append(detune[0])
+            for _ in range(detune[1]):
+                corr.append(i)  # use the ith detuning more than once
+        detunings = new_detunings
+    points, weights = hermgauss(deg)
+    nonzero_detunings = np.where(np.array(detunings) != 0)[0]
+    zero_detunings = np.where(np.array(detunings) == 0)[0]
+
+    pairs = [list(zip(np.sqrt(detuning) * points, weights)) for i, detuning in
+             enumerate(np.array(detunings)[nonzero_detunings])]
+    for index in zero_detunings:
+        pairs.insert(index, [(0, 1)])
+    combinations = itertools.product(*pairs)
+    # Expand them if there are correlations
+    if corr:
+        new_combinations = []
+        for combo in combinations:
+            new_combo = []
+            last_number = -1
+            for index in corr:
+                if index == last_number:
+                    new_number = False
+                else:
+                    new_number = True
+                last_number = index
+                pair = combo[index]
+                if not new_number:
+                    pair = (pair[0], 1)
+                new_combo.append(pair)
+            new_combinations.append(new_combo)
+        combinations = new_combinations
+    jobs = combinations
+    # Split into however many cores are available.
+    #jobs = split(jobs, COMM.size)
+    # else:
+    #     jobs = None
 
     # Scatter jobs across cores.
-    jobs = COMM.scatter(jobs, root=0)
+    #jobs = COMM.scatter(jobs, root=0)
     # Now each rank just does its jobs and collects everything in a results list.
     # Make sure to not use super big objects in there as they will be pickled to be
     # exchanged over MPI.
     results = []
     for job in jobs:
-
         #print("{} has {} jobs, doing job {}".format(COMM.rank, len(jobs), job))
         results.append(comp_avg_perf((
                                      job, controls, func, ambient_hamiltonian, control_hamiltonians,
                                      detunings, dt, target_operator)))
     # Gather results on rank 0.
-    results = MPI.COMM_WORLD.allgather(results)
+    #results = MPI.COMM_WORLD.allgather(results)
     #print(f"Number of results on {COMM.rank} is now {len(results)}")
     # if COMM.rank == 0:
     #     # Flatten list of lists.
-    results = [_i for temp in results for _i in temp]
+    #results = [_i for temp in results for _i in temp]
     # if np.sum(results, axis=0).shape == ():
     #     print(np.sum(results, axis=0))
     return np.sum(results, axis=0)
-
 
 def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps, time,
           threshold=1 - 1E-3, detunings=None, iteration=0):
@@ -290,6 +288,7 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
 
     while -perf_at_zero/(dimension ** 2) < threshold:
         print(f"\n\n\nRetrying control {iteration}\n\n\n")
+        sys.stdout.flush()
         controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .1
         result = optimize.minimize(fun=perf, x0=controls, jac=grad, method='tnc', options=options,
                                    bounds=bounds)
