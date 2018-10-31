@@ -83,30 +83,30 @@ class PCA(object):
         controlset = []
         dt = time / num_steps
         self.num_controls = num_controls
-        for i in range(num_controls):
-            if (i % COMM.size) != COMM.rank:
-                continue
-            print(f'{COMM.rank} doing control {i}')
-            np.random.seed(self.seed + i)
-            random_detunings = []
-            for detuning in detunings:
-                random_detunings.append((detuning[0], detuning[1]))
-            import sys
-            sys.stdout.flush()
-            result = GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator,
-                           num_steps, time, threshold, random_detunings, i)
-            controlset.append(result.reshape(-1, len(control_hamiltonians)))
-            dill.dump(result.reshape(-1, len(control_hamiltonians)), open(os.path.join(dirname, f'control_{i}'), 'wb'))
-        print(f'controlset has {len(controlset)} members')
-        controlset = MPI.COMM_WORLD.gather(controlset, root=0)
-        if COMM.rank == 0:
-            controlset = [item for sublist in controlset for item in sublist]
-            self.controlset = controlset
-            self.detunings = detunings
-            self.target_operator = target_operator
-            self.dt = dt
-            self.ambient_hamiltonian = ambient_hamiltonian
-            self.control_hamiltonians = control_hamiltonians
+        # for i in range(num_controls):
+        #     if (i % COMM.size) != COMM.rank:
+        #         continue
+        #     print(f'{COMM.rank} doing control {i}')
+        #     np.random.seed(self.seed + i)
+        #     random_detunings = []
+        #     for detuning in detunings:
+        #         random_detunings.append((detuning[0], detuning[1]))
+        #     import sys
+        #     sys.stdout.flush()
+        #     result = GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator,
+        #                    num_steps, time, threshold, random_detunings, i)
+        #     controlset.append(result.reshape(-1, len(control_hamiltonians)))
+        #     dill.dump(result.reshape(-1, len(control_hamiltonians)), open(os.path.join(dirname, f'control_{i}'), 'wb'))
+        # print(f'controlset has {len(controlset)} members')
+        # controlset = MPI.COMM_WORLD.gather(controlset, root=0)
+        # if COMM.rank == 0:
+        #     controlset = [item for sublist in controlset for item in sublist]
+        #     self.controlset = controlset
+        self.detunings = detunings
+        self.target_operator = target_operator
+        self.dt = dt
+        self.ambient_hamiltonian = ambient_hamiltonian
+        self.control_hamiltonians = control_hamiltonians
 
     def assign_weights(self, l1=0, l2=1E-3):
         derivs = all_derivs(self.controlset, self.target_operator, self.control_hamiltonians, self.ambient_hamiltonian,
@@ -230,12 +230,11 @@ def gen_2q():
     num_controls = 100
     #pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
     #          num_steps, time, threshold, detunings)
-    dirname = None
+    i = 0
+    while os.path.exists("pickled_controls%s.pkl" % i):
+        i += 1
+    dirname = f'controls_{i}'
     if COMM.rank == 0:
-        i = 0
-        while os.path.exists("pickled_controls%s.pkl" % i):
-            i += 1
-        dirname = f'controls_{i}'
         if not os.path.exists(dirname):
             os.mkdir(dirname)
     pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
