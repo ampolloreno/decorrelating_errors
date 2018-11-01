@@ -77,7 +77,7 @@ class PCA(object):
     def __init__(self, num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
                  num_steps, time, threshold, detunings, dirname):
         COMM = MPI.COMM_WORLD
-        self.seed = 138
+        self.seed = 138 + 100
         np.random.seed(self.seed)
         self.start = timemod.time()
         controlset = []
@@ -116,7 +116,7 @@ class PCA(object):
         self.derivs = derivs
         self.weights = weights
         self.weights_0 = weights_0
-        print("Assigned weights.")
+        print("Tried assigning weights.")
 
 
 def compute_dpn_and_fid(data):
@@ -227,7 +227,7 @@ def gen_2q():
     time = 2. * np.pi
     num_steps = 40
     threshold = 1 - .001
-    num_controls = 100
+    num_controls = 200
     i = 0
     while os.path.exists("pickled_controls%s.pkl" % i):
         i += 1
