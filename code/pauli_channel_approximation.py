@@ -227,7 +227,7 @@ def gen_2q():
     time = 2. * np.pi
     num_steps = 40
     threshold = 1 - .001
-    num_controls = 200
+    num_controls = 500
     i = 0
     while os.path.exists("pickled_controls%s.pkl" % i):
         i += 1
