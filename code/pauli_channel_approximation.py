@@ -224,8 +224,8 @@ def gen_2q():
     control_hamiltonians = [IX, IY, XI, YI, ZZ]
     detunings = [(.001, 1), (.001, 1), (.001, 2), (.001, 2), (.001, 1)]
     target_operator = entangle_ZZ
-    time = 2. * np.pi
-    num_steps = 40
+    time = 4. * np.pi
+    num_steps = 400
     threshold = 1 - .001
     num_controls = 200
     i = 0
