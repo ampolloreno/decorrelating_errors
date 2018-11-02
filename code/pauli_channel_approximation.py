@@ -77,7 +77,7 @@ class PCA(object):
     def __init__(self, num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
                  num_steps, time, threshold, detunings, dirname):
         COMM = MPI.COMM_WORLD
-        self.seed = 138
+        self.seed = 138 + 100
         np.random.seed(self.seed)
         self.start = timemod.time()
         controlset = []
@@ -102,11 +102,11 @@ class PCA(object):
         if COMM.rank == 0:
             controlset = [item for sublist in controlset for item in sublist]
             self.controlset = controlset
-            self.detunings = detunings
-            self.target_operator = target_operator
-            self.dt = dt
-            self.ambient_hamiltonian = ambient_hamiltonian
-            self.control_hamiltonians = control_hamiltonians
+        self.detunings = detunings
+        self.target_operator = target_operator
+        self.dt = dt
+        self.ambient_hamiltonian = ambient_hamiltonian
+        self.control_hamiltonians = control_hamiltonians
 
     def assign_weights(self, l1=0, l2=1E-3):
         derivs = all_derivs(self.controlset, self.target_operator, self.control_hamiltonians, self.ambient_hamiltonian,
@@ -116,7 +116,7 @@ class PCA(object):
         self.derivs = derivs
         self.weights = weights
         self.weights_0 = weights_0
-        print("Assigned weights.")
+        print("Tried assigning weights.")
 
 
 def compute_dpn_and_fid(data):
@@ -227,15 +227,12 @@ def gen_2q():
     time = 2. * np.pi
     num_steps = 40
     threshold = 1 - .001
-    num_controls = 100
-    #pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
-    #          num_steps, time, threshold, detunings)
-    dirname = None
+    num_controls = 500
+    i = 0
+    while os.path.exists("pickled_controls%s.pkl" % i):
+        i += 1
+    dirname = f'controls_{i}'
     if COMM.rank == 0:
-        i = 0
-        while os.path.exists("pickled_controls%s.pkl" % i):
-            i += 1
-        dirname = f'controls_{i}'
         if not os.path.exists(dirname):
             os.mkdir(dirname)
     pca = PCA(num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
