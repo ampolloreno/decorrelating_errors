@@ -7,7 +7,8 @@ import dill
 from functools import reduce
 from tqdm import tqdm
 import time as timemod
-from convex import all_derivs, optimal_weights, optimal_weights_1st_order
+from convex import (all_derivs, optimal_weights, optimal_weights_1st_order,
+                    optimal_weights_1st_order_no_constraints, optimal_weights_no_constraints)
 from mpi4py import MPI
 import scipy
 import os
@@ -108,11 +109,11 @@ class PCA(object):
         self.ambient_hamiltonian = ambient_hamiltonian
         self.control_hamiltonians = control_hamiltonians
 
-    def assign_weights(self, l1=0, l2=1E-3):
+    def assign_weights(self, l1=1E-3, l2=1E-3):
         derivs = all_derivs(self.controlset, self.target_operator, self.control_hamiltonians, self.ambient_hamiltonian,
                             self.dt, 1)
-        weights = optimal_weights_1st_order(derivs, l1)
-        weights_0 = optimal_weights(derivs[:1], l2)
+        weights = optimal_weights_1st_order_no_constraints(derivs, l1)
+        weights_0 = optimal_weights_no_constraints(derivs[:1], l2)
         self.derivs = derivs
         self.weights = weights
         self.weights_0 = weights_0
@@ -219,11 +220,14 @@ def gen_2q():
     IY = np.kron(I, Y)
     YI = np.kron(Y, I)
     ZZ = np.kron(Z, Z)
+    XX = np.kron(X, X)
+    YY = np.kron(Y, Y)
     entangle_ZZ = np.array([[1, 0, 0, 0], [0, 1.j, 0, 0], [0, 0, 1.j, 0], [0, 0, 0, 1]])
+    iswap = np.array([[1, 0, 0, 0], [0, 0, -1.j, 0], [0, -1.j, 0, 0], [0, 0, 0, 1]])
     ambient_hamiltonian = [IZ, ZI]
-    control_hamiltonians = [IX, IY, XI, YI, ZZ]
+    control_hamiltonians = [IX, IY, XI, YI, XX + YY]
     detunings = [(.001, 1), (.001, 1), (.001, 2), (.001, 2), (.001, 1)]
-    target_operator = entangle_ZZ
+    target_operator = iswap
     time = 2. * np.pi
     num_steps = 40
     threshold = 1 - .001

@@ -53,6 +53,7 @@ def control_unitaries(ambient_hamiltonian, control_hamiltonians, controls, dt):
     unitaries = []
     for row in controls:
         step_hamiltonian = [control * control_hamiltonians[i] for i, control in enumerate(row)]
+        #print(step_hamiltonian)
         evolution = scipy.linalg.expm(
             -1.j * dt * (sum(ambient_hamiltonian) + np.sum(step_hamiltonian, axis=0)))
         unitaries.append(evolution)

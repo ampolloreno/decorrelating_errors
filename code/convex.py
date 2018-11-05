@@ -7,8 +7,7 @@ from scipy.linalg import logm
 import cvxpy as cp
 import numpy as np
 
-DEFAULT_TOL = 1e-8
-# Not being used right now.
+DEFAULT_TOL = 1e-6
 
 
 def error(combo, controls, target_operator, control_hamiltonians, ambient_hamiltonian0, dt):
@@ -43,15 +42,18 @@ def error(combo, controls, target_operator, control_hamiltonians, ambient_hamilt
         assert np.isclose(np.conj(u.T).dot(u), np.eye(int(np.sqrt(target_operator.size)))).all(), np.conj(u.T).dot(u)
     unitary = reduce(lambda a, b: a.dot(b), step_unitaries)
     error_gen = logm(adjoint_target.dot(unitary))
-    entry = (error_gen[0, 0] - error_gen[1, 1])/2
-    error_gen[0, 0] = entry
-    error_gen[1, 1] = -entry
+    num_states = error_gen.shape[0]
+    eye_proj = np.trace(np.dot(np.eye(num_states), error_gen))/num_states
+    # entry = (error_gen[0, 0] - error_gen[1, 1])/2
+    # error_gen[0, 0] = entry
+    # error_gen[1, 1] = -entry
+    error_gen -= eye_proj * np.eye(error_gen.shape[0])
     return -1.j * error_gen
 
 
 def deg_deriv(controlset, target, control_hamiltonians, ambient_hamiltonian0, dt, deg):
     ds = []
-    if target.shape == (2,2):
+    if target.shape == (2, 2):
         point = np.array([0, 0])
     else:
         point = np.array([0, 0, 0, 0, 0])
@@ -118,11 +120,50 @@ def optimal_weights_1st_order(derivs, l, tol=DEFAULT_TOL):
         #first_order = compute_first_order_term(derivs)
         objective = cp.Minimize(cp.norm(np.real(first_order) * omega) + cp.norm(np.imag(first_order) * omega) + t)
         prob = cp.Problem(objective, constraints)
-        result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER)# abstol=tol, abstol_inacc=tol)
+        result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER, abstol=tol, abstol_inacc=tol)
         if result < mini and omega.value is not None:
             mini = result
             res = omega.value
     return res
+
+
+def optimal_weights_no_constraints(derivs, l, tol=DEFAULT_TOL):
+    print("Starting optimal weights no constraints")
+    mini = float('inf')
+    res = None
+    ham_consts = []
+    for deriv in derivs:
+        ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
+    omega = cp.Variable(len(derivs[0]))
+    constraints = [0 <= omega, omega <= 1, sum(omega)==1]
+    equalities = ham_consts[:-1]
+    for ham_const in equalities:
+        constraints += [np.real(ham_const)*omega == 0]
+        constraints += [np.imag(ham_const)*omega == 0]
+    objective = cp.Minimize(cp.norm(np.real(ham_consts[-1])*omega) + cp.norm(np.imag(ham_consts[-1])*omega))
+    prob = cp.Problem(objective, constraints)
+    result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER, abstol=tol, abstol_inacc=tol)
+    return omega.value
+
+
+def optimal_weights_1st_order_no_constraints(derivs, l, tol=DEFAULT_TOL):
+    print("Starting optimal weights no constraints 1st order")
+    mini = float('inf')
+    res = None
+    ham_consts = []
+    for deriv in derivs:
+        ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
+    omega = cp.Variable(len(derivs[0]))
+    constraints = [0 <= omega, omega <= 1, sum(omega) == 1]
+    equalities = ham_consts[:-1]
+    for ham_const in equalities:
+        constraints += [np.real(ham_const) * omega == 0]
+        constraints += [np.imag(ham_const) * omega == 0]
+    first_order = ham_consts[-1]
+    objective = cp.Minimize(cp.norm(np.real(first_order) * omega) + cp.norm(np.imag(first_order) * omega))
+    prob = cp.Problem(objective, constraints)
+    result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER, abstol=tol, abstol_inacc=tol)
+    return omega.value
 
 
 def compute_first_order_term(derivs):
@@ -166,7 +207,7 @@ def optimal_weights(derivs, l, tol=DEFAULT_TOL):
             constraints += [np.imag(ham_const)*omega == 0]
         objective = cp.Minimize(cp.norm(np.real(ham_consts[-1])*omega) + cp.norm(np.imag(ham_consts[-1])*omega) + t)
         prob = cp.Problem(objective, constraints)
-        result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER)# abstol=tol, abstol_inacc=tol)
+        result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER, abstol=tol, abstol_inacc=tol)
         if result < mini and omega.value is not None:
             mini = result
             res = omega.value
