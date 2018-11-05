@@ -220,11 +220,14 @@ def gen_2q():
     IY = np.kron(I, Y)
     YI = np.kron(Y, I)
     ZZ = np.kron(Z, Z)
+    XX = np.kron(X, X)
+    YY = np.kron(Y, Y)
     entangle_ZZ = np.array([[1, 0, 0, 0], [0, 1.j, 0, 0], [0, 0, 1.j, 0], [0, 0, 0, 1]])
+    iswap = np.array([[1, 0, 0, 0], [0, 0, -1.j, 0], [0, -1.j, 0, 0], [0, 0, 0, 1]])
     ambient_hamiltonian = [IZ, ZI]
-    control_hamiltonians = [IX, IY, XI, YI, ZZ]
+    control_hamiltonians = [IX, IY, XI, YI, XX + YY]
     detunings = [(.001, 1), (.001, 1), (.001, 2), (.001, 2), (.001, 1)]
-    target_operator = entangle_ZZ
+    target_operator = iswap
     time = 2. * np.pi
     num_steps = 40
     threshold = 1 - .001
