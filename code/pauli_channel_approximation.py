@@ -77,7 +77,7 @@ class PCA(object):
     def __init__(self, num_controls, ambient_hamiltonian, control_hamiltonians, target_operator,
                  num_steps, time, threshold, detunings, dirname):
         COMM = MPI.COMM_WORLD
-        self.seed = 138 + 100
+        self.seed = 138 + 500
         np.random.seed(self.seed)
         self.start = timemod.time()
         controlset = []
