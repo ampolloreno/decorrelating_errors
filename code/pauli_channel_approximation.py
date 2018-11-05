@@ -7,7 +7,8 @@ import dill
 from functools import reduce
 from tqdm import tqdm
 import time as timemod
-from convex import all_derivs, optimal_weights, optimal_weights_1st_order
+from convex import (all_derivs, optimal_weights, optimal_weights_1st_order,
+                    optimal_weights_1st_order_no_constraints, optimal_weights_no_constraints)
 from mpi4py import MPI
 import scipy
 import os
@@ -108,11 +109,11 @@ class PCA(object):
         self.ambient_hamiltonian = ambient_hamiltonian
         self.control_hamiltonians = control_hamiltonians
 
-    def assign_weights(self, l1=0, l2=1E-3):
+    def assign_weights(self, l1=1E-3, l2=1E-3):
         derivs = all_derivs(self.controlset, self.target_operator, self.control_hamiltonians, self.ambient_hamiltonian,
                             self.dt, 1)
-        weights = optimal_weights_1st_order(derivs, l1)
-        weights_0 = optimal_weights(derivs[:1], l2)
+        weights = optimal_weights_1st_order_no_constraints(derivs, l1)
+        weights_0 = optimal_weights_no_constraints(derivs[:1], l2)
         self.derivs = derivs
         self.weights = weights
         self.weights_0 = weights_0
