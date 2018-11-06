@@ -143,7 +143,12 @@ def compute_dpn_and_fid(data):
             if cnum >= 0:
                 newcontrols[:, cnum] = newcontrols[:, cnum] * (1 + value)
             if cnum < 0:
-                ambient_hamiltonian[cnum] *= float(value)
+                if cnum == -1:
+                    import sys
+                    sys.stdout.flush()
+                    ambient_hamiltonian[cnum] *= 1 + float(value)
+                else:
+                    ambient_hamiltonian[cnum] *= float(value)
         step_unitaries = control_unitaries(ambient_hamiltonian,
                                            control_hamiltonians, newcontrols,
                                            dt)
@@ -224,11 +229,11 @@ def gen_2q():
     YY = np.kron(Y, Y)
     entangle_ZZ = np.array([[1, 0, 0, 0], [0, 1.j, 0, 0], [0, 0, 1.j, 0], [0, 0, 0, 1]])
     iswap = np.array([[1, 0, 0, 0], [0, 0, -1.j, 0], [0, -1.j, 0, 0], [0, 0, 0, 1]])
-    ambient_hamiltonian = [IZ, ZI, (XX + YY)/4.]
+    ambient_hamiltonian = [IZ, ZI, (XX + YY)/10.]
     control_hamiltonians = [IX, IY, XI, YI]
     detunings = [(.001, 1), (.001, 1), (0, 1), (.001, 2), (.001, 2)]
     target_operator = iswap
-    time = 2. * np.pi * 10
+    time = 5/2*np.pi
     num_steps = 40
     threshold = 1 - .001
     num_controls = 500
