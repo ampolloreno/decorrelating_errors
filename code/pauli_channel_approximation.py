@@ -233,7 +233,7 @@ def gen_2q():
     threshold = 1 - .001
     num_controls = 500
     i = 0
-    while os.path.exists("pickled_controls%s.pkl" % i):
+    while os.path.exists("pickled_controls%s.pkl" % i) or os.path.exists(f'controls_{i}'):
         i += 1
     dirname = f'controls_{i}'
     if COMM.rank == 0:
