@@ -224,11 +224,11 @@ def gen_2q():
     YY = np.kron(Y, Y)
     entangle_ZZ = np.array([[1, 0, 0, 0], [0, 1.j, 0, 0], [0, 0, 1.j, 0], [0, 0, 0, 1]])
     iswap = np.array([[1, 0, 0, 0], [0, 0, -1.j, 0], [0, -1.j, 0, 0], [0, 0, 0, 1]])
-    ambient_hamiltonian = [IZ, ZI]
-    control_hamiltonians = [IX, IY, XI, YI, XX + YY]
-    detunings = [(.001, 1), (.001, 1), (.001, 2), (.001, 2), (.001, 1)]
+    ambient_hamiltonian = [IZ, ZI, (XX + YY)/4.]
+    control_hamiltonians = [IX, IY, XI, YI]
+    detunings = [(.001, 1), (.001, 1), (0, 1), (.001, 2), (.001, 2)]
     target_operator = iswap
-    time = 2. * np.pi
+    time = 2. * np.pi * 10
     num_steps = 40
     threshold = 1 - .001
     num_controls = 500

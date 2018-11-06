@@ -107,6 +107,7 @@ def grape_gradient(ambient_hamiltonian, control_hamiltonians, controls, dt, targ
     :rtype: numpy.arrays
     """
     controls = controls.reshape((-1, len(control_hamiltonians)))
+    #print(controls[:, -1])
     unitaries = control_unitaries(ambient_hamiltonian, control_hamiltonians, controls, dt)
     forward = [unitaries[0]]
     backward = [target_operator]
