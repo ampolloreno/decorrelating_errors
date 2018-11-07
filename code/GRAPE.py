@@ -279,7 +279,7 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
         if iteration % 2 == 0:
             controls = np.zeros((num_steps, int(len(control_hamiltonians))))
             controls[0, 0] = 1 / dt * np.pi / 2
-            controls[1, 0] = 1 / dt * np.pi / 2
+            controls[-1, 0] = 1 / dt * np.pi / 2
             controls[0, 2] = 1 / dt * np.pi / 2
             controls[-1, 2] = 1 / dt * np.pi / 2
             controls = controls.reshape((1, int(len(control_hamiltonians)) * num_steps))
