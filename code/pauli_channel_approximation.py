@@ -112,6 +112,9 @@ class PCA(object):
     def assign_weights(self, l1=1E-3, l2=1E-3):
         derivs = all_derivs(self.controlset, self.target_operator, self.control_hamiltonians, self.ambient_hamiltonian,
                             self.dt, 1)
+        for i, d in enumerate(derivs):
+            if i == 1:
+                derivs[i] = np.delete(d, np.s_[2], 1)
         weights = optimal_weights_1st_order_no_constraints(derivs, l1)
         weights_0 = optimal_weights_no_constraints(derivs[:1], l2)
         self.derivs = derivs

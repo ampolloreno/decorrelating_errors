@@ -156,9 +156,9 @@ def optimal_weights_1st_order_no_constraints(derivs, l, tol=DEFAULT_TOL):
     omega = cp.Variable(len(derivs[0]))
     constraints = [0 <= omega, omega <= 1, sum(omega) == 1]
     equalities = ham_consts[:-1]
-    for ham_const in equalities:
-        constraints += [np.real(ham_const) * omega == 0]
-        constraints += [np.imag(ham_const) * omega == 0]
+    # for ham_const in equalities:
+    #     constraints += [np.real(ham_const) * omega == 0]
+    #     constraints += [np.imag(ham_const) * omega == 0]
     first_order = ham_consts[-1]
     objective = cp.Minimize(cp.norm(np.real(first_order) * omega) + cp.norm(np.imag(first_order) * omega))
     prob = cp.Problem(objective, constraints)

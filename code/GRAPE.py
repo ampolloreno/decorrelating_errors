@@ -266,7 +266,30 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
     options = {"ftol": ftol,
                "disp": disp}
     constraint = (-10, 10)
-    controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0)
+    # num_steps = pca.controlset[0].shape[0]
+    # other_new_control[:int(num_steps/3), -1] = 3/2 * np.pi/4 * 1/(pca.controlset[0].shape[0]*pca.dt)
+    # other_new_control[int(num_steps/3 + 1),0] = 1/pca.dt * np.pi/2
+    # other_new_control[int(num_steps/3 + 1),2] = 1/pca.dt * np.pi/2
+    # other_new_control[-int(num_steps/3+1),0] = 1/pca.dt * np.pi/2
+    # other_new_control[-int(num_steps/3+1),2] = 1/pca.dt * np.pi/2
+    # other_new_control[-int(num_steps/3):, -1] = 3/2 * np.pi/4 * 1/(pca.controlset[0].shape[0]*pca.dt)
+
+    def f():
+        # Flip both qubits to let iSWAP continue to happen, but to reverse the Z noise.
+        if iteration % 2 == 0:
+            controls = np.zeros((num_steps, int(len(control_hamiltonians))))
+            controls[int(num_steps / 3 + 1), 0] = 1 / dt * np.pi / 2
+            controls[-int(num_steps / 3 + 1), 0] = 1 / dt * np.pi / 2
+            controls[int(num_steps / 3 + 1), 2] = 1 / dt * np.pi / 2
+            controls[-int(num_steps / 3 + 1), 2] = 1 / dt * np.pi / 2
+            controls = controls.reshape((1, int(len(control_hamiltonians)) * num_steps))
+            controls += (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .1
+        # Don't flip either.
+        if iteration % 2 == 1:
+            controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .1
+        return controls
+    controls = f()
+
     import sys
     sys.stdout.flush()
     bounds = [constraint for _ in controls[0]]
@@ -296,7 +319,7 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
     while -perf_at_zero/(dimension ** 2) < threshold:
         print(f"\n\n\nRetrying control {iteration}\n\n\n")
         sys.stdout.flush()
-        controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .1
+        controls = f()
         result = optimize.minimize(fun=perf, x0=controls, jac=grad, method='tnc', options=options,
                                    bounds=bounds)
         perf_at_zero = grape_perf(np.array([ah * 0 for ah in ambient_hamiltonian[:-1]] + [ambient_hamiltonian[-1]]),
