@@ -275,18 +275,19 @@ def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps,
     # other_new_control[-int(num_steps/3):, -1] = 3/2 * np.pi/4 * 1/(pca.controlset[0].shape[0]*pca.dt)
 
     def f():
+        num_options = 5
+        index = iteration % num_options - 1
         # Flip both qubits to let iSWAP continue to happen, but to reverse the Z noise.
-        if iteration % 2 == 0:
+        if index == -1:
+            controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .01
+        else:
             controls = np.zeros((num_steps, int(len(control_hamiltonians))))
-            controls[0, 0] = 1 / dt * np.pi / 2
-            controls[-1, 0] = 1 / dt * np.pi / 2
-            controls[0, 2] = 1 / dt * np.pi / 2
-            controls[-1, 2] = 1 / dt * np.pi / 2
+            controls[index, 0] = 1 / dt * np.pi / 2
+            controls[-(index+1), 0] = 1 / dt * np.pi / 2
+            controls[index, 2] = 1 / dt * np.pi / 2
+            controls[-(index+1), 2] = 1 / dt * np.pi / 2
             controls = controls.reshape((1, int(len(control_hamiltonians)) * num_steps))
             controls += (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .01
-        # Don't flip either.
-        if iteration % 2 == 1:
-            controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .01
         return controls
     controls = f()
 
