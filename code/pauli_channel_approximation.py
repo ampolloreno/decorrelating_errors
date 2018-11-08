@@ -115,8 +115,8 @@ class PCA(object):
         for i, d in enumerate(derivs):
             if i == 1:
                 derivs[i] = np.delete(d, np.s_[2], 1)
-        weights = optimal_weights_1st_order_no_constraints(derivs, l1)
-        weights_0 = optimal_weights_no_constraints(derivs[:1], l2)
+        weights = optimal_weights_1st_order(derivs, l1)
+        weights_0 = optimal_weights(derivs[:1], l2)
         self.derivs = derivs
         self.weights = weights
         self.weights_0 = weights_0
@@ -140,7 +140,7 @@ def compute_dpn_and_fid(data):
     #         return 0
     for controls in controlset:
         newcontrols = deepcopy(controls)
-        ambient_hamiltonian = [deepcopy(ah).astype("float") for ah in ambient_hamiltonian0]
+        ambient_hamiltonian = [deepcopy(ah).astype("complex") for ah in ambient_hamiltonian0]
         for cnum, value in enumerate(combo):
             cnum -= len(ambient_hamiltonian0)
             if cnum >= 0:

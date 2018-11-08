@@ -14,7 +14,7 @@ def error(combo, controls, target_operator, control_hamiltonians, ambient_hamilt
     """Return the Hamiltonian that when exponentiated gives the error unitary from the target."""
     adjoint_target = np.conj(target_operator.T)
     newcontrols = deepcopy(controls)
-    ambient_hamiltonian = [deepcopy(ah).astype("float") for ah in ambient_hamiltonian0]
+    ambient_hamiltonian = [deepcopy(ah).astype("complex") for ah in ambient_hamiltonian0]
     combo = list(combo)
     if len(combo) == 2:
         combo = combo + combo[-1:]
@@ -29,6 +29,8 @@ def error(combo, controls, target_operator, control_hamiltonians, ambient_hamilt
             newcontrols[:, cnum] = newcontrols[:, cnum] * (1 + value)
         if cnum < 0:
             idx = len(ambient_hamiltonian) - abs(cnum)
+            if cnum == -1:
+                continue
             ambient_hamiltonian[idx] *= float(value)
     # just check the first one
     assert np.isclose(ambient_hamiltonian[0], np.conj(ambient_hamiltonian[0].T)).all()
@@ -156,9 +158,9 @@ def optimal_weights_1st_order_no_constraints(derivs, l, tol=DEFAULT_TOL):
     omega = cp.Variable(len(derivs[0]))
     constraints = [0 <= omega, omega <= 1, sum(omega) == 1]
     equalities = ham_consts[:-1]
-    # for ham_const in equalities:
-    #     constraints += [np.real(ham_const) * omega == 0]
-    #     constraints += [np.imag(ham_const) * omega == 0]
+    for ham_const in equalities:
+        constraints += [np.real(ham_const) * omega == 0]
+        constraints += [np.imag(ham_const) * omega == 0]
     first_order = ham_consts[-1]
     objective = cp.Minimize(cp.norm(np.real(first_order) * omega) + cp.norm(np.imag(first_order) * omega))
     prob = cp.Problem(objective, constraints)
