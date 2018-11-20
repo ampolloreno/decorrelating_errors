@@ -107,20 +107,28 @@ class PCA(object):
         self.ambient_hamiltonian = ambient_hamiltonian
         self.control_hamiltonians = control_hamiltonians
 
-    def assign_weights_0(self, l2=1E-3):
-        # derivs = all_derivs(self.controlset, self.target_operator, self.control_hamiltonians, self.ambient_hamiltonian,
-        #                     self.dt, 1)
-        # for i, d in enumerate(derivs):
-        #     if i == 1:
-        #         derivs[i] = np.delete(d, np.s_[2], 1)
-        weights_0 = optimal_weights(self.derivs[:1], l2)
-        self.weights_0 = weights_0
-        print("Tried assigning zeroth order weights.")
-
-    def assign_weights(self, l1=1E-3):
-        weights = optimal_weights(self.derivs, l1)
+    # def assign_weights_0(self, l2=1E-3):
+    #     # derivs = all_derivs(self.controlset, self.target_operator, self.control_hamiltonians, self.ambient_hamiltonian,
+    #     #                     self.dt, 1)
+    #     # for i, d in enumerate(derivs):
+    #     #     if i == 1:
+    #     #         derivs[i] = np.delete(d, np.s_[2], 1)
+    #     weights_0 = optimal_weights(self.derivs[:1], l2)
+    #     self.weights_0 = weights_0
+    #     print("Tried assigning zeroth order weights.")
+    #
+    # def assign_weights(self, l1=1E-3):
+    #     weights = optimal_weights(self.derivs, l1)
+    #     self.weights = weights
+    #     print("Tried assigning order weights.")
+    def assign_weights(self, l1=0, l2=1E-3):
+        derivs = all_derivs(self.controlset, self.target_operator, self.control_hamiltonians, self.ambient_hamiltonian,
+                            self.dt, 1)
+        weights = optimal_weights_1st_order(derivs, l1)
+        weights_0 = optimal_weights(derivs[:1], l2)
+        self.derivs = derivs
         self.weights = weights
-        print("Tried assigning order weights.")
+        self.weights_0 = weights_0
 
 
 def compute_dpn_and_fid(data):

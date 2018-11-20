@@ -163,42 +163,69 @@ def compute_first_order_term(derivs):
     first_order = hdh + dhh + dh
     return first_order
 
+#
+# def optimal_weights(derivs, l, tol=DEFAULT_TOL):
+#     mini = float('inf')
+#     res = None
+#     for i in range(len(derivs[0])):
+#         try:
+#             if i % 10 == 0:
+#                 print(f"Done with convex problem {i} out of {len(derivs[0])}")
+#             ham_consts = []
+#             for deriv in derivs:
+#                 ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
+#             omega = cp.Variable(len(derivs[0]))
+#             t = cp.Variable(1)
+#             constraints = [0 <= omega, omega <= 1/l, sum(omega) == 1/l, t >= 0]
+#             constraints += [omega[i] >= cp.inv_pos(t)]
+#             equalities = ham_consts[:-1]
+#             for ham_const in equalities:
+#                 constraints += [np.real(ham_const)*omega == 0]
+#                 constraints += [np.imag(ham_const)*omega == 0]
+#             objective = cp.Minimize(cp.norm(np.real(ham_consts[-1])*omega) + cp.norm(np.imag(ham_consts[-1])*omega) + t)
+#             prob = cp.Problem(objective, constraints)
+#             result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER, abstol=tol, abstol_inacc=tol)
+#             if result < mini and omega.value is not None:
+#                 mini = result
+#                 res = omega.value
+#         except cp.SolverError:
+#             continue
+#     return res * l
 
-def optimal_weights(derivs, l, tol=DEFAULT_TOL):
-    mini = float('inf')
-    res = None
-    for i in range(len(derivs[0])):
-        try:
-            if i % 10 == 0:
-                print(f"Done with convex problem {i} out of {len(derivs[0])}")
-            ham_consts = []
-            for deriv in derivs:
-                ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
-            omega = cp.Variable(len(derivs[0]))
-            t = cp.Variable(1)
-            constraints = [0 <= omega, omega <= 1/l, sum(omega) == 1/l, t >= 0]
-            constraints += [omega[i] >= cp.inv_pos(t)]
-            equalities = ham_consts[:-1]
-            for ham_const in equalities:
-                constraints += [np.real(ham_const)*omega == 0]
-                constraints += [np.imag(ham_const)*omega == 0]
-            objective = cp.Minimize(cp.norm(np.real(ham_consts[-1])*omega) + cp.norm(np.imag(ham_consts[-1])*omega) + t)
-            prob = cp.Problem(objective, constraints)
-            result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER, abstol=tol, abstol_inacc=tol)
-            if result < mini and omega.value is not None:
-                mini = result
-                res = omega.value
-        except cp.SolverError:
-            continue
-    return res * l
+
+# def optimal_weights_1st_order(derivs, l, tol=DEFAULT_TOL):
+#     mini = float('inf')
+#     res = None
+#     for i in range(len(derivs[0])):
+#         if i % 100:
+#             print(f"Done with convex problem {i} out of {len(derivs[0])}")
+#         ham_consts = []
+#         for deriv in derivs:
+#             ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
+#         omega = cp.Variable(len(derivs[0]))
+#         t = cp.Variable(1)
+#         constraints = [0 <= omega, omega <= 1, sum(omega) == 1, t >= 0]
+#         constraints += [omega[i] >= l * cp.inv_pos(t)]
+#         equalities = ham_consts[:-1]
+#         for ham_const in equalities:
+#             constraints += [np.real(ham_const) * omega == 0]
+#             constraints += [np.imag(ham_const) * omega == 0]
+#         first_order = ham_consts[-1]
+#         #first_order = compute_first_order_term(derivs)
+#         objective = cp.Minimize(cp.norm(np.real(first_order) * omega) + cp.norm(np.imag(first_order) * omega) + t)
+#         prob = cp.Problem(objective, constraints)
+#         result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER)#, abstol=tol, abstol_inacc=tol)
+#         if result < mini and omega.value is not None:
+#             mini = result
+#             res = omega.value
+#     return res
+
 
 
 def optimal_weights_1st_order(derivs, l, tol=DEFAULT_TOL):
     mini = float('inf')
     res = None
     for i in range(len(derivs[0])):
-        if i % 100:
-            print(f"Done with convex problem {i} out of {len(derivs[0])}")
         ham_consts = []
         for deriv in derivs:
             ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
@@ -210,11 +237,58 @@ def optimal_weights_1st_order(derivs, l, tol=DEFAULT_TOL):
         for ham_const in equalities:
             constraints += [np.real(ham_const) * omega == 0]
             constraints += [np.imag(ham_const) * omega == 0]
-        first_order = ham_consts[-1]
-        #first_order = compute_first_order_term(derivs)
-        objective = cp.Minimize(cp.norm(np.real(first_order) * omega) + cp.norm(np.imag(first_order) * omega) + t)
+
+        first_order = compute_first_order_term(derivs)
+        objective = cp.Minimize(
+            cp.norm(np.real(first_order) * omega) + cp.norm(np.imag(first_order) * omega) + t)
         prob = cp.Problem(objective, constraints)
-        result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER)#, abstol=tol, abstol_inacc=tol)
+        result = prob.solve(solver=cp.CVXOPT, abstol=tol, abstol_inacc=tol)
+        if result < mini and omega.value is not None:
+            mini = result
+            res = omega.value
+    return res
+
+def compute_first_order_term(derivs):
+    dim = int(np.sqrt(derivs[0][0].shape[1]))
+    hdh = [np.matmul(derivs[0][i].reshape(dim, dim), d.reshape((dim, dim, -1))) for i, d in
+           enumerate(derivs[1])]
+    hdh = [[a[:, :, 0], a[:, :, 1]] for a in hdh]
+
+    dh = [d.reshape((dim, dim, -1)) for d in derivs[1]]
+    dh = [[a[:, :, 0], a[:, :, 1]] for a in dh]
+
+    h = [d.reshape((dim, dim, -1)) for d in derivs[0]]
+
+    dhh = [[np.kron(h[i].T, el[0]), np.kron(h[i].T, el[1])] for i, el in enumerate(dh)]
+    hdh = [[np.kron(np.eye(dim), el[0]), np.kron(np.eye(dim), el[1])] for i, el in enumerate(hdh)]
+    dh = [[np.kron(np.eye(dim), el[0]), np.kron(np.eye(dim), el[1])] for el in dh]
+
+    dhh = np.matrix(np.array(dhh).T.reshape(-1, len(derivs[0])))
+    hdh = np.matrix(np.array(hdh).T.reshape(-1, len(derivs[0])))
+    dh = np.matrix(np.array(dh).T.reshape(-1, len(derivs[0])))
+
+    first_order = hdh + dhh + dh
+    return first_order
+
+def optimal_weights(derivs, l, tol=DEFAULT_TOL):
+    mini = float('inf')
+    res = None
+    for i in range(len(derivs[0])):
+        ham_consts = []
+        for deriv in derivs:
+            ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
+        omega = cp.Variable(len(derivs[0]))
+        t = cp.Variable(1)
+        constraints = [0 <= omega, omega <= 1, sum(omega) == 1, t >= 0]
+        constraints += [omega[i] >= l * cp.inv_pos(t)]
+        equalities = ham_consts[:-1]
+        for ham_const in equalities:
+            constraints += [np.real(ham_const) * omega == 0]
+            constraints += [np.imag(ham_const) * omega == 0]
+        objective = cp.Minimize(
+            cp.norm(np.real(ham_consts[-1]) * omega) + cp.norm(np.imag(ham_consts[-1]) * omega) + t)
+        prob = cp.Problem(objective, constraints)
+        result = prob.solve(solver=cp.CVXOPT, abstol=tol, abstol_inacc=tol)
         if result < mini and omega.value is not None:
             mini = result
             res = omega.value
