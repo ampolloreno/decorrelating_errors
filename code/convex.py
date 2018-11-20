@@ -7,7 +7,7 @@ from scipy.linalg import logm
 import cvxpy as cp
 import numpy as np
 
-DEFAULT_TOL = 1e-3
+DEFAULT_TOL = 1e-8
 
 
 def error(combo, controls, target_operator, control_hamiltonians, ambient_hamiltonian0, dt):
@@ -102,8 +102,6 @@ def compute_ith_derivative(f, point, args, i, matsize):
     return res
 
 
-
-
 def optimal_weights_no_constraints(derivs, l, tol=DEFAULT_TOL):
     print("Starting optimal weights no constraints")
     mini = float('inf')
@@ -119,7 +117,8 @@ def optimal_weights_no_constraints(derivs, l, tol=DEFAULT_TOL):
         constraints += [np.imag(ham_const)*omega == 0]
     objective = cp.Minimize(cp.norm(np.real(ham_consts[-1])*omega) + cp.norm(np.imag(ham_consts[-1])*omega))
     prob = cp.Problem(objective, constraints)
-    result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER)#, abstol=tol, abstol_inacc=tol)
+    result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER,
+                        abstol=tol, abstol_inacc=tol, max_iters=1000, reltol=tol, feastol=tol)
     return omega.value
 
 
@@ -169,26 +168,29 @@ def optimal_weights(derivs, l, tol=DEFAULT_TOL):
     mini = float('inf')
     res = None
     for i in range(len(derivs[0])):
-        if i % 10 == 0:
-            print(f"Done with convex problem {i} out of {len(derivs[0])}")
-        ham_consts = []
-        for deriv in derivs:
-            ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
-        omega = cp.Variable(len(derivs[0]))
-        t = cp.Variable(1)
-        constraints = [0 <= omega, omega <= 1, sum(omega)==1, t>=0]
-        constraints += [omega[i] >= l*cp.inv_pos(t)]
-        equalities = ham_consts[:-1]
-        for ham_const in equalities:
-            constraints += [np.real(ham_const)*omega == 0]
-            constraints += [np.imag(ham_const)*omega == 0]
-        objective = cp.Minimize(cp.norm(np.real(ham_consts[-1])*omega) + cp.norm(np.imag(ham_consts[-1])*omega) + t)
-        prob = cp.Problem(objective, constraints)
-        result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER)#, abstol=tol, abstol_inacc=tol)
-        if result < mini and omega.value is not None:
-            mini = result
-            res = omega.value
-    return res
+        try:
+            if i % 10 == 0:
+                print(f"Done with convex problem {i} out of {len(derivs[0])}")
+            ham_consts = []
+            for deriv in derivs:
+                ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
+            omega = cp.Variable(len(derivs[0]))
+            t = cp.Variable(1)
+            constraints = [0 <= omega, omega <= 1/l, sum(omega) == 1/l, t >= 0]
+            constraints += [omega[i] >= cp.inv_pos(t)]
+            equalities = ham_consts[:-1]
+            for ham_const in equalities:
+                constraints += [np.real(ham_const)*omega == 0]
+                constraints += [np.imag(ham_const)*omega == 0]
+            objective = cp.Minimize(cp.norm(np.real(ham_consts[-1])*omega) + cp.norm(np.imag(ham_consts[-1])*omega) + t)
+            prob = cp.Problem(objective, constraints)
+            result = prob.solve(solver=cp.CVXOPT, kktsolver=cp.ROBUST_KKTSOLVER, abstol=tol, abstol_inacc=tol)
+            if result < mini and omega.value is not None:
+                mini = result
+                res = omega.value
+        except cp.SolverError:
+            continue
+    return res * l
 
 
 def optimal_weights_1st_order(derivs, l, tol=DEFAULT_TOL):
