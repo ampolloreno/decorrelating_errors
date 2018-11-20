@@ -1,11 +1,9 @@
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 from GRAPE import GRAPE, control_unitaries, adjoint
 import numpy as np
 import dill
 from functools import reduce
-from tqdm import tqdm
 import time as timemod
 from convex import (all_derivs, optimal_weights, optimal_weights_1st_order,
                     optimal_weights_1st_order_no_constraints, optimal_weights_no_constraints)
@@ -110,18 +108,17 @@ class PCA(object):
         self.control_hamiltonians = control_hamiltonians
 
     def assign_weights_0(self, l2=1E-3):
-        derivs = all_derivs(self.controlset, self.target_operator, self.control_hamiltonians, self.ambient_hamiltonian,
-                            self.dt, 1)
-        for i, d in enumerate(derivs):
-            if i == 1:
-                derivs[i] = np.delete(d, np.s_[2], 1)
-        weights_0 = optimal_weights(derivs[:1], l2)
-        self.derivs = derivs
+        # derivs = all_derivs(self.controlset, self.target_operator, self.control_hamiltonians, self.ambient_hamiltonian,
+        #                     self.dt, 1)
+        # for i, d in enumerate(derivs):
+        #     if i == 1:
+        #         derivs[i] = np.delete(d, np.s_[2], 1)
+        weights_0 = optimal_weights(self.derivs[:1], l2)
         self.weights_0 = weights_0
         print("Tried assigning zeroth order weights.")
 
     def assign_weights(self, l1=1E-3):
-        weights = optimal_weights_1st_order(self.derivs, l1)
+        weights = optimal_weights(self.derivs, l1)
         self.weights = weights
         print("Tried assigning order weights.")
 
