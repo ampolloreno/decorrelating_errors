@@ -288,19 +288,21 @@ def optimal_weights(derivs, l, tol=DEFAULT_TOL):
                 ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
             omega = cp.Variable(len(derivs[0]))
             t = cp.Variable(1)
-            constraints = [0 <= omega, omega <= 1, sum(omega) == 1, t >= 0]
-            constraints += [omega[i] >= l * cp.inv_pos(t)]
-            equalities = ham_consts[:-1]
+            constraints = [0 <= omega, omega <= 1/l, sum(omega) == 1/l, t >= 0]
+            constraints += [omega[i] >= cp.inv_pos(t)]
+            equalities = ham_consts[:1] # include the min for the first one
             for ham_const in equalities:
                 constraints += [np.real(ham_const) * omega == 0]
                 constraints += [np.imag(ham_const) * omega == 0]
-            objective = cp.Minimize(
-                cp.norm(np.real(ham_consts[-1]) * omega) + cp.norm(np.imag(ham_consts[-1]) * omega) + t)
+            objective = cp.Minimize(t/l + cp.norm(np.real(ham_consts[-1]) * omega, 1) + cp.norm(np.imag(ham_consts[-1]) * omega, 1))
+
+            # objective = cp.Minimize(
+            #     cp.norm(np.real(ham_consts[-1]) * omega) + cp.norm(np.imag(ham_consts[-1]) * omega) + t/l) # + cp.norm(np.real(ham_consts[-1]) * omega, 1) + cp.norm(np.imag(ham_consts[-1]) * omega, 1))
             prob = cp.Problem(objective, constraints)
-            result = prob.solve(solver=cp.CVXOPT, abstol=tol, abstol_inacc=tol)
+            result = prob.solve(solver=cp.CVXOPT)# abstol=tol, abstol_inacc=tol, verbose=True)
             if result < mini and omega.value is not None:
                 mini = result
-                res = omega.value
+                res = omega.value * l
         except cp.SolverError:
             continue
     return res
