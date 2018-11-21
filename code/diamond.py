@@ -95,7 +95,7 @@ def diamond_norm( jamiolkowski_matrix ):
 
     prob = cvx.Problem(objective, constraints)
     import cvxpy as cp
-    prob.solve(solver="CVXOPT", kktsolver=cp.ROBUST_KKTSOLVER)
+    prob.solve(solver="CVXOPT")
 
     return prob.value
 
