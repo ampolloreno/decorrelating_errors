@@ -326,7 +326,7 @@ def optimal_weights(derivs, l1_constraint=False, l1_param=None, sparsity_param=N
                 t = cp.Variable(1)
                 constraints = [0 <= omega, omega <= 1, sum(omega) == 1, t >= 0]
                 constraints += [omega[i] >= cp.inv_pos(t) * sparsity_param]
-                equalities = ham_consts[:-1]
+                equalities = ham_consts[:1]
                 for ham_const in equalities:
                    constraints += [np.real(ham_const) * omega == 0]
                    constraints += [np.imag(ham_const) * omega == 0]
@@ -335,17 +335,17 @@ def optimal_weights(derivs, l1_constraint=False, l1_param=None, sparsity_param=N
                                       + cp.norm(np.real(ham_consts[-1]) * omega)
                                       + cp.norm(np.imag(ham_consts[-1]) * omega))
                 if l1_constraint:
-                    real_norm = np.matrix(norm(np.real(ham_consts[-1]), 2, 0))
-                    imag_norm = np.matrix(norm(np.imag(ham_consts[-1]), 2, 0))
-                    objective_argument += l1_param * (real_norm + imag_norm) * omega
+                    ham_norm = np.matrix(norm(np.real(ham_consts[-1]), 1, 0))
+                    objective_argument += cp.norm(l1_param * (ham_norm) * omega, 1)
                 objective = cp.Minimize(objective_argument)
 
                 prob = cp.Problem(objective, constraints)
-                result = prob.solve(solver=cp.MOSEK, verbose=True)
+                result = prob.solve(solver=cp.MOSEK)#, verbose=True)
                 if result < mini and omega.value is not None:
                     mini = result
                     res = omega.value
             except cp.SolverError:
+                print("FAILED")
                 continue
     else:
         ham_consts = []
@@ -353,7 +353,7 @@ def optimal_weights(derivs, l1_constraint=False, l1_param=None, sparsity_param=N
             ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
         omega = cp.Variable(len(derivs[0]))
         constraints = [0 <= omega, omega <= 1, sum(omega) == 1]
-        equalities = ham_consts[:-1]
+        equalities = ham_consts[:1]
         for ham_const in equalities:
             constraints += [np.real(ham_const) * omega == 0]
             constraints += [np.imag(ham_const) * omega == 0]
@@ -361,14 +361,14 @@ def optimal_weights(derivs, l1_constraint=False, l1_param=None, sparsity_param=N
         objective_argument = (cp.norm(np.real(ham_consts[-1]) * omega)
                               + cp.norm(np.imag(ham_consts[-1]) * omega))
         if l1_constraint:
-            real_norm = np.matrix(norm(np.real(ham_consts[-1]), 2, 0))
-            imag_norm = np.matrix(norm(np.imag(ham_consts[-1]), 2, 0))
-
-            objective_argument += l1_param * (real_norm + imag_norm) * omega
+            ham_norm = np.matrix(norm(np.real(ham_consts[-1]), 1, 0))
+            # What does this do if I don't write norm???
+            objective_argument += cp.norm(l1_param * (ham_norm) * omega, 1)
         objective = cp.Minimize(objective_argument)
 
         prob = cp.Problem(objective, constraints)
         _ = prob.solve(solver=cp.MOSEK, verbose=True)
+        #import pdb; pdb.set_trace()
         res = omega.value
     return res
 
