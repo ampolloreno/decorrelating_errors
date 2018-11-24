@@ -324,8 +324,8 @@ def optimal_weights(derivs, l1_constraint=False, l1_param=None, sparsity_param=N
                     ham_consts.append(np.matrix([d.flatten() for d in deriv]).T)
                 omega = cp.Variable(len(derivs[0]))
                 t = cp.Variable(1)
-                constraints = [0 <= omega, omega <= 1, sum(omega) == 1, sparsity_param*t >= 0]
-                constraints += [omega[i] >= cp.inv_pos(t)]
+                constraints = [0 <= omega, omega <= 1, sum(omega) == 1, t >= 0]
+                constraints += [omega[i] >= cp.inv_pos(t) * sparsity_param]
                 equalities = ham_consts[:-1]
                 for ham_const in equalities:
                    constraints += [np.real(ham_const) * omega == 0]
@@ -371,4 +371,5 @@ def optimal_weights(derivs, l1_constraint=False, l1_param=None, sparsity_param=N
         _ = prob.solve(solver=cp.MOSEK, verbose=True)
         res = omega.value
     return res
+
 
