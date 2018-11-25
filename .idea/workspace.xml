@@ -2,26 +2,38 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a34741b1-9004-49a2-a43c-0620a4d71458" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/code/0_pickled_controls106.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/code/0_pickled_controls106.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/1_pickled_controls106.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/code/1_pickled_controls106.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/Plots for iSWAP.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/code/Plots for iSWAP.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms00_0_0" beforeDir="false" afterPath="$PROJECT_DIR$/code/d_norms00_0_0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms00_0_1" beforeDir="false" afterPath="$PROJECT_DIR$/code/d_norms00_0_1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms00_1_0" beforeDir="false" afterPath="$PROJECT_DIR$/code/d_norms00_1_0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms00_1_1" beforeDir="false" afterPath="$PROJECT_DIR$/code/d_norms00_1_1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms00_2_0" beforeDir="false" afterPath="$PROJECT_DIR$/code/d_norms00_2_0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms00_2_1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms01_0_0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms01_0_1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms01_1_0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms01_1_1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms01_2_0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms01_2_1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms03_0_0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms03_1_0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/d_norms03_2_0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/derivs" beforeDir="false" afterPath="$PROJECT_DIR$/code/derivs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/iSWAP.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/code/iSWAP.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Plots for iSWAP 100 steps.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Plots for iSWAP 1000 steps.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Quadratic Programs Working (iSWAP).ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Quadratic Programs Working (sqrtY).ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Quadratic Programs Working (sqrtZZ).ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms00_0_0_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms00_0_1_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms00_1_0_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms00_1_1_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms00_2_0_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms00_2_1_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms01_0_0_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms01_0_1_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms01_1_0_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms01_1_1_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms01_2_0_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms01_2_1_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms03_0_0_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms03_0_1_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms03_1_0_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms03_1_1_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms03_2_0_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms03_2_1_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms04_0_0_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms04_0_1_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms04_1_0_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms04_1_1_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms04_2_0_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms04_2_1_100" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/iSWAP 100 steps.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/iSWAP 1000 steps.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/iSWAP_dev.ipynb" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,6 +45,7 @@
     <session id="1868004869">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
           <entry key="project.open.time.20" value="1" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.7" value="1" />
@@ -112,7 +125,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="99" />
     <option name="y" value="651" />
     <option name="width" value="907" />
@@ -154,7 +167,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="99" y="651" width="907" height="789" extended-state="1" />
+    <frame x="99" y="651" width="907" height="789" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.69567657" />
