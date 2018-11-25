@@ -4,7 +4,22 @@
     <list default="true" id="a34741b1-9004-49a2-a43c-0620a4d71458" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/code/0_pickled_controls106.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/code/0_pickled_controls106.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/1_pickled_controls106.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/code/1_pickled_controls106.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/Untitled.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/code/Untitled.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Plots for iSWAP.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/code/Plots for iSWAP.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms00_0_0" beforeDir="false" afterPath="$PROJECT_DIR$/code/d_norms00_0_0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms00_0_1" beforeDir="false" afterPath="$PROJECT_DIR$/code/d_norms00_0_1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms00_1_0" beforeDir="false" afterPath="$PROJECT_DIR$/code/d_norms00_1_0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms00_1_1" beforeDir="false" afterPath="$PROJECT_DIR$/code/d_norms00_1_1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms00_2_0" beforeDir="false" afterPath="$PROJECT_DIR$/code/d_norms00_2_0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms00_2_1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms01_0_0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms01_0_1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms01_1_0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms01_1_1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms01_2_0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms01_2_1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms03_0_0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms03_1_0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/d_norms03_2_0" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/code/derivs" beforeDir="false" afterPath="$PROJECT_DIR$/code/derivs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/iSWAP.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/code/iSWAP.ipynb" afterDir="false" />
     </list>
@@ -41,7 +56,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/convex.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="957">
+            <state relative-caret-position="156">
               <caret line="347" column="29" selection-start-line="347" selection-start-column="29" selection-end-line="347" selection-end-column="29" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
@@ -97,7 +112,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="1">
     <option name="x" value="99" />
     <option name="y" value="651" />
     <option name="width" value="907" />
@@ -107,13 +122,11 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../willow" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -141,7 +154,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="-2" width="1280" height="1442" extended-state="4" />
+    <frame x="99" y="651" width="907" height="789" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.69567657" />
@@ -196,7 +209,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/code/convex.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="957">
+        <state relative-caret-position="156">
           <caret line="347" column="29" selection-start-line="347" selection-start-column="29" selection-end-line="347" selection-end-column="29" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
