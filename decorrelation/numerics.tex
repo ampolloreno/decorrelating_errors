@@ -79,5 +79,10 @@ There is much more work that can be done investigating other Hamiltonians, for o
 
 Finally, much of the numerical work here was limited by the same simplicity that makes the GRAPE algorithm useful. Future work could modify the derivative in the GRAPE algorithm to include derivative information to in addition to finding controls with bounded error, GRAPE finds controls with not only bounded derivative, but also derivatives that are wrong in a way that can cancel out the derivatives of other controls in the RBC. These results demonstrate numerically that RBCs are feasible and tractable, and provide an algorithmic way to compute optimal weights for minimizing sensitive to drift.
 
+\begin{figure}[htb]
+  \centering
+  \includegraphics[scale=.2]{figures/2QRBC}
 
+\caption{0RBC and 1RBC performance for $RX(\frac{\pi}{2})$, as compared to each other, and members of the control families. At the origin the RBCs can be see to outperform members of the family by two orders of magnitude in diamond norm. Away from the origin the 1RBC can be seen to be flatter than the 0RBC, outperforming at 1\% error.}
+\end{figure}
 \end{document}

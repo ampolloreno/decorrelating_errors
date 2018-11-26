@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  25 NOV 2018 14:41
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  25 NOV 2018 17:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -552,15 +552,31 @@ l.77
 
 LaTeX Warning: Reference `Campbell' on page 2 undefined on input line 78.
 
+<figures/2QRBC.png, id=35, 2391.93625pt x 1198.4775pt>
+File: figures/2QRBC.png Graphic file (type png)
+<use figures/2QRBC.png>
+Package pdftex.def Info: figures/2QRBC.png  used on input line 84.
+(pdftex.def)             Requested size: 478.37878pt x 239.69125pt.
+
+Overfull \hbox (232.37878pt too wide) in paragraph at lines 84--85
+ [][] 
+ []
+
 No file numerics.bbl.
 
 Package natbib Warning: There were undefined citations.
 
-[2]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 83.
+[2] [3pdfTeX warning (ext4): destination with the same identifier (name{figure.
+3}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.88 \end{document}
+                    <./figures/2QRBC.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 88.
  (./numerics.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 83.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 83.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 88.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 88.
 Package rerunfilecheck Info: File `numerics.out' has not changed.
 (rerunfilecheck)             Checksum: 2AC1036FAC1F4AA1CB00343D5E58728B;44.
 
@@ -569,10 +585,10 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 8967 strings out of 492982
- 124790 string characters out of 6134895
+ 8974 strings out of 492982
+ 124900 string characters out of 6134895
  330513 words of memory out of 5000000
- 12396 multiletter control sequences out of 15000+600000
+ 12400 multiletter control sequences out of 15000+600000
  14459 words of font info for 54 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  32i,16n,28p,1154b,342s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -587,10 +603,10 @@ ublic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.
 pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on numerics.pdf (2 pages, 243933 bytes).
+Output written on numerics.pdf (3 pages, 364652 bytes).
 PDF statistics:
- 82 PDF objects out of 1000 (max. 8388607)
- 61 compressed objects within 1 object stream
- 8 named destinations out of 1000 (max. 500000)
- 19 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 89 PDF objects out of 1000 (max. 8388607)
+ 65 compressed objects within 1 object stream
+ 10 named destinations out of 1000 (max. 500000)
+ 24 words of extra memory for PDF output out of 10000 (max. 10000000)
 
