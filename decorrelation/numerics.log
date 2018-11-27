@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  25 NOV 2018 17:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  26 NOV 2018 17:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -556,18 +556,13 @@ LaTeX Warning: Reference `Campbell' on page 2 undefined on input line 78.
 File: figures/2QRBC.png Graphic file (type png)
 <use figures/2QRBC.png>
 Package pdftex.def Info: figures/2QRBC.png  used on input line 84.
-(pdftex.def)             Requested size: 478.37878pt x 239.69125pt.
-
-Overfull \hbox (232.37878pt too wide) in paragraph at lines 84--85
- [][] 
- []
-
+(pdftex.def)             Requested size: 239.20764pt x 119.85477pt.
 No file numerics.bbl.
 
 Package natbib Warning: There were undefined citations.
 
-[2] [3pdfTeX warning (ext4): destination with the same identifier (name{figure.
-3}) has been already used, duplicate ignored
+[2pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) 
+has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
@@ -583,11 +578,15 @@ Package rerunfilecheck Info: File `numerics.out' has not changed.
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right .
+
+
  ) 
 Here is how much of TeX's memory you used:
- 8974 strings out of 492982
- 124900 string characters out of 6134895
- 330513 words of memory out of 5000000
+ 8973 strings out of 492982
+ 124894 string characters out of 6134895
+ 331513 words of memory out of 5000000
  12400 multiletter control sequences out of 15000+600000
  14459 words of font info for 54 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -603,10 +602,10 @@ ublic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.
 pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on numerics.pdf (3 pages, 364652 bytes).
+Output written on numerics.pdf (2 pages, 366648 bytes).
 PDF statistics:
- 89 PDF objects out of 1000 (max. 8388607)
- 65 compressed objects within 1 object stream
- 10 named destinations out of 1000 (max. 500000)
+ 85 PDF objects out of 1000 (max. 8388607)
+ 62 compressed objects within 1 object stream
+ 9 named destinations out of 1000 (max. 500000)
  24 words of extra memory for PDF output out of 10000 (max. 10000000)
 
