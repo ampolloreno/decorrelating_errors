@@ -1,0 +1,128 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% RevTeX 4.1 LaTeX
+% Kevin C. Young
+% Scalable & Secure Systems Research (08961)
+% Thu Mar  5 15:29:19 PST 2015
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[aps,nofootinbib,pra,notitlepage,twocolumn]{revtex4-1}
+\usepackage{amsfonts,amsmath,amssymb,amsthm}
+\usepackage{array,bm,color}
+\usepackage{epsfig,graphicx,nomencl,revsymb4-1,upgreek,url}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\graphicspath{{./figures/}}
+\hypersetup{colorlinks=true, pdfauthor=Kevin C. Young, pdftitle=Decorrelating Errors}
+\newcommand{\tr}{{\rm Tr\thinspace}}
+\newcommand{\bra}[1]{\ensuremath{\left\langle{#1}\right\vert}}
+\newcommand{\ket}[1]{\ensuremath{\left\vert{#1}\right\rangle}}
+\newcommand{\braket}[2]{\left\langle #1 | #2 \right\rangle}
+\newcommand{\ketbra}[2]{\left| #1 \right\rangle\!\!\!\,\left\langle #2 \right|}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\expect}[1]{\ensuremath{\left\langle{#1}\right\rangle}}
+\newcommand{\timeorder}{\ensuremath{\underset{\leftarrow}{\mathcal{T}}}}
+\newcommand{\ident}{{\mathbb1}}
+\newcommand{\order}[1]{\mathcal{O}\left( #1 \right)}
+\newcommand{\diag}[1]{\mathrm{diag}\{#1\}}
+\newcommand{\trans}[1]{#1^\mathsf{T}}
+\newcommand{\T}{\mathsf{T}}
+\newcommand{\erf}[1]{Eq.~(\ref{#1})}
+\newcommand{\needcite}{{\color{blue}\textsuperscript{[citation needed]}}}
+\newcommand{\note}[1]{{\color{red}[#1]}}
+\newcommand{\kcy}[1]{{\color{red}[#1]_{\rm{KCY}}}}
+\newcommand{\amp}[1]{{\color{red}[#1]_{\rm{AMP}}}}
+\setlength{\jot}{10pt}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\usepackage{lipsum}
+
+%-------------Header begins here----------------------------------------
+\begin{document}
+% \tableofcontents
+\title{Mixing Unitary Operators for Real and Simulated Quantum Information Processing}
+
+\author{Anthony Polloreno}
+\email[Email: ]{anthony@rigetti.com}
+\affiliation{Rigetti Computing, Berkeley, CA}
+
+\author{Kevin C. Young}
+% \email[Corresponding author: ]{kyoung@sandia.gov}
+\affiliation{Sandia National Laboratories, Livermore, CA}
+
+\date{\today}
+
+\begin{abstract}
+Quantum information processors (QIPs) can suffer from a number of differnt kinds of errors.
+\end{abstract}
+
+\pacs{}
+
+\maketitle
+
+% ==============================================================================
+% Section: Introduction
+% ==============================================================================
+\section{Introduction}
+\label{sec:introduction}
+
+% ==============================================================================
+% Section: Mixed Unitary Processes
+% ==============================================================================
+\section{Mixed Unitary Processes}
+\label{sec:mixed_unitary_processes}
+
+
+% ==============================================================================
+% Section: Robustly Mixed Unitary Processes
+% ==============================================================================
+\section{Robustly Mixed Unitary Processes}
+\label{sec:robustly_mixed}
+
+
+
+
+% ==============================================================================
+% Section: Figures
+% ==============================================================================
+\section{Figures}
+\label{sec:figures}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{simple_example.pdf}
+  \caption{An example of a balanced control solution. Using optimal control, two implementations of a $Z_\pi$ gate are designed to have equal and opposite sensitivity to errors (if one implementation over-rotates by angle $\theta$, then the other \emph{under}-rotates by $\theta$). Each time the gate is used, one of these implementations is chosen at random. The resulting quantum channel is equivalent to a perfect implementation of the gate followed by dephasing of $\order{\theta^2}$.}
+  \label{fig:simple_example}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{vectorspace.pdf}
+  \caption{A target unitary gate can be implemented a number of ways, each with a different effective Hamiltonian error. These error Hamiltonians lie in a vector space. a) Four effective Hamiltonians. The origin is not contained in their convex hull, so there are no balanced control solutions. b) The origin is contained in the covex hull after adding an additional control solution. Because there are more than $n+1$ implementations, there exist an infinite number of balanced control solutions. c) The error Hamiltonians shown with their derivative with respect to a control parameter. As this parameter drifts, a $0^{\rm th}$-order balanced control solution may drift, leading to a first-order error. d) The derivatives also lie in a vector space. If the origin lies in their convex hull, then it may be possible to construct a $1^{\rm{st}}$-order robust balanced control solution.}
+  \label{fig:vectorspace}
+\end{figure}
+
+\begin{figure}\label{fig:num}
+  \centering
+  \includegraphics[width=\columnwidth]{placeholdernumerical.pdf}
+  \caption{Placeholder image until we figure out what to plot. This currently shows that for one of the control the diamond norm decreased by over an order of magnitude. The labels need to be bigger.}
+  \label{fig:rb}
+\end{figure}
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{rb_data.pdf}
+  \caption{Randomized benchmarking experiments ran using different pulse definitions. The four plots on the left are from the incorrectly calibrated pulse, while the top right is the calibrated pulse, and the bottom right is the BCS.}
+  \label{fig:rb}
+\end{figure}
+
+% ==============================================================================
+% Section: Acknowledgements
+% ==============================================================================
+\section{Acknowledgements}
+\label{sec:acknowledgements}
+Sandia National Laboratories is a multimission laboratory managed and operated by National Technology and Engineering Solutions of Sandia, LLC, a wholly owned subsidiary of Honeywell International, Inc., for the U.S. Department of Energy's National Nuclear Security Administration under contract DE-NA0003525.
+\bibliography{decorrelation.bib}
+\end{document}
