@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  26 NOV 2018 17:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  27 NOV 2018 23:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**numerics.tex
-(./numerics.tex
+**techniques.tex
+(./techniques.tex
 LaTeX2e <2017-04-15>
 Babel <3.18> and hyphenation patterns for 84 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/revtex/revtex4-1.cls
@@ -418,8 +418,8 @@ Class revtex4-1 Info: Robustifying \LaTeX's \boldmath command on input line 41.
 Class revtex4-1 Info: cite was not loaded (OK!) on input line 41.
 Class revtex4-1 Info: mcite was not loaded (OK!) on input line 41.
 Class revtex4-1 Info: multicol was not loaded (OK!) on input line 41.
-(./numerics.aux)
-\openout1 = `numerics.aux'.
+(./techniques.aux)
+\openout1 = `techniques.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 41.
 LaTeX Font Info:    ... okay on input line 41.
@@ -481,131 +481,69 @@ LaTeX Info: Redefining \ref on input line 41.
 LaTeX Info: Redefining \pageref on input line 41.
 LaTeX Info: Redefining \nameref on input line 41.
 
-(./numerics.out) (./numerics.out)
+(./techniques.out) (./techniques.out)
 \@outlinefile=\write4
-\openout4 = `numerics.out'.
+\openout4 = `techniques.out'.
 
 Class revtex4-1 Info: Taking \maketitle back from hyperref on input line 41.
-\openout3 = `numericsNotes.bib'.
+\openout3 = `techniquesNotes.bib'.
 
 
 
-Package natbib Warning: Citation `https://arxiv.org/pdf/1604.03076.pdf' on page
- 1 undefined on input line 44.
+Package natbib Warning: Citation `NIPS2012_4504' on page 1 undefined on input l
+ine 45.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 44.
+LaTeX Font Info:    Try loading font information for U+msa on input line 48.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 44.
+LaTeX Font Info:    Try loading font information for U+msb on input line 48.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-
-Package natbib Warning: Citation `SPARTSITY' on page 1 undefined on input line 
-48.
-
-
-LaTeX Warning: Reference `GRAPE SECTION' on page 1 undefined on input line 48.
-
-
-LaTeX Warning: Reference `FIGURE1' on page 1 undefined on input line 48.
-
-
-LaTeX Warning: Reference `FIGURE2' on page 1 undefined on input line 48.
-
-<figures/SQRTX.png, id=8, 1202.4925pt x 608.2725pt>
-File: figures/SQRTX.png Graphic file (type png)
-<use figures/SQRTX.png>
-Package pdftex.def Info: figures/SQRTX.png  used on input line 52.
-(pdftex.def)             Requested size: 240.49423pt x 121.65234pt.
-<figures/SQRTY.png, id=10, 1202.4925pt x 608.2725pt>
-File: figures/SQRTY.png Graphic file (type png)
-<use figures/SQRTY.png>
-Package pdftex.def Info: figures/SQRTY.png  used on input line 58.
-(pdftex.def)             Requested size: 240.49423pt x 121.65234pt.
-
-LaTeX Warning: Reference `https://arxiv.org/pdf/1402.7367.pdf' on page 1 undefi
-ned on input line 70.
-
-
-LaTeX Warning: Reference `BANGBANG' on page 1 undefined on input line 72.
-
-
-LaTeX Warning: Reference `FIGURE' on page 1 undefined on input line 72.
-
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}pdfTeX warning (ext4): des
-tination with the same identifier (name{figure.1}) has been already used, dupli
-cate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.77 
-     pdfTeX warning (ext4): destination with the same identifier (name{figure.2
-}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.77 
-      <./figures/SQRTX.png> <./figures/SQRTY.png>]
-
-LaTeX Warning: Reference `Campbell' on page 2 undefined on input line 78.
-
-<figures/2QRBC.png, id=35, 2391.93625pt x 1198.4775pt>
-File: figures/2QRBC.png Graphic file (type png)
-<use figures/2QRBC.png>
-Package pdftex.def Info: figures/2QRBC.png  used on input line 84.
-(pdftex.def)             Requested size: 239.20764pt x 119.85477pt.
-No file numerics.bbl.
+No file techniques.bbl.
 
 Package natbib Warning: There were undefined citations.
 
-[2pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) 
-has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.88 \end{document}
-                    <./figures/2QRBC.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 88.
- (./numerics.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 88.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 88.
-Package rerunfilecheck Info: File `numerics.out' has not changed.
-(rerunfilecheck)             Checksum: 2AC1036FAC1F4AA1CB00343D5E58728B;44.
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 60.
+ (./techniques.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 60.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 60.
 
 
-LaTeX Warning: There were undefined references.
+Package rerunfilecheck Warning: File `techniques.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right .
-
-
+Package rerunfilecheck Info: Checksums for `techniques.out':
+(rerunfilecheck)             Before: EBE61A8BDA1323D8B7A024B73A4C7A63;61
+(rerunfilecheck)             After:  EB55E9E5EB6AA0A78DEAE0AECB1D44B6;215.
  ) 
 Here is how much of TeX's memory you used:
- 8973 strings out of 492982
- 124894 string characters out of 6134895
- 331513 words of memory out of 5000000
- 12400 multiletter control sequences out of 15000+600000
- 14459 words of font info for 54 fonts, out of 8000000 for 9000
+ 8912 strings out of 492982
+ 124156 string characters out of 6134895
+ 339487 words of memory out of 5000000
+ 12358 multiletter control sequences out of 15000+600000
+ 9552 words of font info for 36 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 32i,16n,28p,1154b,342s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 32i,20n,28p,1056b,332s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share
 /texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist
+mf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.
-pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on numerics.pdf (2 pages, 366648 bytes).
+type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
+7.pfb>
+Output written on techniques.pdf (1 page, 115671 bytes).
 PDF statistics:
- 85 PDF objects out of 1000 (max. 8388607)
- 62 compressed objects within 1 object stream
- 9 named destinations out of 1000 (max. 500000)
- 24 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 68 PDF objects out of 1000 (max. 8388607)
+ 53 compressed objects within 1 object stream
+ 7 named destinations out of 1000 (max. 500000)
+ 9 words of extra memory for PDF output out of 10000 (max. 10000000)
 
