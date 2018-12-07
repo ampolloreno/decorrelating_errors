@@ -33,33 +33,32 @@
 \newcommand{\note}[1]{{\color{red}[#1]}}
 \newcommand{\kcy}[1]{{\color{red}[#1]_{\rm{KCY}}}}
 \newcommand{\amp}[1]{{\color{red}[#1]_{\rm{AMP}}}}
-\setlength{\jot}{10pt}
-\newtheorem{thm}{Theorem}[section]
-\newtheorem{lem}[thm]{Lemma}
-\usepackage{lipsum}
+
+\newcommand{\actual}{\ensuremath{\tilde{\mathcal{G}}}}
+\newcommand{\target}{\ensuremath{{\mathcal{G}}}}
+\newcommand{\error}{\ensuremath{{\mathcal{E}}}}
 
 %-------------Header begins here----------------------------------------
 \begin{document}
-% \tableofcontents
-\title{Mixing Unitary Operators for Real and Simulated Quantum Information Processing}
+\title{Advantages of mixed unitary operators for quantum information processing}
 
 \author{Anthony Polloreno}
 \email[Email: ]{anthony@rigetti.com}
 \affiliation{Rigetti Computing, Berkeley, CA}
 
 \author{Kevin C. Young}
-% \email[Corresponding author: ]{kyoung@sandia.gov}
 \affiliation{Sandia National Laboratories, Livermore, CA}
 
 \date{\today}
 
 \begin{abstract}
-Quantum information processors (QIPs) can suffer from a number of differnt kinds of errors.
+...
 \end{abstract}
 
 \pacs{}
 
 \maketitle
+
 
 % ==============================================================================
 % Section: Introduction
@@ -67,11 +66,47 @@ Quantum information processors (QIPs) can suffer from a number of differnt kinds
 \section{Introduction}
 \label{sec:introduction}
 
+The past decade has seen a dramatic increase in the performance and scale of quantum information processors (QIP). Gate fidelities are now routinely in the 99\% to 99.99\% range, and dozens of individually-addressable qubits are becoming available on integrated devices. While these advances represent important steps forward on the path towards a computationally useful QIP, the quantum supremacy milestone has yet to be definitively reached. The limiting factor, of course, is errors in the quantum gate operations.
+
+The impact of an error in a quantum gate depends strongly on both the nature of the errors. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations. These errors induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time and add up coherently, so they are computationally expensive to model and it is difficult to place analytic bounds on circuit performance. Contrast this against random, or \emph{stochastic}, errors, which result from high-frequency noise in the controls or the environment. These errors can be modeled by defining a rate of various discrete errors in the system, such as a bit flip or phase flip. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate.
+
+Despite the relative ease of modeling stochastic errors, coherent errors are often much more likely to appear in QIPs. Drifting control parameters or environmental variables can easily have long correlation times that result in errors which is strongly coherent over the length of a quantum circuit. While these errors can often be reconstructed using various tomographic techniques, their impact is difficult to predict. The diamond distance can be used to estimate the failure probability of a quantum circuit, but the diamond distance can grow quadratically with repeated application of gate with coherent errors. For long circuits, this can add up extremely quickly. Recent work by Hastings and Campbell, however, has shown that coherent noise can be strongly suppressed by probabilistic sampling over various implementations of the target quantum gates. This averaging results in quantum processes with diamond distances that grow only linearly  quadratic in the over/under rotation angle of the component gates. \note{Clear this up.}
+
+In this article we discuss various applications of mixed unitary controls, and show that the advantages of this approach can be made robust to drift in the target gates. In this article, we discuss an optimal control approach to the mixed unitary control design problem.  We apply our methods in simulation where we construct single- and two-qubit mixed unitary controls which are robust to drift and uncertainty in the control parameters. We further present an experimental implementation of single-qubit mixed unitary controls on a superconducting qubit testbed at Rigetti Quantum Computing. Using randomized benchmarking, we are able to show a marked improvement in error rates, as well as a reduced variance in circuit outcome probabilities, indicating a reduction in the coherence of the error.
+
+% For instance, the repeated measurements that occur in quantum error correction are suspected to reduce the potential impact of coherent buildup of error. Modern devices, however, do not have sufficient numbers of qubits and their errors are above the threshold at which QEC becomes a viable option.
+
+
 % ==============================================================================
-% Section: Mixed Unitary Processes
+% Section: Representing quantum gates
 % ==============================================================================
-\section{Mixed Unitary Processes}
+\section{Representing quantum gates}
+\label{sec:representing_quantum_gates}
+The standard model for quantum gate operations is as linear maps on the state of some qubits. The state is usually represented as a density operator. It is often convenient, however, to represent the states instead as a generalized Bloch vector,
+\begin{equation}
+  \vec \rho = \tr(\rho \vec \sigma)
+\end{equation}
+Operations on this Bloch vector can then be represented as \emph{process matrices}, $\target$, and their action on a quantum state given by standard matrix multiplication
+\begin{equation}
+  \rho \rightarrow \target\rho = \error \actual \rho
+\end{equation}
+Here $\target_i$ is the target operation, $\actual$ is the actual gate as implemented, and $\error$ is the effective error channel. If the error channel is unitary, then the error is coherent. An advantage of this particular representation of quantum gates is that Pauli stochastic channels are diagonal, with each entry corresponding to the probability that the associated Pauli error occurs in a given application of the gate.
+
+% ==============================================================================
+% Section: Example Mixed Unitary Processes
+% ==============================================================================
+\section{Example Mixed Unitary Processes}
 \label{sec:mixed_unitary_processes}
+There are often many possibly ways of implementing a target quantum gate. Hastings and Campbell consider gates compiled using the Solovey-Kitaev algorithm, for which there are many choices of approximate quantum gate implementations. By implementing some number o these implementations at random, we are able to construct a quantum channel that has reduced coherent error. As a simple example, we have:
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{simple_example.pdf}
+  \caption{An example of a balanced control solution. Using optimal control, two implementations of a $Z_\pi$ gate are designed to have equal and opposite sensitivity to errors (if one implementation over-rotates by angle $\theta$, then the other \emph{under}-rotates by $\theta$). Each time the gate is used, one of these implementations is chosen at random. The resulting quantum channel is equivalent to a perfect implementation of the gate followed by dephasing of $\order{\theta^2}$.}
+  \label{fig:simple_example}
+\end{figure}
+
+** This example is really useful and should be expanded. We should discuss the various optimization problems, a mixed unitary strategy, the fidelity of the resulting channel.
 
 
 % ==============================================================================
@@ -79,6 +114,22 @@ Quantum information processors (QIPs) can suffer from a number of differnt kinds
 % ==============================================================================
 \section{Robustly Mixed Unitary Processes}
 \label{sec:robustly_mixed}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{vectorspace.pdf}
+  \caption{A target unitary gate can be implemented a number of ways, each with a different effective Hamiltonian error. These error Hamiltonians lie in a vector space. a) Four effective Hamiltonians. The origin is not contained in their convex hull, so there are no balanced control solutions. b) The origin is contained in the covex hull after adding an additional control solution. Because there are more than $n+1$ implementations, there exist an infinite number of balanced control solutions. c) The error Hamiltonians shown with their derivative with respect to a control parameter. As this parameter drifts, a $0^{\rm th}$-order balanced control solution may drift, leading to a first-order error. d) The derivatives also lie in a vector space. If the origin lies in their convex hull, then it may be possible to construct a $1^{\rm{st}}$-order robust balanced control solution.}
+  \label{fig:vectorspace}
+\end{figure}
+
+
+
+
+% ==============================================================================
+% Section: Experimental Results
+% ==============================================================================
+\section{Experimental Results}
+\label{sec:experimental_results}
 
 
 
