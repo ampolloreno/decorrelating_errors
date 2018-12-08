@@ -130,6 +130,18 @@ There are often many possibly ways of implementing a target quantum gate. Hastin
 % ==============================================================================
 \section{Experimental Results}
 \label{sec:experimental_results}
+Here we present experimental results from implementing our routine on a fixed-frequency superconducting transmon qubit. In particular, we used qubit 8 on the Rigetti 19Q-Acorn chip, whose characterization can be found in \cite{1712.05771}. To implement a MUP on this qubit, four incorrectly calibrated approximately Gaussian pulses were produced by scaling the pulseshape amplitude for a calibrated 10 sample 50ns $RX(\frac{\pi}{2})$ pulse by $106.4\%$,  $103.9\%$, $93.7\%$ and $91.2\%$.
+
+Using the COBYLA minimizer in \texttt{scipy.optimize}\cite{scipy} to perform constrained minimization of the off--diagonal elements of the produced channel. This is a form of Sequential Quadratic Programming\cite{wright1999numerical}. \note{Explain why this an okay thing to do, or reference the section where we explain it.} To benchmark the quality of the new MUP, we then performed six randomized benchmarking experiments\cite{Magesan2011}: one for each over-- and under--calibrated pulse, one for the calibrated pulse, and one for the mixed process. We used $1000$ shots per experiment, $10$ sequences per sequence length, for sequence lengths of $2, 4, 8, 16, 32$ and $64$. In each case, our Clifford operations were decomposed into RX($\frac{\pi}{2})$) and RY($\frac{\pi}{2})$) pulses. In our implementation, these gates are implemented using the same pulse envelope definitions and control electronics, phase shifted by $\frac{\pi}{2}$ radians, and are therefore subject to identical miscalibration errors. The results are shown in Figure \ref{fig:rb} for sequence lengths $L=64$. The complete dataset can be found at  \cite{decorrelating_errors}.
+
+Using \texttt{scipy.optimize.curve\_fit} to fit the randomized benchmarking data to Equation 6 in \cite{Magesan2011} with $B_0$ set to .5, and bounds between (0, 1), we find one-qubit gate fidelities of $99.3\%$ for the calibrated pulse, $98.9\%$ for Pulse1, $99.1\%$ for Pulse2, $98.9\%$ for Pulse3, $98.5\%$ for Pulse4, and $99.2\%$ for the MUP. In the cases of each miscalibrated pulse, the second moment of the RB number\cite{Proctor2017} for the sampled sequences extends significantly, which is in agreement with the results shown in \cite{Ball2016}. Specifically, for non-Markovian error models noise will manifest as gamma distributed points for each sequence length. On the other hand, Markovian noise, such as depolarizing noise, will result in Gaussian distributed fidelity estimates for each randomized benchmarking sequence length. We see that the coherently miscalibrated controls have long tails, consistent with gamma distributed random variables, while the calibrated and randomized implementations both have much shorter tails, consistent with Gaussian distributed random variables. 
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{rb_data.pdf}
+  \caption{Randomized benchmarking experiments ran using different pulse definitions. The four plots on the left are from the incorrectly calibrated pulse, while the top right is the calibrated pulse, and the bottom right is the BCS.}
+  \label{fig:rb}
+\end{figure}
 
 
 
