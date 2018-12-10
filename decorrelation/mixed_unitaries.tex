@@ -123,8 +123,28 @@ There are often many possibly ways of implementing a target quantum gate. Hastin
 \end{figure}
 
 
+% ==============================================================================
+% Section: Numerical Results
+% ==============================================================================
+\section{Numerical Results}
+\label{sec:numerical_results}
+In the following numerical results, we explore using the methods in Section \ref{sec:mixed_unitary_processes} to build MUPs. We consider the following model for a single tunable qubit: 
+\begin{equation}\label{eq:1Qham}
+  H(\delta, \epsilon, t) = \epsilon\sigma_z + (1 + \delta)(c_x(t)\sigma_x + c_y(t)\sigma_y)
+\end{equation}
+We use the GRAPE algorithm as discussed in \ref{sec:GRAPE} with N=25 steps and total evolution time of $\pi$ to generate 100 candidate controls. The performance function used to terminate the gradient descent was Equation (30) in \cite{Khaneja2005} -- the square of the Hilbert--Schmidt inner product between the generated unitary and the target unitary. The gradient, however, is the gaussian quadrature gradient described in \ref{sec:GRAPE}. In particular, using degree two (which should be accurate for polynomials up to degree 3) Gauss-Hermite quadrature we evaluated the gaussian weighted average gradient for standard deviation $\sigma=.001$, on both the qubit drive, and the qubit frequency. We assume that the errors on $\sigma_x$ and $\sigma_y$ are perfecly correlated, as in superconducting qubit systems that share a common RF drive.
 
+Solving the optimization problem defined in  \ref{sec:robustly_mixed} with the MOSEK solver in \texttt{cvxpy} yields a 0MUP with nontrivial (nearly uniform 1\%) support on all the members of the control family. However, by imposing the sparsity constraint described in \ref{sec:robustly_mixed} the number of controls can be constrained to be just five. When generating a 1MUP we impose an $\ell1$ penalty so that the algorithm favors smaller error Hamiltonians.
 
+In our two-qubit example we consider the following model for two tunable qubits coupled by a resonant exchange interaction, similar to that in \cite{McKay2016}:
+\begin{equation} \label{eq:2Qham}
+\begin{split}
+H(\vec{\delta}, \vec{\epsilon}, t) = &\sum_{j=1}^2(\epsilon_j\sigma_z^j + (1 + \delta_j)(c_x^jx(t)\sigma_x^j + c_y^j(t)\sigma_y^j)) \\
+&+ \frac{1}{10}(XX + YY)
+\end{split}
+\end{equation}
+
+In this example it was infeasible to use GRAPE to return non-trivial solutions. Instead we manually selected piecewise constant echoing sequences with 500 steps and total evolution time of $\frac{5\pi}{2}$. In particular, we considered $RX(\pi)$, $RX(-\pi)$, $RY(\pi)$ and $RY(-\pi)$ pulses used to decouple detuning errors as taking only one time step, to avoid significant errors arising from non-commutativity. The specific collection of bang-bang sequences \cite{bang-bang} considered were all combinations of simultaneous $\pi$ pulses activated at multiples of $8$ steps from the first time step, and the same multiple of $8$ steps prior to the last time step. To give the control family a variety of RF errors, we added on uniformly distributed errors to each $\pi$ pulse, between $-.25$\% and $.25$\%. This resulted in 1024 controls, over which we performed the convex optimization described in \ref{sec:robustly_mixed}, with neither sparisty, nor $\ell1$ constraints.
 % ==============================================================================
 % Section: Experimental Results
 % ==============================================================================
