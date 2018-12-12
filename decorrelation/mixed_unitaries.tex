@@ -90,15 +90,15 @@ where $\vec \Sigma$ is a vector of all $4^n$ $n$-qubit Pauli operators. The acti
 \begin{equation}
   \rho \rightarrow \target\rho = \error \actual \rho.
 \end{equation}
-Here $\target_i$ is the target operation, $\actual$ is the actual gate as implemented, and $\error$ is the effective error channel.  
+Here $\target_i$ is the target operation, $\actual$ is the actual gate as implemented, and $\error$ is the effective error channel. 
+ 
 \begin{equation}
-	\left( 
-	\begin{array}{c|cccc}
-		1 &  & \vec 0 & \\ 
-		\hrule & &  &  \\
+	\left(\begin{array}{c|cccc}
+		1 &  & \vec0 & \\ 
+		\hline & &  &  \\
 		\vec{m} &  & R &  \\
 		 &  &  & 
-	\end{array}
+	\end{array} 	
 	\right)
 \end{equation}
 
@@ -129,23 +129,27 @@ A mixed unitary channel consists of a set of unitary channels, $\actual_i$, and 
 
 Campbell considered the very important problem of minimizing the diamond norm of the resulting error channel.  \note{Mention the mixing lemma of Campbell and how the Hamiltonians should form a convex set containing the origin \cite{}}. This is a particualrly appealing target, because the diamond norm provides useful error metrics on quantum circuits. However, it is not the only optimization target that can be chosen. If the ultimate goal is to produce a channel whose effect can be easily simulated, then it may be useful instead to construct a channel whose errors are Pauli stochastic. 
 
-\eq
+%\eq
 
 % ==============================================================================
 % Section: Example Mixed Unitary Processes
 % ==============================================================================
 \section{Example Mixed Unitary Processes}
 \label{sec:mixed_unitary_processes}
-There are often many possibly ways of implementing any given target quantum gate. Hastings and Campbell, for instance, consider gates compiled using the Solovey-Kitaev algorithm, for which  many approximate gate compilations are possible. By selecting from these various implementations at random, they show that the resulting quantum channel can be made to have significantly reduced coherent error. As a simple example of how this occurs, consider a scenario in which we have a single-qubit and four possible implementations of a $\pi$-pulse about the $\sigma_x$ axis. The error channels for these four implementations are themselves unitary rotations about the $\sigma_x$ axis with rotation angles of $\{-2\epsilon, -epsilon, epsilon, 2\epsilon\}$. Such a situation could appear, for instance, if there were amplitude errors on the fields used to affect the gates, and if the control could be implemented by a rotation about the positive or negative $\sigma_x$ axis.
+There are often many possibly ways of implementing any given target quantum gate. Hastings and Campbell, for instance, consider gates compiled using the Solovey-Kitaev algorithm, for which  many approximate gate compilations are possible. By selecting from these various implementations at random, they show that the resulting quantum channel can be made to have significantly reduced coherent error. As a simple example of how this occurs, consider a scenario in which we have a single-qubit and four possible implementations of a $\pi$-pulse about the $\sigma_x$ axis. The error channels for these four implementations are themselves unitary rotations about the $\sigma_x$ axis with rotation angles of $\{-2\epsilon, -\epsilon, \epsilon, 2\epsilon\}$. Such a situation could appear, for instance, if there were amplitude errors on the fields used to affect the gates, and if the control could be implemented by a rotation about the positive or negative $\sigma_x$ axis.
+
+\begin{center}
 
 \begin{tabular}{cccc}
-	Gate & H_{\rm{eff}} & AGI & $\vert\vert\cdot\vert\vert_\diamond$ \\
+	Gate & $H_{\rm{eff}}$ & AGI & $\vert\vert\cdot\vert\vert_\diamond$ \\
+\hline
 	$U_{+2\epsilon}$ & $2\epsilon \sigma_x$ & $4\epsilon^2$ & $2\epsilon$\\
 	$U_{+\epsilon}$ & $\epsilon \sigma_x$ & $\epsilon^2$ & $\epsilon$ \\
 	$U_{-\epsilon}$ & $-\epsilon \sigma_x$ & $\epsilon^2$ & $\epsilon$ \\
 	$U_{-2\epsilon}$ & $-2\epsilon \sigma_x$ & $4\epsilon^2$ & $2\epsilon$ 
 \end{tabular}
 
+\end{center}
 Make a table of these error channels. 
 
 \begin{figure}
