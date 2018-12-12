@@ -7,7 +7,7 @@
 
 \documentclass[aps,nofootinbib,pra,notitlepage,twocolumn]{revtex4-1}
 \usepackage{amsfonts,amsmath,amssymb,amsthm}
-\usepackage{array,bm,color}
+ \usepackage{array,bm,color}
 \usepackage{epsfig,graphicx,nomencl,revsymb4-1,upgreek,url}
 \usepackage{hyperref}
 \usepackage{algorithm}
@@ -68,7 +68,7 @@
 
 The past decade has seen a dramatic increase in the performance and scale of quantum information processors (QIPs). Gate fidelities are now routinely in the 99\% to 99.99\% range, and dozens of individually-addressable qubits are becoming available on integrated devices. While these advances represent important steps forward on the path towards a computationally useful QIP, the quantum advantage milestone has yet to be definitively reached. The limiting factor, of course, is errors in the quantum gate operations.
 
-The impact of an error in a quantum gate depends strongly on both the magnitude and nature of the errors. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations. These errors induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time and add up coherently, so they are computationally expensive to model and it is difficult to place analytic bounds on circuit performance. Contrast this against random, or \emph{stochastic}, errors, which result from high-frequency noise in the controls or the environment. These errors can be modeled by defining a rate of various discrete errors in the system, such as a bit flip or phase flip. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate.
+The impact of an error in a quantum gate depends strongly on both the magnitude and the nature of the errors. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations that induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time and add up coherently. They are are  computationally expensive to model and it is difficult to place analytic bounds on circuit performance. Contrast this against random, or \emph{stochastic}, errors, which result from high-frequency noise in the controls or the environment. Systems with stochastic errors can be  modeled by defining a rate of various discrete errors in the system, such as a bit flip or phase flip. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate.
 
 Despite the relative ease of modeling stochastic errors, coherent errors are often much more likely to appear in QIPs. Drifting control parameters or environmental variables can easily have long correlation times that result in errors which is strongly coherent over the length of a quantum circuit. While these errors can often be reconstructed using various tomographic techniques, their impact is difficult to predict. The diamond distance can be used to estimate the failure probability of a quantum circuit, but the diamond distance can grow quadratically with repeated application of gate with coherent errors. For long circuits, this can add up extremely quickly. Recent work by Hastings and Campbell, however, has shown that coherent noise can be strongly suppressed by probabilistic sampling over various implementations of the target quantum gates. This averaging results in quantum processes with diamond distances that grow only linearly  quadratic in the over/under rotation angle of the component gates. \note{Clear this up.}
 
@@ -78,26 +78,75 @@ In this article we discuss various applications of mixed unitary controls, and s
 
 
 % ==============================================================================
-% Section: Representing quantum gates
+% Section: Mathematical preliminaries
 % ==============================================================================
-\section{Representing quantum gates}
+\section{Mathematical preliminaries}
 \label{sec:representing_quantum_gates}
-The standard model for quantum gate operations is as linear maps on the state of some qubits. The state is usually represented as a density operator. It is often convenient, however, to represent the states instead as a generalized Bloch vector,
+Quantum gate operations are implemented by applying a sequence of classical control fields to some set of qubits. Fluctuations in the environment or imperfections in the controls can cause the state of the qubits to change in a way that is different from what was intended.  But if the gates are fairly stable with time and context, then we can describe their action on the qubit state using \emph{process matrices}, linear, Markovian maps on the state of some qubits.  When working with process matrices, it is convenient to write the system density operator using a vectorized representation, and in this article, we'll make use of the generalized Bloch vector,
 \begin{equation}
-  \vec \rho = \tr(\rho \vec \sigma)
+  \vec \rho = \tr(\rho \vec \Sigma),
 \end{equation}
-Operations on this Bloch vector can then be represented as \emph{process matrices}, $\target$, and their action on a quantum state given by standard matrix multiplication
+where $\vec \Sigma$ is a vector of all $4^n$ $n$-qubit Pauli operators. The action of a gate is then given by the usual matrix multiplication:
 \begin{equation}
-  \rho \rightarrow \target\rho = \error \actual \rho
+  \rho \rightarrow \target\rho = \error \actual \rho.
 \end{equation}
-Here $\target_i$ is the target operation, $\actual$ is the actual gate as implemented, and $\error$ is the effective error channel. If the error channel is unitary, then the error is coherent. An advantage of this particular representation of quantum gates is that Pauli stochastic channels are diagonal, with each entry corresponding to the probability that the associated Pauli error occurs in a given application of the gate.
+Here $\target_i$ is the target operation, $\actual$ is the actual gate as implemented, and $\error$ is the effective error channel.  
+\begin{equation}
+	\left( 
+	\begin{array}{c|cccc}
+		1 &  & \vec 0 & \\ 
+		\hrule & &  &  \\
+		\vec{m} &  & R &  \\
+		 &  &  & 
+	\end{array}
+	\right)
+\end{equation}
+
+The top row of all trace-preserving (TP) maps is fixed to $\{1,0,0,0,\cdots\}$.  The first column, $\vec{m}$, describes any deviations from unitality, such as could arise from amplitude damping. If the error channel is unitary, then the error is coherent, and the submatrix $R$ is perfectly antisymmetric, corresponding to a rotation of the generalized Bloch vector. If  $R$ is diagonal, then the error channel is Pauli stochastic, with each entry corresponding to the probability that the associated Pauli error occurs in each application of the gate. \note{Be more clear about what "associated" means here}.  If R is symmetric but not diagonal, then the channel is still stochastic, but the random errors consist of correlated Pauli operators (such as $X+Y$). For a single qubit, this describes everything, but the situation can be slightly more complicated for more qubits. 
+
+** The vec representation may be a little more convenient here? The channel that results is:
+\begin{align}
+	\mathcal{M} 
+		=& \sum_i p_i U^*_i \otimes U_i \\
+		=& \sum_i p_i \exp(i \theta \hat n \cdot \vec\sigma^*) \otimes \exp(-i \theta \hat n \cdot \vec\sigma) \\
+		\simeq & \sum_i p_i (\cos\theta + i \sin\theta H^*)\otimes(\cos\theta -i \sin\theta H) \\
+		\simeq & \sum_i p_i (\cos\theta^2 I\otimes I + \sin\theta^2 H^*\otimes H \\ & + i\sin\theta\cos\theta H^*\otimes I
+								- i\sin\theta\cos\theta I\otimes H )
+\end{align}
+In this case, $\sin\theta^2$ is always positive, so we cannot hope to eliminate the second term, but $\sin\theta\cos\theta$ may be positive or negative, and so there is hope that we could possibly combine various implementations to eliminate this term. The result would be a purely stochastic channel. 
+
+
+The \emph{size} of an error in quantum gates may  be quantified in a number of ways. Two of the most metrics are the average gate fidelity, $\mathcal{F}$, and the diamond norm, $\vert\vert\cdot\vert\vert_\diamond$. These may be represented in terms of the error maps as
+\begin{equation}
+	\vert\vert \error \vert\vert_\diamond = \sup_\rho \vert \vert (I\otimes I)(\rho) - (\error \otimes I)(\rho) \vert\vert_1
+\end{equation}
+\begin{equation}
+	\mathcal{F}(\error) = ...
+\end{equation}
+The diamond norm is generally linear in the over-rotation angle of a quantum operation. Also definition of average gate infidelity. The AGI is generally quadratic in the over-rotation angle of a quantum operation. 
+
+A mixed unitary channel consists of a set of unitary channels, $\actual_i$, and associated weights, $\sum_i p_i = 1$.  The process matrices for a mixed unitary channel is then the weighted sum of the component channels, $\actual_{\rm M} = \sum_i p_i \actual_i$, and the associated error channel is simply the weighted sum of the associated error channels, $\error_{\rm M} = \sum_i p_i \error_i$. 
+
+Campbell considered the very important problem of minimizing the diamond norm of the resulting error channel.  \note{Mention the mixing lemma of Campbell and how the Hamiltonians should form a convex set containing the origin \cite{}}. This is a particualrly appealing target, because the diamond norm provides useful error metrics on quantum circuits. However, it is not the only optimization target that can be chosen. If the ultimate goal is to produce a channel whose effect can be easily simulated, then it may be useful instead to construct a channel whose errors are Pauli stochastic. 
+
+\eq
 
 % ==============================================================================
 % Section: Example Mixed Unitary Processes
 % ==============================================================================
 \section{Example Mixed Unitary Processes}
 \label{sec:mixed_unitary_processes}
-There are often many possibly ways of implementing a target quantum gate. Hastings and Campbell consider gates compiled using the Solovey-Kitaev algorithm, for which there are many choices of approximate quantum gate implementations. By implementing some number of these implementations at random, we are able to construct a quantum channel that has reduced coherent error. As a simple example, we have:
+There are often many possibly ways of implementing any given target quantum gate. Hastings and Campbell, for instance, consider gates compiled using the Solovey-Kitaev algorithm, for which  many approximate gate compilations are possible. By selecting from these various implementations at random, they show that the resulting quantum channel can be made to have significantly reduced coherent error. As a simple example of how this occurs, consider a scenario in which we have a single-qubit and four possible implementations of a $\pi$-pulse about the $\sigma_x$ axis. The error channels for these four implementations are themselves unitary rotations about the $\sigma_x$ axis with rotation angles of $\{-2\epsilon, -epsilon, epsilon, 2\epsilon\}$. Such a situation could appear, for instance, if there were amplitude errors on the fields used to affect the gates, and if the control could be implemented by a rotation about the positive or negative $\sigma_x$ axis.
+
+\begin{tabular}{cccc}
+	Gate & H_{\rm{eff}} & AGI & $\vert\vert\cdot\vert\vert_\diamond$ \\
+	$U_{+2\epsilon}$ & $2\epsilon \sigma_x$ & $4\epsilon^2$ & $2\epsilon$\\
+	$U_{+\epsilon}$ & $\epsilon \sigma_x$ & $\epsilon^2$ & $\epsilon$ \\
+	$U_{-\epsilon}$ & $-\epsilon \sigma_x$ & $\epsilon^2$ & $\epsilon$ \\
+	$U_{-2\epsilon}$ & $-2\epsilon \sigma_x$ & $4\epsilon^2$ & $2\epsilon$ 
+\end{tabular}
+
+Make a table of these error channels. 
 
 \begin{figure}
   \centering
@@ -109,11 +158,14 @@ There are often many possibly ways of implementing a target quantum gate. Hastin
 ** This example is really useful and should be expanded. We should discuss the various optimization problems, a mixed unitary strategy, the fidelity of the resulting channel.
 
 
+
 % ==============================================================================
 % Section: Robustly Mixed Unitary Processes
 % ==============================================================================
 \section{Robustly Mixed Unitary Processes}
 \label{sec:robustly_mixed}
+
+While mixed unitary 
 
 \begin{figure}
   \centering
@@ -122,6 +174,8 @@ There are often many possibly ways of implementing a target quantum gate. Hastin
   \label{fig:vectorspace}
 \end{figure}
 
+
+	
 
 % ==============================================================================
 % Section: Numerical Results
@@ -165,12 +219,6 @@ Using \texttt{scipy.optimize.curve\_fit} to fit the randomized benchmarking data
 
 
 
-
-% ==============================================================================
-% Section: Figures
-% ==============================================================================
-\section{Figures}
-\label{sec:figures}
 
 \begin{figure}
   \centering
