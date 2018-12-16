@@ -70,7 +70,7 @@ The past decade has seen a dramatic increase in the performance and scale of qua
 
 The impact of an error in a quantum gate depends strongly on both the magnitude and the nature of the errors. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations that induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time and add up coherently. They are are  computationally expensive to model and it is difficult to place analytic bounds on circuit performance. Contrast this against random, or \emph{stochastic}, errors, which result from high-frequency noise in the controls or the environment. Systems with stochastic errors can be  modeled by defining a rate of various discrete errors in the system, such as a bit flip or phase flip. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate.
 
-Despite the relative ease of modeling stochastic errors, coherent errors are often much more likely to appear in QIPs. Drifting control parameters or environmental variables can easily have long correlation times that result in errors which are strongly coherent over the length of a quantum circuit. While these errors can often be reconstructed using various tomographic techniques, their impact is difficult to predict. The diamond distance can be used to estimate the failure probability of a quantum circuit, but the diamond distance can grow quadratically with repeated application of gate with coherent errors. For long circuits, this can add up extremely quickly. Recent work by Hastings and Campbell, however, has shown that coherent noise can be strongly suppressed by probabilistic sampling over various implementations of the target quantum gates. This averaging results in quantum processes with diamond distances that grow only linearly  quadratic in the over/under rotation angle of the component gates. \note{Clear this up.}
+Despite the relative ease of modeling stochastic errors, coherent errors are often much more likely to appear in QIPs. Drifting control parameters or environmental variables can easily have long correlation times that result in errors which is strongly coherent over the length of a quantum circuit. While these errors can often be reconstructed using various tomographic techniques, their impact is difficult to predict. The diamond distance can be used to estimate the failure probability of a quantum circuit, but the diamond distance can grow quadratically with repeated application of gate with coherent errors. For long circuits, this can add up extremely quickly. Recent work by Hastings and Campbell, however, has shown that coherent noise can be strongly suppressed by probabilistic sampling over various implementations of the target quantum gates. This averaging results in quantum processes with diamond distances that grow only linearly  quadratic in the over/under rotation angle of the component gates. \note{Clear this up.}
 
 In this article we discuss various applications of mixed unitary controls, and show that the advantages of this approach can be made robust to drift in the target gates. In this article, we discuss an optimal control approach to the mixed unitary control design problem.  We apply our methods in simulation where we construct single- and two-qubit mixed unitary controls which are robust to drift and uncertainty in the control parameters. We further present an experimental implementation of single-qubit mixed unitary controls on a superconducting qubit testbed at Rigetti Quantum Computing. Using randomized benchmarking, we are able to show a marked improvement in error rates, as well as a reduced variance in circuit outcome probabilities, indicating a reduction in the coherence of the error.
 
@@ -168,6 +168,11 @@ Make a table of these error channels.
 % ==============================================================================
 \section{Robustly Mixed Unitary Processes}
 \label{sec:robustly_mixed}
+\note{Decide on naming convention, Anthony has used $\ell$ MUP in the rest of the text} 
+
+\note{Anthony references this section when discussing minimizing the offdiagonal elements of the error's process matrix.}
+
+\note{Anthony mentions the sparsity constraint, as well as the $\ell_1$ penalty, as being described in this section.}
 
 While mixed unitary 
 
@@ -179,7 +184,48 @@ While mixed unitary
 \end{figure}
 
 
-	
+
+% ==============================================================================
+% Section: Numerical Results
+% ==============================================================================
+
+\section{Random Gate Synthesis}
+\label{sec:random_gate_synthesis}
+ In this paper, we use optimal control to generate the one qubit families of controls for MUPs. One could use any of the many available quantum optimal control techniques \cite{Khaneja2005, Caneva2011, Machnes2018}, and for our numerics we chose to use the GRAPE algorithm. First described in \cite{Khaneja2005}, the GRAPE (GRadient Ascent Pulse Engineering) algorithm is a technique for finding piecewise constant control sequences that approximate a desired unitary, $U_T$, given a Hamiltonian with controlled and uncontrolled terms. Defining the uncontrolled Hamiltonian as $H_0$, the control Hamiltonians as $H_{i\neq 0}$, and the \textit{control matrix} $c_{ij}$ as containing the control amplitude associated with the $i^{th}$ time step and the $j^{th}$ Hamiltonian, we can write an the unitary for any timestep of evolution as:
+\begin{equation}\label{eq:3}
+  U_i = \exp\{-i\Delta t(H_0 + \sum_{j=1}^{n}c_{ij}H_{j}\}
+\end{equation}
+To measure the simularity of our approxiate unitary $U=\prod_iU_{i=1}^n$ to our target unitary $U_T$, we can define a cost function $J(U) = Tr\{U_T^{\dagger}U\}$.
+
+To optimize this cost function we can perform the following standard update loop for some threshold value $\varepsilon > 0$ and step size $\delta > 0$:
+\begin{algorithm}[H]
+\floatname{algorithm}
+  \caption{\textsc{\textbf{Gradient Ascent}}}
+  \begin{algorithmic}
+    \While{$J(U) < (1-\varepsilon$)}
+    \State $c_{ij} \rightarrow c_{ij} + \delta\frac{\partial J(U)}{\partial c_{ij}}$
+    \For{$1 \leq i \leq n$}
+    \State $U_i \rightarrow \exp\{-i\Delta t(H_0 + \sum_{i=0}^{n}c_{ij}H_j)\}$
+    \EndFor
+    \State $U \rightarrow \prod_{i=1}^nU_i$
+    \EndWhile
+  \end{algorithmic}
+\end{algorithm}
+
+In general these gradients can be computed by propagating partial derivatives of the cost function with respect to control parameters through each timestep of the  via the chain rule. However, in \cite{Khaneja2005} Khaneja et al. derive an update formula that is correct to first order, and efficient to compute. In particular one can show that:
+\begin{equation}\label{eq:update}
+  \begin{split}
+\frac{\partial J(U)}{\partial u_{ij}} = -2Re\{\braket{{U_{j+1}^{\dagger}...U_N^{\dagger} U_T}}{i\Delta tH_jU_j...U_1}\\
+\braket{U_j...U_1}{U_{j+1}^{\dagger}...U_N^{\dagger} U_T}\} +  \mathcal{O}(\Delta t^2)
+  \end{split}
+\end{equation}
+
+Because we our trying to generate high-order RBCs, we want to generate controls that perform well even in the presence of drift. To do this, we modified the gradient in GRAPE to instead be:
+\begin{align}\label{quadrature}
+\frac{\partial \tilde J(U)}{\partial u_{ij}} =
+\int p(\vec{\delta})\frac{\partial J(U(\vec{\delta}))}{\partial u_{ij}} d\vec{\delta}
+\end{align}
+with $p(\vec{\delta})$ Gaussian distributed, as has been done in previous works \cite{Goerz2014} to ensure that the optimal control results are robust over a wide range of errors. To make this averaging tractable, we approximate this integral using Gaussian quadrature, approximating the cost function as a low order polynomial\cite{abramowiz1972handbook} (in particular degree 5). Note that despite updating the gradient, we did not change the cost function. The termination condition for the gradient ascent loop is still just that the controls perform well in the absence of drift. This is not a fundamental requirement of the routine, but rather was done to make finding solutions with $J(U) < 1 - \epsilon$  less computationally taxing.
 
 % ==============================================================================
 % Section: Numerical Results
@@ -190,9 +236,11 @@ In the following numerical results, we explore using the methods in Section \ref
 \begin{equation}\label{eq:1Qham}
   H(\delta, \epsilon, t) = \epsilon\sigma_z + (1 + \delta)(c_x(t)\sigma_x + c_y(t)\sigma_y)
 \end{equation}
-We use the GRAPE algorithm as discussed in \ref{sec:GRAPE} with N=25 steps and total evolution time of $\pi$ to generate 100 candidate controls. The performance function used to terminate the gradient descent was Equation (30) in \cite{Khaneja2005} -- the square of the Hilbert--Schmidt inner product between the generated unitary and the target unitary. The gradient, however, is the gaussian quadrature gradient described in \ref{sec:GRAPE}. In particular, using degree two (which should be accurate for polynomials up to degree 3) Gauss-Hermite quadrature we evaluated the gaussian weighted average gradient for standard deviation $\sigma=.001$, on both the qubit drive, and the qubit frequency. We assume that the errors on $\sigma_x$ and $\sigma_y$ are perfecly correlated, as in superconducting qubit systems that share a common RF drive.
+We use the GRAPE algorithm as discussed in Section  \ref{sec:random_gate_synthesis} with N=25 steps and total evolution time of $\pi$ to generate 100 candidate controls, with the Gaussian-weighted gradient averaged over a standard deviation of $\sigma=.001$. We assume that the errors on $\sigma_x$ and $\sigma_y$ are perfecly correlated, as in superconducting qubit systems that share a common RF drive.
 
-Solving the optimization problem defined in  \ref{sec:robustly_mixed} with the MOSEK solver in \texttt{cvxpy} yields a 0MUP with nontrivial (nearly uniform 1\%) support on all the members of the control family. However, by imposing the sparsity constraint described in \ref{sec:robustly_mixed} the number of controls can be constrained to be just five. When generating a 1MUP we impose an $\ell1$ penalty so that the algorithm favors smaller error Hamiltonians.
+Solving the optimization problem defined in  \ref{sec:robustly_mixed} yields MUPs for $RX(\frac{\pi}{2})$ and $RY(\frac{\pi}{2})$ shown in Figure \ref{fig:XMUP} and Figure \ref{fig:YMUP}. 
+
+These results demonstrate several properties that make MUPs useful and tractable to generate. First, naively generating a 0MUP results in nontrivial support on all the members of the control family. However, by rewriting the minimization to impose the sparsity constraint discussed in \ref{sec:robustly_mixed}, we can generate a 0MUP that uses just five of the controls. This shows that through adding constraints to our optimization routine, we can make the MUP practically useful, i.e. not requiring a prohibitive amount of waveform memory. When generating a 1MUP we impose the $\ell_1$ penalty discussed in \ref{sec:robustly_mixed}, so that the algorithm favors smaller error Hamiltonians. While the solution in this case was already sparse, enforcing the penalty allows for a smooth trade off between performance at the origin, and robustness to drift.
 
 In our two-qubit example we consider the following model for two tunable qubits coupled by a resonant exchange interaction, similar to that in \cite{McKay2016}:
 \begin{equation} \label{eq:2Qham}
@@ -202,7 +250,9 @@ H(\vec{\delta}, \vec{\epsilon}, t) = &\sum_{j=1}^2(\epsilon_j\sigma_z^j + (1 + \
 \end{split}
 \end{equation}
 
-In this example it was infeasible to use GRAPE to return non-trivial solutions. Instead we manually selected piecewise constant echoing sequences with 500 steps and total evolution time of $\frac{5\pi}{2}$. In particular, we considered $RX(\pi)$, $RX(-\pi)$, $RY(\pi)$ and $RY(-\pi)$ pulses used to decouple detuning errors as taking only one time step, to avoid significant errors arising from non-commutativity. The specific collection of bang-bang sequences \cite{bang-bang} considered were all combinations of simultaneous $\pi$ pulses activated at multiples of $8$ steps from the first time step, and the same multiple of $8$ steps prior to the last time step. To give the control family a variety of RF errors, we added on uniformly distributed errors to each $\pi$ pulse, between $-.25$\% and $.25$\%. This resulted in 1024 controls, over which we performed the convex optimization described in \ref{sec:robustly_mixed}, with neither sparisty, nor $\ell1$ constraints.
+In this example it was infeasible to use GRAPE to return non-trivial solutions. Instead we manually selected piecewise constant echoing sequences with 500 steps and total evolution time of $\frac{5\pi}{2}$. In particular, we considered $RX(\pi)$, $RX(-\pi)$, $RY(\pi)$ and $RY(-\pi)$ pulses used to decouple detuning errors as taking only one time step, to avoid significant errors arising from non-commutativity. The specific collection of bang-bang sequences \cite{bangbang} considered were all combinations of simultaneous $\pi$ pulses activated at multiples of $8$ steps from the first time step, and the same multiple of $8$ steps prior to the last time step. To give the control family a variety of RF errors, we added on uniformly distributed errors to each $\pi$ pulse, between $-.25$\% and $.25$\%.
+
+In this example, we find much more modest improvements to performance, as shown in Figure \ref{fig:2MUP}. Indeed, there are now four free parameters to optimize over, and the uncontrolled entangling interaction means that there is little variation in the controls. Nonetheless, using a MUP improves performance by half of an order of magnitude at the origin, and up to an order of magnitude away from the origin, with the 1MUP performing just as well as the 0MUP, but also being more robust to drift. We believe that if we used a two qubit interaction that was controllable, such as tunable couplers, there would be room for more interesting controls and perhaps even better performance improvements.
 % ==============================================================================
 % Section: Experimental Results
 % ==============================================================================
@@ -210,9 +260,9 @@ In this example it was infeasible to use GRAPE to return non-trivial solutions. 
 \label{sec:experimental_results}
 Here we present experimental results from implementing our routine on a fixed-frequency superconducting transmon qubit. In particular, we used qubit 8 on the Rigetti 19Q-Acorn chip, whose characterization can be found in \cite{1712.05771}. To implement a MUP on this qubit, four incorrectly calibrated Gaussian pulses were produced by scaling the pulseshape amplitude for a calibrated 10 sample 50ns $RX(\frac{\pi}{2})$ pulse by $106.4\%$,  $103.9\%$, $93.7\%$ and $91.2\%$.
 
-Using the COBYLA minimizer in \texttt{scipy.optimize}\cite{scipy} to perform constrained minimization via Sequential Quadratic Programming\cite{wright1999numerical}, we minimized the off--diagonal elements of the resulting mixed process. \note{Explain why this an okay thing to do, or reference the section where we explain it.} To benchmark the quality of the new MUP, we then performed six randomized benchmarking experiments\cite{Magesan2011}: one for each over-- and under--calibrated pulse, one for the calibrated pulse, and one for the mixed process. We used $1000$ shots per experiment, $10$ sequences per sequence length, for sequence lengths of $2, 4, 8, 16, 32$ and $64$. In each case, our Clifford operations were decomposed into RX($\frac{\pi}{2})$) and RY($\frac{\pi}{2})$) pulses. In our implementation, these gates are implemented using the same pulse envelope definitions and control electronics, phase shifted by $\frac{\pi}{2}$ radians, and are therefore subject to identical miscalibration errors. The results are shown in Figure \ref{fig:rb} for sequence lengths $L=64$. The complete dataset can be found at  \cite{decorrelating_errors}.
+As discussed in Section \ref{sec:robustly_mixed}, we chose here to minimize the off diagonal elements of the process matrix. To benchmark the quality of the MUP, we then performed six randomized benchmarking experiments\cite{Magesan2011}: one for each over-- and under--calibrated pulse, one for the calibrated pulse, and one for the mixed process. We used $1000$ shots per experiment, $10$ sequences per sequence length, for sequence lengths of $2, 4, 8, 16, 32$ and $64$. In each case, our Clifford operations were decomposed into RX($\frac{\pi}{2})$) and RY($\frac{\pi}{2})$) pulses. In our implementation, these gates are implemented using the same pulse envelope definitions and control electronics, phase shifted by $\frac{\pi}{2}$ radians, and are therefore subject to identical miscalibration errors. The results are shown in Figure \ref{fig:rb} for sequence lengths $L=64$. Fitting to the randomized benchmarking decay curves, we find one-qubit gate fidelities of $99.3\%$ for the calibrated pulse, $98.9\%$ for Pulse1, $99.1\%$ for Pulse2, $98.9\%$ for Pulse3, $98.5\%$ for Pulse4, and $99.2\%$ for the MUP, demonstrating that it performs almost as well as the calibrated pulse, and better than the constituent pulses. 
 
-Using \texttt{scipy.optimize.curve\_fit} to fit the randomized benchmarking data to Equation 6 in \cite{Magesan2011} with $B_0$ set to .5, and bounds between (0, 1), we find one-qubit gate fidelities of $99.3\%$ for the calibrated pulse, $98.9\%$ for Pulse1, $99.1\%$ for Pulse2, $98.9\%$ for Pulse3, $98.5\%$ for Pulse4, and $99.2\%$ for the MUP. In the cases of each miscalibrated pulse, the second moment of the RB number\cite{Proctor2017} for the sampled sequences extends significantly, which is in agreement with the results shown in \cite{Ball2016}. Specifically, for non-Markovian error models noise will manifest as gamma distributed points for each sequence length. On the other hand, Markovian noise, such as depolarizing noise, will result in Gaussian distributed fidelity estimates for each randomized benchmarking sequence length. We see that the coherently miscalibrated controls have long tails, consistent with gamma distributed random variables, while the calibrated and randomized implementations both have much shorter tails, consistent with Gaussian distributed random variables. 
+Additionally, by minimizing the off-diagonal elements of the process matrix, rather than balancing the Hamiltonian errors, we expect to produce a process with minimal coherent error in the absence of drift. To see that this is the case, we cite the results in \cite{Ball2016}. For non-Markovian error models, noise will manifest as gamma distributed points for each sequence length. On the other hand, Markovian noise, such as depolarizing noise, will result in Gaussian distributed fidelity estimates for each randomized benchmarking sequence length. We see that the coherently miscalibrated controls in our RB experiment have long tails, consistent with gamma distributed random variables, while the calibrated and randomized implementations both have much shorter tails, consistent with Gaussian distributed random variables. Thus, our experiment demonstrates that not only is the performance of the MUP better than the constituent gates, it also has a signicantly less coherent error channel.
 
 \begin{figure}
   \centering
@@ -223,6 +273,12 @@ Using \texttt{scipy.optimize.curve\_fit} to fit the randomized benchmarking data
 
 
 
+
+% ==============================================================================
+% Section: Figures
+% ==============================================================================
+\section{Figures}
+\label{sec:figures}
 
 \begin{figure}
   \centering
@@ -238,13 +294,6 @@ Using \texttt{scipy.optimize.curve\_fit} to fit the randomized benchmarking data
   \label{fig:vectorspace}
 \end{figure}
 
-\begin{figure}\label{fig:num}
-  \centering
-  \includegraphics[width=\columnwidth]{placeholdernumerical.pdf}
-  \caption{Placeholder image until we figure out what to plot. This currently shows that for one of the control the diamond norm decreased by over an order of magnitude. The labels need to be bigger.}
-  \label{fig:rb}
-\end{figure}
-
 
 \begin{figure}
   \centering
@@ -257,10 +306,25 @@ Using \texttt{scipy.optimize.curve\_fit} to fit the randomized benchmarking data
 \begin{figure*}
   \centering
   \includegraphics[width=\textwidth]{SQRTX.png}
-  \caption{Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit. Shown with lower alpha values are example members of the control families, with diamond norms of around $10^{-2}$. The 0MUP can be seen to outperform the members of the control family by two orders of magnitude at the origin, and the 1MUP by an order of magnitude. However, the 1MUP can be seen to be flatter. In paritcular, for small detunings, the 1MUP performs better than the 0MUP.}
+  \caption{Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RX(\frac{np.pi}{2})$. Shown with lower alpha values are example members of the control families, with diamond norms of around $10^{-2}$. The 0MUP can be seen to outperform the members of the control family by two orders of magnitude at the origin, and the 1MUP by an order of magnitude. However, the 1MUP can be seen to be flatter. In paritcular, for small detunings, the 1MUP performs better than the 0MUP.}
   \label{fig:1QMUP}
 \end{figure*}
 
+\begin{figure*}
+  \centering
+  \includegraphics[width=\textwidth]{SQRTY.png}
+  \caption{Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac{\pi}{2})$. The results are quantitatively similar to those for $RX(\frac{\pi}{2})$, but in this case the 0MUP is worse at the origin. This can be improved by penalizing for the norms, or by simply trying to find a 1MUP, which both symmeterizes the performance at the origin and makes them better.}
+  \label{fig:XMUP}
+\end{figure*}
+
+
+
+\begin{figure*}
+  \centering
+  \includegraphics[width=\textwidth]{2QRBC.png}
+  \caption{Numerical results comparing a 0MUP to a 1MUP for a pair of tunable qubits, with a resonant exchange interaction. Shown with lower alpha values are example members of the control families. The 0MUP and 1MUP can be seen to outperform the members of the control family by half an order of magnitude at the origin. Away from the origin, the 1MUP can be seen to be flatter. Far away from the origin, the 1MUP outperforms members of the control famlies by almost an order of magnitude in diamond norm.}
+  \label{fig:2MUP}
+\end{figure*}
 % ==============================================================================
 % Section: Acknowledgements
 % ==============================================================================
