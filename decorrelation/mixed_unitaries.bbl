@@ -6,7 +6,7 @@
 %Control: page (0) single
 %Control: year (1) truncated
 %Control: production of eprint (0) enabled
-\begin{thebibliography}{14}%
+\begin{thebibliography}{18}%
 \makeatletter
 \providecommand \@ifxundefined [1]{%
  \@ifx{#1\undefined}
@@ -227,4 +227,72 @@
   {\doibase 10.1103/physreva.93.022303} {\bibfield  {journal} {\bibinfo
   {journal} {Physical Review A}\ }\textbf {\bibinfo {volume} {93}} (\bibinfo
   {year} {2016}),\ 10.1103/physreva.93.022303}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Blume-Kohout}\ \emph {et~al.}(2017)\citenamefont
+  {Blume-Kohout}, \citenamefont {Gamble}, \citenamefont {Nielsen},
+  \citenamefont {Rudinger}, \citenamefont {Mizrahi}, \citenamefont {Fortier},\
+  and\ \citenamefont {Maunz}}]{BlumeKohout2017}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Blume-Kohout}}, \bibinfo {author} {\bibfnamefont {J.~K.}\ \bibnamefont
+  {Gamble}}, \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont {Nielsen}},
+  \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Rudinger}}, \bibinfo
+  {author} {\bibfnamefont {J.}~\bibnamefont {Mizrahi}}, \bibinfo {author}
+  {\bibfnamefont {K.}~\bibnamefont {Fortier}}, \ and\ \bibinfo {author}
+  {\bibfnamefont {P.}~\bibnamefont {Maunz}},\ }\href {\doibase
+  10.1038/ncomms14485} {\bibfield  {journal} {\bibinfo  {journal} {Nature
+  Communications}\ }\textbf {\bibinfo {volume} {8}} (\bibinfo {year} {2017}),\
+  10.1038/ncomms14485}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Wu}\ \emph {et~al.}(2018)\citenamefont {Wu},
+  \citenamefont {Chu}, \citenamefont {Owens},\ and\ \citenamefont
+  {Rabitz}}]{Wu2018}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.-B.}\ \bibnamefont
+  {Wu}}, \bibinfo {author} {\bibfnamefont {B.}~\bibnamefont {Chu}}, \bibinfo
+  {author} {\bibfnamefont {D.~H.}\ \bibnamefont {Owens}}, \ and\ \bibinfo
+  {author} {\bibfnamefont {H.}~\bibnamefont {Rabitz}},\ }\href {\doibase
+  10.1103/physreva.97.042122} {\bibfield  {journal} {\bibinfo  {journal}
+  {Physical Review A}\ }\textbf {\bibinfo {volume} {97}} (\bibinfo {year}
+  {2018}),\ 10.1103/physreva.97.042122}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kelly}\ \emph {et~al.}(2014)\citenamefont {Kelly},
+  \citenamefont {Barends}, \citenamefont {Campbell}, \citenamefont {Chen},
+  \citenamefont {Chen}, \citenamefont {Chiaro}, \citenamefont {Dunsworth},
+  \citenamefont {Fowler}, \citenamefont {Hoi}, \citenamefont {Jeffrey},
+  \citenamefont {Megrant}, \citenamefont {Mutus}, \citenamefont {Neill},
+  \citenamefont {O'Malley}, \citenamefont {Quintana}, \citenamefont {Roushan},
+  \citenamefont {Sank}, \citenamefont {Vainsencher}, \citenamefont {Wenner},
+  \citenamefont {White}, \citenamefont {Cleland},\ and\ \citenamefont
+  {Martinis}}]{Kelly2014}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {Kelly}}, \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Barends}},
+  \bibinfo {author} {\bibfnamefont {B.}~\bibnamefont {Campbell}}, \bibinfo
+  {author} {\bibfnamefont {Y.}~\bibnamefont {Chen}}, \bibinfo {author}
+  {\bibfnamefont {Z.}~\bibnamefont {Chen}}, \bibinfo {author} {\bibfnamefont
+  {B.}~\bibnamefont {Chiaro}}, \bibinfo {author} {\bibfnamefont
+  {A.}~\bibnamefont {Dunsworth}}, \bibinfo {author} {\bibfnamefont
+  {A.}~\bibnamefont {Fowler}}, \bibinfo {author} {\bibfnamefont {I.-C.}\
+  \bibnamefont {Hoi}}, \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+  {Jeffrey}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Megrant}},
+  \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Mutus}}, \bibinfo
+  {author} {\bibfnamefont {C.}~\bibnamefont {Neill}}, \bibinfo {author}
+  {\bibfnamefont {P.}~\bibnamefont {O'Malley}}, \bibinfo {author}
+  {\bibfnamefont {C.}~\bibnamefont {Quintana}}, \bibinfo {author}
+  {\bibfnamefont {P.}~\bibnamefont {Roushan}}, \bibinfo {author} {\bibfnamefont
+  {D.}~\bibnamefont {Sank}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Vainsencher}}, \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Wenner}},
+  \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {White}}, \bibinfo
+  {author} {\bibfnamefont {A.}~\bibnamefont {Cleland}}, \ and\ \bibinfo
+  {author} {\bibfnamefont {J.~M.}\ \bibnamefont {Martinis}},\ }\href {\doibase
+  10.1103/physrevlett.112.240504} {\bibfield  {journal} {\bibinfo  {journal}
+  {Physical Review Letters}\ }\textbf {\bibinfo {volume} {112}} (\bibinfo
+  {year} {2014}),\ 10.1103/physrevlett.112.240504}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Ferrie}\ and\ \citenamefont
+  {Moussa}(2015)}]{Ferrie2015}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.}~\bibnamefont
+  {Ferrie}}\ and\ \bibinfo {author} {\bibfnamefont {O.}~\bibnamefont
+  {Moussa}},\ }\href {\doibase 10.1103/physreva.91.052306} {\bibfield
+  {journal} {\bibinfo  {journal} {Physical Review A}\ }\textbf {\bibinfo
+  {volume} {91}} (\bibinfo {year} {2015}),\
+  10.1103/physreva.91.052306}\BibitemShut {NoStop}%
 \end{thebibliography}%

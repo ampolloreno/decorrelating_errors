@@ -209,41 +209,7 @@ In this context, since we are assuming that the derivatives are all of norm $\ep
 \section{Generation of Robustly Mixed Unitary Processes}
 \label{sec:generation}
 
-To generate robustly mixed unitary processes, we can solve the following convex optimization problem:
-
-\begin{equation}\label{eq:minimization}
-  \begin{split}
-    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||D_{\ell}^T\omega||\\
-    &\textbf{subject to: } \forall i<\ell, \sum \omega_jD_j^i=0\\
-  \end{split}
-\end{equation}
-
-If the control family is too small a solution won't exist, in particular as in \cite{Campbell2017} we need  $0\in $ Conv$[D_j^i]$.  This can be accomplished by modifying the oracle in Campbell's algorithm to produce robust controls, in particular by updating the GRAPE cost function to include derivative information, one could produce controls with derivatives of order $\epsilon$. In our case, by using the Gaussian weighted cost function, we ensure that the controls generated should have vanishing first derivative.
-
-This minimization problem, while sufficient for quadratically decreasing the diamond norm relative to the \textit{worst} controls in the family, does not preferentially select the controls with the least error. That is to say, as in Section \ref{sec:mixed_unitary_processes}, both \{$U_{+2\epsilon}$, $U_{-2\epsilon}$\} and \{$U_{\epsilon}$, $U_{-\epsilon}$\} minimize this cost function for a 0MUP. To encourage the inclusion of controls with smaller error, we may impose an $\ell_2$ penalty to our cost function by rewriting it as:
-
-\begin{equation}\label{eq:minimization_l2}
-  \begin{split}
-    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||D_{\ell}^T\omega||_2 + \eta\sum||D_0^T\omega||_2\\
-  \end{split}
-\end{equation}
-with $\eta \geq 0$. 
-
-To make sure the routine remains practical, we would also like to regularize our objective function to enforce sparsity. In this case, lasso regularization \cite{tibshirani1996regression} is insufficient as we already constrain the one norm of the vector we optimize over to be one. However, the problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends Equation \ref{eq:minimization}:
-\begin{equation}
-\begin{split}
-\underset{n\in[N]}{\textbf{minimize}}\{
-    &\underset{\omega_j\geq0, |\omega|_1=1, t\geq0}{\textbf{minimize}: } ||D_{\ell}^T\omega|| + t\\
-    &\textbf{subject to: } \omega_n > \frac{\lambda}{t}\\
-    &\phantom{\textbf{subject to: }} \forall i<\ell, \sum \omega_jD_j^i=0\}
-\end{split}
-\end{equation} where $\lambda$ is a hyperparameter to be optimized over.
-
-% ==============================================================================
-% Section: Numerical Results
-% ==============================================================================
-
-\section{Random Gate Synthesis}
+\subsection{Random Gate Synthesis}
 \label{sec:random_gate_synthesis}
  In this article, we use optimal control to generate the one qubit families of controls for MUPs. One could use any of the many available quantum optimal control techniques \cite{Khaneja2005, Caneva2011, Machnes2018}, and for our numerics we chose to use the GRAPE algorithm. First described in \cite{Khaneja2005}, the GRAPE (GRadient Ascent Pulse Engineering) algorithm is a technique for finding piecewise constant control sequences that approximate a desired unitary, $U_T$, given a Hamiltonian with controlled and uncontrolled terms. Defining the uncontrolled Hamiltonian as $H_0$, the control Hamiltonians as $H_{i\neq 0}$, and the \textit{control matrix} $c_{ij}$ as containing the control amplitude associated with the $i^{th}$ time step and the $j^{th}$ Hamiltonian, we can write an the unitary for any timestep of evolution as:
 \begin{equation}\label{eq:3}
@@ -280,6 +246,38 @@ Because we our trying to generate high-order RBCs, we want to generate controls 
 \int p(\vec{\delta})\frac{\partial J(U(\vec{\delta}))}{\partial u_{ij}} d\vec{\delta}
 \end{align}
 with $p(\vec{\delta})$ Gaussian distributed, as has been done in previous works \cite{Goerz2014} to ensure that the optimal control results are robust over a wide range of errors. To make this averaging tractable, we approximate this integral using Gaussian quadrature, approximating the cost function as a low order polynomial\cite{abramowiz1972handbook} (in particular degree 5). Note that despite updating the gradient, we did not change the cost function. The termination condition for the gradient ascent loop is still just that the controls perform well in the absence of drift. This is not a fundamental requirement of the routine, but rather was done to make finding solutions with $J(U) < 1 - \epsilon$  less computationally taxing.
+
+\subsection{Optimal Weighting}
+To generate robustly mixed unitary processes, we can solve the following convex optimization problem:
+
+\begin{equation}\label{eq:minimization}
+  \begin{split}
+    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||D_{\ell}^T\omega||\\
+    &\textbf{subject to: } \forall i<\ell, \sum \omega_jD_j^i=0\\
+  \end{split}
+\end{equation}
+
+If the control family is too small a solution won't exist, in particular as in \cite{Campbell2017} we need  $0\in $ Conv$[D_j^i]$.  This can be accomplished by modifying the oracle in Campbell's algorithm to produce robust controls, in particular by updating the GRAPE cost function to include derivative information, one could produce controls with derivatives of order $\epsilon$. In our case, by using the Gaussian weighted cost function, we ensure that the controls generated should have vanishing first derivative.
+
+This minimization problem, while sufficient for quadratically decreasing the diamond norm relative to the \textit{worst} controls in the family, does not preferentially select the controls with the least error. That is to say, as in Section \ref{sec:mixed_unitary_processes}, both \{$U_{+2\epsilon}$, $U_{-2\epsilon}$\} and \{$U_{\epsilon}$, $U_{-\epsilon}$\} minimize this cost function for a 0MUP. To encourage the inclusion of controls with smaller error, we may impose an $\ell_2$ penalty to our cost function by rewriting it as:
+
+\begin{equation}\label{eq:minimization_l2}
+  \begin{split}
+    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||D_{\ell}^T\omega||_2 + \eta\sum||D_0^T\omega||_2\\
+  \end{split}
+\end{equation}
+with $\eta \geq 0$. 
+
+To make sure the routine remains practical, we would also like to regularize our objective function to enforce sparsity. In this case, lasso regularization \cite{tibshirani1996regression} is insufficient as we already constrain the one norm of the vector we optimize over to be one. However, the problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends Equation \ref{eq:minimization}:
+\begin{equation}
+\begin{split}
+\underset{n\in[N]}{\textbf{minimize}}\{
+    &\underset{\omega_j\geq0, |\omega|_1=1, t\geq0}{\textbf{minimize}: } ||D_{\ell}^T\omega|| + t\\
+    &\textbf{subject to: } \omega_n > \frac{\lambda}{t}\\
+    &\phantom{\textbf{subject to: }} \forall i<\ell, \sum \omega_jD_j^i=0\}
+\end{split}
+\end{equation} where $\lambda$ is a hyperparameter to be optimized over.
+
 
 % ==============================================================================
 % Section: Numerical Results
@@ -358,6 +356,21 @@ Here we present experimental results from implementing our routine on a fixed-fr
 As discussed in Section \ref{sec:robustly_mixed}, we chose here to minimize the off diagonal elements of the process matrix. To benchmark the quality of the MUP, we then performed six randomized benchmarking experiments\cite{Magesan2011}: one for each over-- and under--calibrated pulse, one for the calibrated pulse, and one for the mixed process. We used $1000$ shots per experiment, $10$ sequences per sequence length, for sequence lengths of $2, 4, 8, 16, 32$ and $64$. In each case, our Clifford operations were decomposed into RX($\frac{\pi}{2})$) and RY($\frac{\pi}{2})$) pulses. In our implementation, these gates are implemented using the same pulse envelope definitions and control electronics, phase shifted by $\frac{\pi}{2}$ radians, and are therefore subject to identical miscalibration errors. The results are shown in Figure \ref{fig:rb} for sequence lengths $L=64$. Fitting to the randomized benchmarking decay curves, we find one-qubit gate fidelities of $99.3\%$ for the calibrated pulse, $98.9\%$ for Pulse1, $99.1\%$ for Pulse2, $98.9\%$ for Pulse3, $98.5\%$ for Pulse4, and $99.2\%$ for the MUP, demonstrating that it performs almost as well as the calibrated pulse, and better than the constituent pulses. 
 
 Additionally, by minimizing the off-diagonal elements of the process matrix, rather than balancing the Hamiltonian errors, we expect to produce a process with minimal coherent error in the absence of drift. To see that this is the case, we cite the results in \cite{Ball2016}. For non-Markovian error models, noise will manifest as gamma distributed points for each sequence length. On the other hand, Markovian noise, such as depolarizing noise, will result in Gaussian distributed fidelity estimates for each randomized benchmarking sequence length. We see that the coherently miscalibrated controls in our RB experiment have long tails, consistent with gamma distributed random variables, while the calibrated and randomized implementations both have much shorter tails, consistent with Gaussian distributed random variables. Thus, our experiment demonstrates that not only is the performance of the MUP better than the constituent gates, it also has a signicantly less coherent error channel.
+
+
+% ==============================================================================
+% Section: Conclusion and Future Work
+% ==============================================================================
+
+
+\section{Conclusion and Future Work}
+We have shown numerically that using RBCs can reduce non-Markovian, coherent error on a quantum channel by more than an order of magnitude in diamond norm, over a wide range of quasi-static values of noise. In addition, we have demonstrated that these approximate controls can be generated through optimal control (GRAPE), and that the minimization problem is tractable.
+
+Future directions for this work include demonstrating the routine experimentally on a two-qubit gate, moving the random gate selection from a precompilation step to runtime logic onboard the FPGA, investigating other optimization routines such as CRAB \cite{Caneva2011} and GOAT\cite{Machnes2018}, and using more sophisticated benchmarking routines such as GST\cite{BlumeKohout2017} to quantitatively investigate the performance of our method.
+
+Another interesting area of research would be using model-free approaches. The numerical work in the paper assumes access to a model of the system, however an experimentalist may not have a model readily available to describe the system, e.g. in the presence of unknown on-chip crosstalk, or an uncalibrated transfer function of the system. Moreover, even if a model is available, it might be computationally inconvenient to simulate, i.e. for more than a few qubits.%, or for non-adiabatic gates, where the timestep is required to be much smaller than the gate-time.
+
+In these situations, one approach would be to use \textit{in-situ} optimal control techniques \cite{Wu2018, Kelly2014, Ferrie2015} to generate candidate controls, and then use an optimizer like Nealder-Mead to perform the minimization. While performing a complete optimization in this way would still be slow, requiring full process tomography, one could intead optimize via partial tomography. By selecting pre-- and post --rotations that correspond to measuring pauli moments of interest in the Hamiltonian, such as unwanted $Z\otimes Z$ crosstalk, one could perform optimization over fewer parameters.
 
 
 % ==============================================================================

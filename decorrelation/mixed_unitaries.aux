@@ -30,7 +30,8 @@
 \newlabel{sec:robustly_mixed}{{IV}{2}{}{section*.6}{}}
 \citation{Campbell2017}
 \citation{1612.01011}
-\citation{Campbell2017}
+\citation{Khaneja2005,Caneva2011,Machnes2018}
+\citation{Khaneja2005}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces An example of a balanced control solution. Using optimal control, two implementations of a $Z_\pi $ gate are designed to have equal and opposite sensitivity to errors (if one implementation over-rotates by angle $\theta $, then the other \emph  {under}-rotates by $\theta $). Each time the gate is used, one of these implementations is chosen at random. The resulting quantum channel is equivalent to a perfect implementation of the gate followed by dephasing of $\mathcal  {O}\left ( \theta ^2 \right )$.}}{3}{figure.1}}
 \newlabel{fig:simple_example}{{1}{3}{An example of a balanced control solution. Using optimal control, two implementations of a $Z_\pi $ gate are designed to have equal and opposite sensitivity to errors (if one implementation over-rotates by angle $\theta $, then the other \emph {under}-rotates by $\theta $). Each time the gate is used, one of these implementations is chosen at random. The resulting quantum channel is equivalent to a perfect implementation of the gate followed by dephasing of $\order {\theta ^2}$}{figure.1}{}}
 \newlabel{eq:MUP}{{11}{3}{}{equation.4.11}{}}
@@ -40,33 +41,42 @@
 \newlabel{fig:vectorspace}{{2}{3}{A target unitary gate can be implemented a number of ways, each with a different effective Hamiltonian error. These error Hamiltonians lie in a vector space. a) Four effective Hamiltonians. The origin is not contained in their convex hull, so there are no balanced control solutions. b) The origin is contained in the covex hull after adding an additional control solution. Because there are more than $n+1$ implementations, there exist an infinite number of balanced control solutions. c) The error Hamiltonians shown with their derivative with respect to a control parameter. As this parameter drifts, a $0^{\rm th}$-order balanced control solution may drift, leading to a first-order error. d) The derivatives also lie in a vector space. If the origin lies in their convex hull, then it may be possible to construct a $1^{\rm {st}}$-order robust balanced control solution}{figure.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Generation of Robustly Mixed Unitary Processes}{3}{section*.7}}
 \newlabel{sec:generation}{{V}{3}{}{section*.7}{}}
-\newlabel{eq:minimization}{{14}{3}{}{equation.5.14}{}}
-\citation{tibshirani1996regression}
-\citation{NIPS2012_4504}
-\citation{Khaneja2005,Caneva2011,Machnes2018}
-\citation{Khaneja2005}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}Random Gate Synthesis}{3}{section*.8}}
+\newlabel{sec:random_gate_synthesis}{{V\tmspace  +\thinmuskip {.1667em}A}{3}{}{section*.8}{}}
 \citation{Khaneja2005}
 \citation{Goerz2014}
 \citation{abramowiz1972handbook}
-\newlabel{eq:minimization_l2}{{15}{4}{}{equation.5.15}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Random Gate Synthesis}{4}{section*.8}}
-\newlabel{sec:random_gate_synthesis}{{VI}{4}{}{section*.8}{}}
-\newlabel{eq:3}{{17}{4}{}{equation.6.17}{}}
-\newlabel{eq:update}{{18}{4}{}{equation.6.18}{}}
-\newlabel{eq:quadrature}{{19}{4}{}{equation.6.19}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Numerical Results}{4}{section*.9}}
-\newlabel{sec:numerical_results}{{VII}{4}{}{section*.9}{}}
-\newlabel{eq:1Qham}{{20}{4}{}{equation.7.20}{}}
+\citation{Campbell2017}
+\citation{tibshirani1996regression}
+\citation{NIPS2012_4504}
+\newlabel{eq:3}{{14}{4}{}{equation.5.14}{}}
+\newlabel{eq:update}{{15}{4}{}{equation.5.15}{}}
+\newlabel{eq:quadrature}{{16}{4}{}{equation.5.16}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B}Optimal Weighting}{4}{section*.9}}
+\newlabel{eq:minimization}{{17}{4}{}{equation.5.17}{}}
+\newlabel{eq:minimization_l2}{{18}{4}{}{equation.5.18}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Numerical Results}{4}{section*.10}}
+\newlabel{sec:numerical_results}{{VI}{4}{}{section*.10}{}}
+\newlabel{eq:1Qham}{{20}{4}{}{equation.6.20}{}}
 \citation{McKay2016}
 \citation{bangbang}
 \citation{1712.05771}
 \citation{Magesan2011}
 \citation{Ball2016}
-\newlabel{eq:2Qham}{{21}{5}{}{equation.7.21}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Experimental Results}{5}{section*.10}}
-\newlabel{sec:experimental_results}{{VIII}{5}{}{section*.10}{}}
+\newlabel{eq:2Qham}{{21}{5}{}{equation.6.21}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Experimental Results}{5}{section*.11}}
+\newlabel{sec:experimental_results}{{VII}{5}{}{section*.11}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Randomized benchmarking experiments ran using different pulse definitions. The four plots on the left are from the incorrectly calibrated pulse, while the top right is the calibrated pulse, and the bottom right is the BCS.}}{5}{figure.6}}
 \newlabel{fig:rb}{{6}{5}{Randomized benchmarking experiments ran using different pulse definitions. The four plots on the left are from the incorrectly calibrated pulse, while the top right is the calibrated pulse, and the bottom right is the BCS}{figure.6}{}}
+\citation{Caneva2011}
+\citation{Machnes2018}
+\citation{BlumeKohout2017}
+\citation{Wu2018,Kelly2014,Ferrie2015}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac  {\pi }{2})$. The results are quantitatively similar to those for $RX(\frac  {\pi }{2})$, but in this case the 0MUP is worse at the origin. This can be improved by penalizing for the norms, or by simply trying to find a 1MUP, which both symmeterizes the performance at the origin and makes them better.}}{6}{figure.3}}
+\newlabel{fig:YMUP}{{3}{6}{Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac {\pi }{2})$. The results are quantitatively similar to those for $RX(\frac {\pi }{2})$, but in this case the 0MUP is worse at the origin. This can be improved by penalizing for the norms, or by simply trying to find a 1MUP, which both symmeterizes the performance at the origin and makes them better}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Example bang-bang sequence, using both qubits' $\sigma _x$ controls. Not shown are the $\sigma _y$ controls, and the uncontrolled resonant exchange interaction.}}{6}{figure.4}}
+\newlabel{fig:bangbang}{{4}{6}{Example bang-bang sequence, using both qubits' $\sigma _x$ controls. Not shown are the $\sigma _y$ controls, and the uncontrolled resonant exchange interaction}{figure.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion and Future Work}{6}{section*.12}}
 \bibdata{mixed_unitariesNotes,decorrelation.bib}
 \bibcite{Campbell2017}{{1}{2017}{{Campbell}}{{}}}
 \bibcite{1612.01011}{{2}{2016}{{Hastings}}{{}}}
@@ -77,22 +87,22 @@
 \bibcite{Machnes2018}{{7}{2018}{{Machnes\ \emph  {et~al.}}}{{Machnes, Ass{\'{e}}mat, Tannor,\ and\ Wilhelm}}}
 \bibcite{Goerz2014}{{8}{2014}{{Goerz\ \emph  {et~al.}}}{{Goerz, Halperin, Aytac, Koch,\ and\ Whaley}}}
 \bibcite{abramowiz1972handbook}{{9}{1972}{{Abramowiz\ and\ Stegun}}{{}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac  {\pi }{2})$. The results are quantitatively similar to those for $RX(\frac  {\pi }{2})$, but in this case the 0MUP is worse at the origin. This can be improved by penalizing for the norms, or by simply trying to find a 1MUP, which both symmeterizes the performance at the origin and makes them better.}}{6}{figure.3}}
-\newlabel{fig:YMUP}{{3}{6}{Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac {\pi }{2})$. The results are quantitatively similar to those for $RX(\frac {\pi }{2})$, but in this case the 0MUP is worse at the origin. This can be improved by penalizing for the norms, or by simply trying to find a 1MUP, which both symmeterizes the performance at the origin and makes them better}{figure.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Example bang-bang sequence, using both qubits' $\sigma _x$ controls. Not shown are the $\sigma _y$ controls, and the uncontrolled resonant exchange interaction.}}{6}{figure.4}}
-\newlabel{fig:bangbang}{{4}{6}{Example bang-bang sequence, using both qubits' $\sigma _x$ controls. Not shown are the $\sigma _y$ controls, and the uncontrolled resonant exchange interaction}{figure.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {IX}Acknowledgements}{6}{section*.11}}
-\newlabel{sec:acknowledgements}{{IX}{6}{}{section*.11}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {}References}{6}{section*.12}}
 \bibcite{McKay2016}{{10}{2016}{{McKay\ \emph  {et~al.}}}{{McKay, Filipp, Mezzacapo, Magesan, Chow,\ and\ Gambetta}}}
 \bibcite{bangbang}{{11}{1998}{{Viola\ and\ Lloyd}}{{}}}
 \bibcite{1712.05771}{{12}{2017}{{Otterbach\ \emph  {et~al.}}}{{Otterbach, Manenti, Alidoust, Bestwick, Block, Bloom, Caldwell, Didier, Fried, Hong, Karalekas, Osborn, Papageorge, Peterson, Prawiroatmodjo, Rubin, Ryan, Scarabelli, Scheer, Sete, Sivarajah, Smith, Staley, Tezak, Zeng, Hudson, Johnson, Reagor, da~Silva,\ and\ Rigetti}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Numerical results comparing a 0MUP to a 1MUP for a pair of tunable qubits, with a resonant exchange interaction. Shown with lower alpha values are example members of the control families. The 0MUP and 1MUP can be seen to outperform the members of the control family by half an order of magnitude at the origin. Away from the origin, the 1MUP can be seen to be flatter. Far away from the origin, the 1MUP outperforms members of the control famlies by almost an order of magnitude in diamond norm.}}{7}{figure.5}}
+\newlabel{fig:2MUP}{{5}{7}{Numerical results comparing a 0MUP to a 1MUP for a pair of tunable qubits, with a resonant exchange interaction. Shown with lower alpha values are example members of the control families. The 0MUP and 1MUP can be seen to outperform the members of the control family by half an order of magnitude at the origin. Away from the origin, the 1MUP can be seen to be flatter. Far away from the origin, the 1MUP outperforms members of the control famlies by almost an order of magnitude in diamond norm}{figure.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IX}Acknowledgements}{7}{section*.13}}
+\newlabel{sec:acknowledgements}{{IX}{7}{}{section*.13}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {}References}{7}{section*.14}}
 \bibcite{Magesan2011}{{13}{2011}{{Magesan\ \emph  {et~al.}}}{{Magesan, Gambetta,\ and\ Emerson}}}
 \bibcite{Ball2016}{{14}{2016}{{Ball\ \emph  {et~al.}}}{{Ball, Stace, Flammia,\ and\ Biercuk}}}
+\bibcite{BlumeKohout2017}{{15}{2017}{{Blume-Kohout\ \emph  {et~al.}}}{{Blume-Kohout, Gamble, Nielsen, Rudinger, Mizrahi, Fortier,\ and\ Maunz}}}
+\bibcite{Wu2018}{{16}{2018}{{Wu\ \emph  {et~al.}}}{{Wu, Chu, Owens,\ and\ Rabitz}}}
+\bibcite{Kelly2014}{{17}{2014}{{Kelly\ \emph  {et~al.}}}{{Kelly, Barends, Campbell, Chen, Chen, Chiaro, Dunsworth, Fowler, Hoi, Jeffrey, Megrant, Mutus, Neill, O'Malley, Quintana, Roushan, Sank, Vainsencher, Wenner, White, Cleland,\ and\ Martinis}}}
+\bibcite{Ferrie2015}{{18}{2015}{{Ferrie\ and\ Moussa}}{{}}}
 \bibstyle{apsrev4-1}
 \citation{REVTEX41Control}
 \citation{apsrev41Control}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Numerical results comparing a 0MUP to a 1MUP for a pair of tunable qubits, with a resonant exchange interaction. Shown with lower alpha values are example members of the control families. The 0MUP and 1MUP can be seen to outperform the members of the control family by half an order of magnitude at the origin. Away from the origin, the 1MUP can be seen to be flatter. Far away from the origin, the 1MUP outperforms members of the control famlies by almost an order of magnitude in diamond norm.}}{7}{figure.5}}
-\newlabel{fig:2MUP}{{5}{7}{Numerical results comparing a 0MUP to a 1MUP for a pair of tunable qubits, with a resonant exchange interaction. Shown with lower alpha values are example members of the control families. The 0MUP and 1MUP can be seen to outperform the members of the control family by half an order of magnitude at the origin. Away from the origin, the 1MUP can be seen to be flatter. Far away from the origin, the 1MUP outperforms members of the control famlies by almost an order of magnitude in diamond norm}{figure.5}{}}
-\newlabel{LastBibItem}{{14}{7}{}{section*.12}{}}
-\newlabel{LastPage}{{}{7}{}{}{}}
+\newlabel{LastBibItem}{{18}{8}{}{section*.14}{}}
+\newlabel{LastPage}{{}{8}{}{}{}}
