@@ -11,6 +11,10 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Database file #1: mixed_unitariesNotes.bib
 Database file #2: decorrelation.bib.bib
+Repeated entry---line 324 of file decorrelation.bib.bib
+ : @article{Campbell2017
+ :                      ,
+I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for ""
 control{REVTEX41Control}, control.key{N/A}, control.author{N/A}, control.editor{N/A}, control.title{N/A}, control.pages{N/A}, control.year{N/A}, control.eprint{N/A}, 
 control{apsrev41Control}, control.key{N/A}, control.author{08}, control.editor{1}, control.title{}, control.pages{0}, control.year{1}, control.eprint{N/A}, 
@@ -24,45 +28,45 @@ Control: production of article title (-1) disabled
 Control: page (0) single
 Control: year (1) truncated
 Control: production of eprint (0) enabled
-You've used 12 entries,
+You've used 16 entries,
             5847 wiz_defined-function locations,
-            1683 strings with 17501 characters,
-and the built_in function-call counts, 13533 in all, are:
-= -- 671
-> -- 503
-< -- 120
-+ -- 155
-- -- 147
-* -- 2336
-:= -- 1219
-add.period$ -- 11
-call.type$ -- 12
-change.case$ -- 41
-chr.to.int$ -- 20
-cite$ -- 12
-duplicate$ -- 1290
-empty$ -- 898
-format.name$ -- 290
-if$ -- 2625
+            1711 strings with 18339 characters,
+and the built_in function-call counts, 17088 in all, are:
+= -- 919
+> -- 574
+< -- 142
++ -- 179
+- -- 163
+* -- 2855
+:= -- 1587
+add.period$ -- 16
+call.type$ -- 16
+change.case$ -- 58
+chr.to.int$ -- 24
+cite$ -- 16
+duplicate$ -- 1635
+empty$ -- 1172
+format.name$ -- 333
+if$ -- 3330
 int.to.chr$ -- 1
-int.to.str$ -- 19
-missing$ -- 169
-newline$ -- 82
-num.names$ -- 30
-pop$ -- 522
+int.to.str$ -- 23
+missing$ -- 209
+newline$ -- 94
+num.names$ -- 43
+pop$ -- 666
 preamble$ -- 1
-purify$ -- 50
+purify$ -- 70
 quote$ -- 0
-skip$ -- 415
+skip$ -- 548
 stack$ -- 0
-substring$ -- 164
-swap$ -- 1301
-text.length$ -- 64
+substring$ -- 267
+swap$ -- 1608
+text.length$ -- 75
 text.prefix$ -- 0
 top$ -- 10
-type$ -- 186
+type$ -- 240
 warning$ -- 1
-while$ -- 31
+while$ -- 44
 width$ -- 0
-write$ -- 137
-(There were 2 warnings)
+write$ -- 169
+(There was 1 error message)
