@@ -5,8 +5,7 @@ import numpy as np
 import dill
 from functools import reduce
 import time as timemod
-from convex import (all_derivs, optimal_weights, optimal_weights_1st_order,
-                    optimal_weights_1st_order_no_constraints, optimal_weights_no_constraints)
+from convex import (all_derivs, optimal_weights)
 from mpi4py import MPI
 import scipy
 import os
@@ -107,25 +106,11 @@ class PCA(object):
         self.ambient_hamiltonian = ambient_hamiltonian
         self.control_hamiltonians = control_hamiltonians
 
-    # def assign_weights_0(self, l2=1E-3):
-    #     # derivs = all_derivs(self.controlset, self.target_operator, self.control_hamiltonians, self.ambient_hamiltonian,
-    #     #                     self.dt, 1)
-    #     # for i, d in enumerate(derivs):
-    #     #     if i == 1:
-    #     #         derivs[i] = np.delete(d, np.s_[2], 1)
-    #     weights_0 = optimal_weights(self.derivs[:1], l2)
-    #     self.weights_0 = weights_0
-    #     print("Tried assigning zeroth order weights.")
-    #
-    # def assign_weights(self, l1=1E-3):
-    #     weights = optimal_weights(self.derivs, l1)
-    #     self.weights = weights
-    #     print("Tried assigning order weights.")
-    def assign_weights(self, l1=0, l2=1E-3):
+    def assign_weights(self):
         derivs = all_derivs(self.controlset, self.target_operator, self.control_hamiltonians, self.ambient_hamiltonian,
                             self.dt, 1)
-        weights = optimal_weights_1st_order(derivs, l1)
-        weights_0 = optimal_weights(derivs[:1], l2)
+        weights_0 = optimal_weights(derivs[:1])
+        weights = optimal_weights(derivs)
         self.derivs = derivs
         self.weights = weights
         self.weights_0 = weights_0
@@ -135,17 +120,11 @@ def compute_dpn_and_fid(data):
     from copy import deepcopy
     import sys
     controlset, ambient_hamiltonian0, combo, dt, control_hamiltonians, target_operator, probs = data
-    print("DOING COMBO {}".format(combo))
     sys.stdout.flush()
     fidelities = []
     projs = []
     sops = []
     controlset_unitaries = []
-    #
-    #
-    # for i, com in enumerate(combo):
-    #     if i != 0 and com != 0:
-    #         return 0
     for controls in controlset:
         newcontrols = deepcopy(controls)
         ambient_hamiltonian = [deepcopy(ah).astype("complex") for ah in ambient_hamiltonian0]
