@@ -104,13 +104,13 @@ Here $\target_i$ is the target operation, $\actual$ is the actual gate as implem
 
 The top row of all trace-preserving (TP) maps is fixed to $\{1,0,0,0,\cdots\}$.  The rest of the first column, $\vec{m}$, describes any deviations from unitality, such as could arise from amplitude damping. If the error channel is unitary, then the error is coherent, and the submatrix $R$ is perfectly antisymmetric, corresponding to a rotation of the generalized Bloch vector. If  $R$ is diagonal, then the error channel is Pauli stochastic, with each entry corresponding to the probability that the associated Pauli error occurs in each application of the gate. \note{Be more clear about what "associated" means here}.  If R is symmetric but not diagonal, then the channel is still stochastic, but the random errors consist of correlated Pauli operators (such as $X+Y$). For a single qubit, this describes everything, but the situation can be slightly more complicated for more qubits. 
 
-\note{Consider the vec representation} The channel that results is:
+The channel that results is:
 \begin{align}
 	\mathcal{M} 
 		=& \sum_i p_i U^*_i \otimes U_i \\
-		=& \sum_i p_i \exp(i \theta \hat n \cdot \vec\sigma^*) \otimes \exp(-i \theta \hat n \cdot \vec\sigma) \\
-		\simeq & \sum_i p_i (\cos\theta + i \sin\theta H^*)\otimes(\cos\theta -i \sin\theta H) \\
-		\simeq & \sum_i p_i (\cos\theta^2 I\otimes I + \sin\theta^2 H^*\otimes H \\ & + i\sin\theta\cos\theta H^*\otimes I
+		=& \sum_i p_i \exp(i \frac{\theta}{2}\hat n \cdot \vec\sigma^*) \otimes \exp(-i \frac{\theta}{2} \hat n \cdot \vec\sigma) \\
+		=& \sum_i p_i (\cos\theta + i \sin\theta H^*)\otimes(\cos\theta -i \sin\theta H) \\
+		=& \sum_i p_i (\cos\theta^2 I\otimes I + \sin\theta^2 H^*\otimes H \\ & + i\sin\theta\cos\theta H^*\otimes I
 								- i\sin\theta\cos\theta I\otimes H )
 \end{align}
 In this case, $\sin\theta^2$ is always positive, so we cannot hope to eliminate the second term, but $\sin\theta\cos\theta$ may be positive or negative, and so there is hope that we could possibly combine various implementations to eliminate this term. The result would be a purely stochastic channel. 
@@ -121,13 +121,13 @@ The \emph{size} of an error in quantum gates may  be quantified in a number of w
 	\vert\vert \error \vert\vert_\diamond = \sup_\rho \vert \vert (I\otimes I)(\rho) - (\error \otimes I)(\rho) \vert\vert_1
 \end{equation}
 \begin{equation}
-	\mathcal{F}(\error) = ...
+	\mathcal{F}(\error) = \frac{Tr(\error^*\otimes\error) + d}{d^2 + d}
 \end{equation}
-The diamond norm is generally linear in the over-rotation angle of a quantum operation. Also definition of average gate infidelity. The AGI is generally quadratic in the over-rotation angle of a quantum operation. 
+The diamond norm is generally linear in the over-rotation angle of a quantum operation, while the AGI is generally quadratic in the over-rotation angle of a quantum operation. 
 
-A mixed unitary channel consists of a set of unitary channels, $\actual_i$, and associated weights, $\sum_i p_i = 1$.  The process matrices for a mixed unitary channel is then the weighted sum of the component channels, $\actual_{\rm M} = \sum_i p_i \actual_i$, and the associated error channel is simply the weighted sum of the associated error channels, $\error_{\rm M} = \sum_i p_i \error_i$. 
+A mixed unitary channel consists of a set of unitary channels, $\actual_i$, and associated weights, $\sum_i p_i = 1$.  The process matrices for a mixed unitary channel are then the weighted sum of the component channels, $\actual_{\rm M} = \sum_i p_i \actual_i$, and the associated error channel is simply the weighted sum of the associated error channels, $\error_{\rm M} = \sum_i p_i \error_i$. 
 
-Campbell considered the very important problem of minimizing the diamond norm of the resulting error channel.  \note{Mention the mixing lemma of Campbell and how the Hamiltonians should form a convex set containing the origin \cite{}}. This is a particualrly appealing target, because the diamond norm provides useful error metrics on quantum circuits. However, it is not the only optimization target that can be chosen. If the ultimate goal is to produce a channel whose effect can be easily simulated, then it may be useful instead to construct a channel whose errors are Pauli stochastic. 
+Campbell considered the very important problem of minimizing the diamond norm of the resulting error channel. Given a collection of component channels with error at most $\epsilon$, Campbell and Hastings gave a sufficient condition for the diamond norm to be minimized to first order in $\epsilon$. In their their mixing lemmas\cite{Campbell2017, 1612.01011}, they show that the Hamiltonians should form a convex set containing the origin. The diamond norm is a particularly appealing target, because the diamond norm provides useful error metrics on quantum circuits. However, it is not the only optimization target that can be chosen. If the ultimate goal is to produce a channel whose effect can be easily simulated, then it may be useful instead to construct a channel whose errors are Pauli stochastic. Such a channel could be produced by instead minimizing the off-diagonal elements of the process matrix.
 
 %\eq
 
@@ -155,10 +155,15 @@ There are often many possibly ways of implementing any given target quantum gate
 \begin{figure}
   \centering
   \includegraphics[width=\columnwidth]{simple_example.pdf}
-  \caption{An example of a balanced control solution. Using optimal control, two implementations of a $Z_\pi$ gate are designed to have equal and opposite sensitivity to errors (if one implementation over-rotates by angle $\theta$, then the other \emph{under}-rotates by $\theta$). Each time the gate is used, one of these implementations is chosen at random. The resulting quantum channel is equivalent to a perfect implementation of the gate followed by dephasing of $\order{\theta^2}$.}
+  \caption{An example of a mixed unitary process. Using optimal control, two implementations of a $Z_\pi$ gate are designed to have equal and opposite sensitivity to errors (if one implementation over-rotates by angle $\theta$, then the other \emph{under}-rotates by $\theta$). Each time the gate is used, one of these implementations is chosen at random. The resulting quantum channel is equivalent to a perfect implementation of the gate followed by dephasing of $\order{\theta^2}$.}
   \label{fig:simple_example}
 \end{figure}
 
+In this case, the MUP that minimizes the diamond norm is given by:
+\begin{equation}
+\frac{1}{2}U_{+\epsilon}^*\otimes U_{+\epsilon} + \frac{1}{2}U_{-\epsilon}^*\otimes U_{-\epsilon}
+\end{equation}
+Additionally, it is clear that because the AGI is linear, the AGI of any convex weighting of these two channels will be $\epsilon^2$.
 \note{This example is really useful and should be expanded. We should discuss the various optimization problems, a mixed unitary strategy, the fidelity of the resulting channel.}
 
 
