@@ -102,13 +102,6 @@
   and the entanglement frontier},}\ } (\bibinfo {year} {2012}),\ \Eprint
   {http://arxiv.org/abs/arXiv:1203.5813} {arXiv:1203.5813} \BibitemShut
   {NoStop}%
-\bibitem [{\citenamefont {Campbell}(2017)}]{Campbell2017}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
-  {Campbell}},\ }\href {\doibase 10.1103/physreva.95.042306} {\bibfield
-  {journal} {\bibinfo  {journal} {Physical Review A}\ }\textbf {\bibinfo
-  {volume} {95}} (\bibinfo {year} {2017}),\
-  10.1103/physreva.95.042306}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Hastings}(2016)}]{1612.01011}%
   \BibitemOpen
   \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~B.}\ \bibnamefont
@@ -116,6 +109,13 @@
   synthesis errors into incoherent errors},}\ } (\bibinfo {year} {2016}),\
   \Eprint {http://arxiv.org/abs/arXiv:1612.01011} {arXiv:1612.01011}
   \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Campbell}(2017)}]{Campbell2017}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+  {Campbell}},\ }\href {\doibase 10.1103/physreva.95.042306} {\bibfield
+  {journal} {\bibinfo  {journal} {Physical Review A}\ }\textbf {\bibinfo
+  {volume} {95}} (\bibinfo {year} {2017}),\
+  10.1103/physreva.95.042306}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Khaneja}\ \emph {et~al.}(2005)\citenamefont
   {Khaneja}, \citenamefont {Reiss}, \citenamefont {Kehlet}, \citenamefont
   {Schulte-Herbr\"{u}ggen},\ and\ \citenamefont {Glaser}}]{Khaneja2005}%
