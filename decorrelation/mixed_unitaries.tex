@@ -13,6 +13,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{graphicx}
+\usepackage{calc}
 \graphicspath{{./figures/}}
 \hypersetup{colorlinks=true, pdfauthor=Kevin C. Young, pdftitle=Decorrelating Errors}
 \newcommand{\tr}{{\rm Tr\thinspace}}
@@ -274,12 +275,22 @@ To generate robustly mixed unitary processes, we can solve the following convex 
 \end{equation}
 with $D_k^n$ defined in Equation \ref{eq:MUP}. Equations \ref{eq:minimization_l2} and\ref{eq:minimization_regularization} extend in a straightforward way:
 
+
+\newcommand{\bunderbrace}[2]{%
+  \begin{array}[t]{@{}c@{}}
+  #1\\
+  \parbox{\widthof{#1}}{$\scriptscriptstyle#2$}
+  \end{array}
+}
+
+
+
 \begin{equation}\label{eq:minimization_regularization}
 \begin{split}
-\underset{n\in[N]}{\textbf{minimize}}\{\\
-    &\underset{\omega_j\geq0, |\omega|_1=1, t\geq0}{\textbf{minimize}: } ||D_{\ell}^T\omega||+ \eta\sum\omega_j||H_j||_2 + t\\
-&\textbf{subject to: } \omega_n > \frac{\lambda}{t}\\
-&\phantom{\textbf{subject to: }} \forall i<\ell, \sum \omega_jD_j^i=0\\
+&\underset{n\in[N]}{\textbf{minimize}}\{\\
+&\ \ \bunderbrace{\textbf{minimize}: }{\omega_j\geq0, |\omega|_1=1,\\ t\geq0} ||D_{\ell}^T\omega||+ \eta\sum\omega_j||H_j||_2 + t\\
+&\ \ \textbf{subject to: } \omega_n > \frac{\lambda}{t}\\
+&\ \ \phantom{\textbf{subject to: }} \forall i<\ell, \sum \omega_jD_j^i=0\\
 \}
 \end{split}
 \end{equation}
@@ -405,15 +416,22 @@ In these situations, one approach would be to use \textit{in-situ} optimal contr
 \section{Acknowledgements}
 \label{sec:acknowledgements}
 Sandia National Laboratories is a multimission laboratory managed and operated by National Technology and Engineering Solutions of Sandia, LLC, a wholly owned subsidiary of Honeywell International, Inc., for the U.S. Department of Energy's National Nuclear Security Administration under contract DE-NA0003525.
+\bibliography{decorrelation.bib}
 
 
+\newpage
+\onecolumngrid
+% ==============================================================================
+% Section: Appendix
+% ==============================================================================
+\section{Appendix}
+\label{sec:appendix}
 \begin{figure*}[h]
   \centering
   \includegraphics[width=\textwidth]{SQRTY.png}
-  \caption{Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac{\pi}{2})$. The results are quantitatively similar to those for $RX(\frac{\pi}{2})$. In this case the 0MUP outperforms both the 1MUP by two orders of magnitude, and the constituent controls by three orders of magnitude at the origin. However, varying over $\delta$ we see that the 1MUP outperforms the 0MUP by up to an order of magnitude when there is $.1\%$ drift in the qubit control amplitudes.}
+  \caption{Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac{\pi}{2})$. The results are qualitatively similar to those for $RX(\frac{\pi}{2})$. In this case the 0MUP outperforms both the 1MUP by two orders of magnitude, and the constituent controls by three orders of magnitude at the origin. However, varying over $\delta$ we see that the 1MUP outperforms the 0MUP by up to an order of magnitude when there is $.1\%$ drift in the qubit control amplitudes.}
   \label{fig:YMUP}
 \end{figure*}
-
 
 \begin{figure*}[h]
   \centering
@@ -422,5 +440,5 @@ Sandia National Laboratories is a multimission laboratory managed and operated b
   \label{fig:2MUP}
 \end{figure*}
 
-\bibliography{decorrelation.bib}
+
 \end{document}

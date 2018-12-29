@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  29 DEC 2018 00:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  29 DEC 2018 12:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -400,19 +400,31 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 \ALG@tmplength=\skip58
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
+) (/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count126
+\calc@Bcount=\count127
+\calc@Adimen=\dimen123
+\calc@Bdimen=\dimen124
+\calc@Askip=\skip59
+\calc@Bskip=\skip60
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count128
+\calc@Cskip=\skip61
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 17.
+Package hyperref Info: Option `colorlinks' set `true' on input line 18.
 Class revtex4-1 Info: Unrecognized array package. Please update this document c
-lass! (Proceeding with fingers crossed.) on input line 42.
+lass! (Proceeding with fingers crossed.) on input line 43.
 
 
 Class revtex4-1 Warning: Repair the float package.
 
-Class revtex4-1 Info: Robustifying \LaTeX's \boldmath command on input line 42.
+Class revtex4-1 Info: Robustifying \LaTeX's \boldmath command on input line 43.
 
-Class revtex4-1 Info: cite was not loaded (OK!) on input line 42.
-Class revtex4-1 Info: mcite was not loaded (OK!) on input line 42.
-Class revtex4-1 Info: multicol was not loaded (OK!) on input line 42.
+Class revtex4-1 Info: cite was not loaded (OK!) on input line 43.
+Class revtex4-1 Info: mcite was not loaded (OK!) on input line 43.
+Class revtex4-1 Info: multicol was not loaded (OK!) on input line 43.
 (./mixed_unitaries.aux
 
 LaTeX Warning: Label `eq:minimization_regularization' multiply defined.
@@ -420,32 +432,32 @@ LaTeX Warning: Label `eq:minimization_regularization' multiply defined.
 )
 \openout1 = `mixed_unitaries.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
  (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count126
-\scratchdimen=\dimen123
+\scratchcounter=\count129
+\scratchdimen=\dimen125
 \scratchbox=\box45
-\nofMPsegments=\count127
-\nofMParguments=\count128
+\nofMPsegments=\count130
+\nofMParguments=\count131
 \everyMPshowfont=\toks33
-\MPscratchCnt=\count129
-\MPscratchDim=\dimen124
-\MPnumerator=\count130
-\makeMPintoPDFobject=\count131
+\MPscratchCnt=\count132
+\MPscratchDim=\dimen126
+\MPnumerator=\count133
+\makeMPintoPDFobject=\count134
 \everyMPtoPDFconversion=\toks34
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -465,7 +477,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box46
-Package hyperref Info: Link coloring ON on input line 42.
+Package hyperref Info: Link coloring ON on input line 43.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -473,110 +485,92 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count132
+\c@section@level=\count135
 )
-LaTeX Info: Redefining \ref on input line 42.
-LaTeX Info: Redefining \pageref on input line 42.
-LaTeX Info: Redefining \nameref on input line 42.
+LaTeX Info: Redefining \ref on input line 43.
+LaTeX Info: Redefining \pageref on input line 43.
+LaTeX Info: Redefining \nameref on input line 43.
 
 (./mixed_unitaries.out) (./mixed_unitaries.out)
 \@outlinefile=\write4
 \openout4 = `mixed_unitaries.out'.
 
-Class revtex4-1 Info: Taking \maketitle back from hyperref on input line 42.
+Class revtex4-1 Info: Taking \maketitle back from hyperref on input line 43.
 \openout3 = `mixed_unitariesNotes.bib'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 60.
+LaTeX Font Info:    Try loading font information for U+msa on input line 61.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 60.
+LaTeX Font Info:    Try loading font information for U+msb on input line 61.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
-<./figures/simple_example.pdf, id=113, 464.5762pt x 132.89963pt>
+<./figures/simple_example.pdf, id=117, 464.5762pt x 132.89963pt>
 File: ./figures/simple_example.pdf Graphic file (type pdf)
 <use ./figures/simple_example.pdf>
-Package pdftex.def Info: ./figures/simple_example.pdf  used on input line 161.
+Package pdftex.def Info: ./figures/simple_example.pdf  used on input line 162.
 (pdftex.def)             Requested size: 246.0pt x 70.3736pt.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 195.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 196.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 195.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 196.
  [3pdfTeX warning (ext4): destination with the same identifier (name{figure.1})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.258 
+l.259 
        <./figures/simple_example.pdf>]
 
 pdfTeX warning: pdflatex (file ./figures/vectorspace.pdf): PDF inclusion: found
  PDF version <1.7>, but at most version <1.5> allowed
-<./figures/vectorspace.pdf, id=163, 995.72pt x 990.19937pt>
+<./figures/vectorspace.pdf, id=167, 995.72pt x 990.19937pt>
 File: ./figures/vectorspace.pdf Graphic file (type pdf)
 <use ./figures/vectorspace.pdf>
-Package pdftex.def Info: ./figures/vectorspace.pdf  used on input line 261.
+Package pdftex.def Info: ./figures/vectorspace.pdf  used on input line 262.
 (pdftex.def)             Requested size: 246.0pt x 244.63315pt.
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/sc' undefined
-(Font)              using `OT1/cmr/bx/n' instead on input line 303.
+(Font)              using `OT1/cmr/bx/n' instead on input line 314.
 
 [4pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.321 \end{equation}
+l.332 \end{equation}
                      <./figures/vectorspace.pdf>]
-<./figures/bangbang.png, id=202, 612.2875pt x 325.215pt>
+<./figures/bangbang.png, id=207, 612.2875pt x 325.215pt>
 File: ./figures/bangbang.png Graphic file (type png)
 <use ./figures/bangbang.png>
-Package pdftex.def Info: ./figures/bangbang.png  used on input line 357.
+Package pdftex.def Info: ./figures/bangbang.png  used on input line 368.
 (pdftex.def)             Requested size: 246.0pt x 130.65932pt.
  [5pdfTeX warning (ext4): destination with the same identifier (name{figure.3})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.364 
+l.375 
        <./figures/bangbang.png>]
-<./figures/rb_data.pdf, id=222, 867.24pt x 505.89pt>
+<./figures/rb_data.pdf, id=227, 867.24pt x 505.89pt>
 File: ./figures/rb_data.pdf Graphic file (type pdf)
 <use ./figures/rb_data.pdf>
-Package pdftex.def Info: ./figures/rb_data.pdf  used on input line 376.
+Package pdftex.def Info: ./figures/rb_data.pdf  used on input line 387.
 (pdftex.def)             Requested size: 246.0pt x 143.49312pt.
- [6pdfTeX warning (ext4): destination with the same identifier (name{figure.4})
- has been already used, duplicate ignored
+ (./mixed_unitaries.bbl [6pdfTeX warning (ext4): destination with the same iden
+tifier (name{figure.4}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.408 
-       <./figures/rb_data.pdf>]
-<./figures/SQRTY.png, id=304, 1218.5525pt x 620.3175pt>
-File: ./figures/SQRTY.png Graphic file (type png)
-<use ./figures/SQRTY.png>
-Package pdftex.def Info: ./figures/SQRTY.png  used on input line 412.
-(pdftex.def)             Requested size: 510.0pt x 259.62291pt.
-
-
-Class revtex4-1 Warning: Float cannot be placed.
-
-<./figures/2QRBC.png, id=305, 2423.0525pt x 1217.54875pt>
-File: ./figures/2QRBC.png Graphic file (type png)
-<use ./figures/2QRBC.png>
-Package pdftex.def Info: ./figures/2QRBC.png  used on input line 420.
-(pdftex.def)             Requested size: 510.0pt x 256.2687pt.
-
-Class revtex4-1 Warning: Float cannot be placed.
-
-(./mixed_unitaries.bbl
+l.9 \begin{thebibliography}{23}
+                               % <./figures/rb_data.pdf>]
 Underfull \hbox (badness 6910) in paragraph at lines 83--88
  []\OT1/cmr/m/n/9 R. Barends, J. Kelly, A. Megrant, A. Veitia,
  []
@@ -613,26 +607,41 @@ Underfull \hbox (badness 10000) in paragraph at lines 314--320
  []\OT1/cmr/m/n/9 R. Blume-Kohout, J. K. Gam-ble, E. Nielsen,
  []
 
-) [7] [8pdfTeX warning (ext4): destination with the same identifier (name{figur
-e.5}) has been already used, duplicate ignored
+) [7]
+<./figures/SQRTY.png, id=352, 1218.5525pt x 620.3175pt>
+File: ./figures/SQRTY.png Graphic file (type png)
+<use ./figures/SQRTY.png>
+Package pdftex.def Info: ./figures/SQRTY.png  used on input line 431.
+(pdftex.def)             Requested size: 510.0pt x 259.62291pt.
+<./figures/2QRBC.png, id=353, 2423.0525pt x 1217.54875pt>
+File: ./figures/2QRBC.png Graphic file (type png)
+<use ./figures/2QRBC.png>
+Package pdftex.def Info: ./figures/2QRBC.png  used on input line 438.
+(pdftex.def)             Requested size: 510.0pt x 256.2687pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[8pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) 
+has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.426 \end{document}
-                    pdfTeX warning (ext4): destination with the same identifier
- (name{figure.6}) has been already used, duplicate ignored
+l.444 \end{document}
+                     <./figures/SQRTY.png>] [9pdfTeX warning (ext4): destinatio
+n with the same identifier (name{figure.6}) has been already used, duplicate ig
+nored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.426 \end{document}
-                     <./figures/SQRTY.png> <./figures/2QRBC.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 426.
-
-(./mixed_unitaries.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 426.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 426.
+l.444 \end{document}
+                     <./figures/2QRBC.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 444.
+ (./mixed_unitaries.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 444.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 444.
 Package rerunfilecheck Info: File `mixed_unitaries.out' has not changed.
-(rerunfilecheck)             Checksum: A714C979457BF94070E21648B10EF205;995.
+(rerunfilecheck)             Checksum: FA3BB66D3292F36DEB0A49484B4E3682;1051.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -642,13 +651,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 9082 strings out of 492982
- 127699 string characters out of 6134895
- 264890 words of memory out of 5000000
- 12424 multiletter control sequences out of 15000+600000
+ 9162 strings out of 492982
+ 128798 string characters out of 6134895
+ 244128 words of memory out of 5000000
+ 12499 multiletter control sequences out of 15000+600000
  18806 words of font info for 69 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 34i,21n,28p,1271b,397s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,23n,29p,1271b,397s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texli
@@ -665,15 +674,16 @@ sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share
 /texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-d
 ist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmti9.pfb>
-Output written on mixed_unitaries.pdf (8 pages, 581271 bytes).
+nts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9
+.pfb>
+Output written on mixed_unitaries.pdf (9 pages, 590403 bytes).
 PDF statistics:
- 445 PDF objects out of 1000 (max. 8388607)
- 348 compressed objects within 4 object streams
- 79 named destinations out of 1000 (max. 500000)
- 143 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 457 PDF objects out of 1000 (max. 8388607)
+ 358 compressed objects within 4 object streams
+ 81 named destinations out of 1000 (max. 500000)
+ 151 words of extra memory for PDF output out of 10000 (max. 10000000)
 
