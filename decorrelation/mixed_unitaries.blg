@@ -15,7 +15,6 @@ Repeated entry---line 324 of file decorrelation.bib.bib
  : @article{Campbell2017
  :                      ,
 I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for ""
 control{REVTEX41Control}, control.key{N/A}, control.author{N/A}, control.editor{N/A}, control.title{N/A}, control.pages{N/A}, control.year{N/A}, control.eprint{N/A}, 
 control{apsrev41Control}, control.key{N/A}, control.author{08}, control.editor{1}, control.title{}, control.pages{0}, control.year{1}, control.eprint{N/A}, 
 Warning--jnrlst (dependency: not reversed) set 1
@@ -28,45 +27,45 @@ Control: production of article title (-1) disabled
 Control: page (0) single
 Control: year (1) truncated
 Control: production of eprint (0) enabled
-You've used 23 entries,
+You've used 25 entries,
             5847 wiz_defined-function locations,
-            1762 strings with 20566 characters,
-and the built_in function-call counts, 27620 in all, are:
-= -- 1399
-> -- 1042
-< -- 221
-+ -- 319
-- -- 289
-* -- 4794
-:= -- 2503
-add.period$ -- 24
-call.type$ -- 23
-change.case$ -- 87
-chr.to.int$ -- 31
-cite$ -- 23
-duplicate$ -- 2590
-empty$ -- 1895
-format.name$ -- 606
-if$ -- 5438
+            1769 strings with 20834 characters,
+and the built_in function-call counts, 29419 in all, are:
+= -- 1510
+> -- 1097
+< -- 231
++ -- 339
+- -- 303
+* -- 5105
+:= -- 2685
+add.period$ -- 28
+call.type$ -- 25
+change.case$ -- 97
+chr.to.int$ -- 33
+cite$ -- 25
+duplicate$ -- 2757
+empty$ -- 2020
+format.name$ -- 638
+if$ -- 5778
 int.to.chr$ -- 1
-int.to.str$ -- 30
-missing$ -- 325
-newline$ -- 115
-num.names$ -- 64
-pop$ -- 1014
+int.to.str$ -- 32
+missing$ -- 340
+newline$ -- 121
+num.names$ -- 70
+pop$ -- 1080
 preamble$ -- 1
-purify$ -- 105
+purify$ -- 115
 quote$ -- 0
-skip$ -- 852
+skip$ -- 911
 stack$ -- 0
-substring$ -- 369
-swap$ -- 2642
-text.length$ -- 138
+substring$ -- 399
+swap$ -- 2804
+text.length$ -- 145
 text.prefix$ -- 0
 top$ -- 10
-type$ -- 380
+type$ -- 409
 warning$ -- 1
-while$ -- 59
+while$ -- 63
 width$ -- 0
-write$ -- 230
+write$ -- 246
 (There was 1 error message)

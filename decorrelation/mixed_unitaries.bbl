@@ -6,7 +6,7 @@
 %Control: page (0) single
 %Control: year (1) truncated
 %Control: production of eprint (0) enabled
-\begin{thebibliography}{21}%
+\begin{thebibliography}{23}%
 \makeatletter
 \providecommand \@ifxundefined [1]{%
  \@ifx{#1\undefined}
@@ -102,13 +102,6 @@
   and the entanglement frontier},}\ } (\bibinfo {year} {2012}),\ \Eprint
   {http://arxiv.org/abs/arXiv:1203.5813} {arXiv:1203.5813} \BibitemShut
   {NoStop}%
-\bibitem [{\citenamefont {Hastings}(2016)}]{1612.01011}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~B.}\ \bibnamefont
-  {Hastings}},\ }\href@noop {} {\enquote {\bibinfo {title} {Turning gate
-  synthesis errors into incoherent errors},}\ } (\bibinfo {year} {2016}),\
-  \Eprint {http://arxiv.org/abs/arXiv:1612.01011} {arXiv:1612.01011}
-  \BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Campbell}(2017)}]{Campbell2017}%
   \BibitemOpen
   \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
@@ -116,6 +109,57 @@
   {journal} {\bibinfo  {journal} {Physical Review A}\ }\textbf {\bibinfo
   {volume} {95}} (\bibinfo {year} {2017}),\
   10.1103/physreva.95.042306}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hastings}(2016)}]{1612.01011}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~B.}\ \bibnamefont
+  {Hastings}},\ }\href@noop {} {\enquote {\bibinfo {title} {Turning gate
+  synthesis errors into incoherent errors},}\ } (\bibinfo {year} {2016}),\
+  \Eprint {http://arxiv.org/abs/arXiv:1612.01011} {arXiv:1612.01011}
+  \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Campbell}(2018)}]{1811.08017}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+  {Campbell}},\ }\href@noop {} {\enquote {\bibinfo {title} {A random compiler
+  for fast hamiltonian simulation},}\ } (\bibinfo {year} {2018}),\ \Eprint
+  {http://arxiv.org/abs/arXiv:1811.08017} {arXiv:1811.08017} \BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Rudinger}\ \emph {et~al.}(2018)\citenamefont
+  {Rudinger}, \citenamefont {Proctor}, \citenamefont {Langharst}, \citenamefont
+  {Sarovar}, \citenamefont {Young},\ and\ \citenamefont
+  {Blume-Kohout}}]{1810.05651}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Rudinger}}, \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Proctor}},
+  \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont {Langharst}}, \bibinfo
+  {author} {\bibfnamefont {M.}~\bibnamefont {Sarovar}}, \bibinfo {author}
+  {\bibfnamefont {K.}~\bibnamefont {Young}}, \ and\ \bibinfo {author}
+  {\bibfnamefont {R.}~\bibnamefont {Blume-Kohout}},\ }\href@noop {} {\enquote
+  {\bibinfo {title} {Probing context-dependent errors in quantum processors},}\
+  } (\bibinfo {year} {2018}),\ \Eprint {http://arxiv.org/abs/arXiv:1810.05651}
+  {arXiv:1810.05651} \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Tibshirani}(1996)}]{tibshirani1996regression}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Tibshirani}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal}
+  {Journal of the Royal Statistical Society. Series B (Methodological)}\ ,\
+  \bibinfo {pages} {267}} (\bibinfo {year} {1996})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Pilanci}\ \emph {et~al.}(2012)\citenamefont
+  {Pilanci}, \citenamefont {Ghaoui},\ and\ \citenamefont
+  {Chandrasekaran}}]{NIPS2012_4504}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Pilanci}}, \bibinfo {author} {\bibfnamefont {L.~E.}\ \bibnamefont {Ghaoui}},
+  \ and\ \bibinfo {author} {\bibfnamefont {V.}~\bibnamefont {Chandrasekaran}},\
+  }in\ \href
+  {http://papers.nips.cc/paper/4504-recovery-of-sparse-probability-measures-via-convex-programming.pdf}
+  {\emph {\bibinfo {booktitle} {Advances in Neural Information Processing
+  Systems 25}}},\ \bibinfo {editor} {edited by\ \bibinfo {editor}
+  {\bibfnamefont {F.}~\bibnamefont {Pereira}}, \bibinfo {editor} {\bibfnamefont
+  {C.~J.~C.}\ \bibnamefont {Burges}}, \bibinfo {editor} {\bibfnamefont
+  {L.}~\bibnamefont {Bottou}}, \ and\ \bibinfo {editor} {\bibfnamefont {K.~Q.}\
+  \bibnamefont {Weinberger}}}\ (\bibinfo  {publisher} {Curran Associates,
+  Inc.},\ \bibinfo {year} {2012})\ pp.\ \bibinfo {pages}
+  {2420--2428}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Khaneja}\ \emph {et~al.}(2005)\citenamefont
   {Khaneja}, \citenamefont {Reiss}, \citenamefont {Kehlet}, \citenamefont
   {Schulte-Herbr\"{u}ggen},\ and\ \citenamefont {Glaser}}]{Khaneja2005}%
@@ -170,29 +214,6 @@
   {Stegun}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal}
   {National Bureau of Standards, US Government Printing Office, Washington,
   DC}\ } (\bibinfo {year} {1972})}\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Tibshirani}(1996)}]{tibshirani1996regression}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
-  {Tibshirani}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal}
-  {Journal of the Royal Statistical Society. Series B (Methodological)}\ ,\
-  \bibinfo {pages} {267}} (\bibinfo {year} {1996})}\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Pilanci}\ \emph {et~al.}(2012)\citenamefont
-  {Pilanci}, \citenamefont {Ghaoui},\ and\ \citenamefont
-  {Chandrasekaran}}]{NIPS2012_4504}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
-  {Pilanci}}, \bibinfo {author} {\bibfnamefont {L.~E.}\ \bibnamefont {Ghaoui}},
-  \ and\ \bibinfo {author} {\bibfnamefont {V.}~\bibnamefont {Chandrasekaran}},\
-  }in\ \href
-  {http://papers.nips.cc/paper/4504-recovery-of-sparse-probability-measures-via-convex-programming.pdf}
-  {\emph {\bibinfo {booktitle} {Advances in Neural Information Processing
-  Systems 25}}},\ \bibinfo {editor} {edited by\ \bibinfo {editor}
-  {\bibfnamefont {F.}~\bibnamefont {Pereira}}, \bibinfo {editor} {\bibfnamefont
-  {C.~J.~C.}\ \bibnamefont {Burges}}, \bibinfo {editor} {\bibfnamefont
-  {L.}~\bibnamefont {Bottou}}, \ and\ \bibinfo {editor} {\bibfnamefont {K.~Q.}\
-  \bibnamefont {Weinberger}}}\ (\bibinfo  {publisher} {Curran Associates,
-  Inc.},\ \bibinfo {year} {2012})\ pp.\ \bibinfo {pages}
-  {2420--2428}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {McKay}\ \emph {et~al.}(2016)\citenamefont {McKay},
   \citenamefont {Filipp}, \citenamefont {Mezzacapo}, \citenamefont {Magesan},
   \citenamefont {Chow},\ and\ \citenamefont {Gambetta}}]{McKay2016}%

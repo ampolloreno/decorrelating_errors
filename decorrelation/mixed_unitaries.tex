@@ -52,7 +52,7 @@
 \date{\today}
 
 \begin{abstract}
-...
+Coherent errors in quantum operations are ubiquitous. Whether arising from spurious environmental couplings or errors in control fields, such errors can accumulate rapidly and degrade the performance of a quantum circuit significantly more than an average gate fidelity may indicate. As Hastings and Campbell have recently shown, randomly sampling an ensemble of implementations of a target gate yields an effective quantum channel that well-approximates the target, but with dramatically suppressed coherent error. Our results extend those of Hastings and Campbell to include robustness to drifting external control parameters. We implement these constructions using a superconducting qubit and will discuss randomized benchmarking results consistent with a marked reduction in coherent error.
 \end{abstract}
 
 \pacs{}
@@ -68,11 +68,11 @@
 
 The past decade has seen a dramatic increase in the performance and scale of quantum information processors (QIPs). Gate fidelities are now routinely in the 99\% to 99.99\% range \cite{Barends2014, Ballance2016}, and dozens of individually-addressable qubits are becoming available on integrated devices. While these advances represent important steps forward on the path towards a computationally useful QIP, the quantum advantage milestone \cite{1203.5813} has yet to be definitively reached. The limiting factor, of course, is errors in the quantum gate operations.
 
-The impact of an error in a quantum gate depends strongly on both the magnitude and the nature of the errors. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations that induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time and add up coherently. They are are  computationally expensive to model and it is difficult to place analytic bounds on circuit performance. Contrast this against random, or \emph{stochastic}, errors, which result from high-frequency noise in the controls or the environment. Systems with stochastic errors can be  modeled by defining a rate of various discrete errors in the system, such as a bit flip or phase flip. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate.
+The impact of an error in a quantum gate depends strongly on both the magnitude and the nature of the errors. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations that induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time and add up coherently. They are are  computationally expensive to model and it is difficult to place tight analytic bounds on circuit performance. Contrast this against random, or \emph{stochastic}, errors, which result from high-frequency noise in the controls or the environment. Systems with stochastic errors can be  modeled by defining a rate of various discrete errors in the system, such as a bit flip or phase flip. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate.
 
-Despite the relative ease of modeling stochastic errors, coherent errors are often much more likely to appear in QIPs. Drifting control parameters or environmental variables can easily have long correlation times that result in errors which is strongly coherent over the length of a quantum circuit. While these errors can often be reconstructed using various tomographic techniques, their impact is difficult to predict. The diamond distance can be used to estimate the failure probability of a quantum circuit, but the diamond distance can grow quadratically with repeated application of gate with coherent errors. For long circuits, this can add up extremely quickly. Recent work by Hastings and Campbell\cite{Campbell2017, 1612.01011, 1811.08017}, however, has shown that coherent noise can be strongly suppressed by probabilistic sampling over various implementations of the target quantum gates. This averaging results in quantum processes with diamond distances that grow only linearly  quadratic in the over/under rotation angle of the component gates. \note{Clear this up.}
+Despite the relative ease of modeling stochastic errors, coherent errors are often much more likely to appear in QIPs. Drifting control parameters or environmental variables can easily have long correlation times that result in errors which are strongly coherent over the length of a quantum circuit. While these errors can often be reconstructed using various tomographic techniques, their impact is difficult to predict. The diamond distance can be used to estimate the failure probability of a quantum circuit, but it is in general sensitive to first order upon repeated application of gate with coherent errors. For long circuits, this can add up extremely quickly. Recent work by Campbell and Hastings\cite{Campbell2017, 1612.01011, 1811.08017}, however, has shown that coherent noise can be strongly suppressed by probabilistic sampling over various implementations of the target quantum gates. This averaging results in quantum processes with diamond distances that grow only quadratically in the over/under rotation angle of the component gates.
 
-In this article we discuss various applications of mixed unitary controls, and show that the advantages of this approach can be made robust to drift in the target gates. We present an optimal control approach to the mixed unitary control design problem. We apply our methods in simulation where we construct single- and two-qubit mixed unitary controls which are robust to drift and uncertainty in the control parameters. We further present an experimental implementation of single-qubit mixed unitary controls on a superconducting qubit testbed at Rigetti Quantum Computing. Using randomized benchmarking, we are able to show a marked improvement in error rates, as well as a reduced variance in circuit outcome probabilities, indicating a reduction in the coherence of the error.
+In this article we discuss various applications of mixed unitary controls, and show that the advantages of this approach can be made robust to drift in the target gates. We present an optimal control approach to the mixed unitary control design problem, and apply our methods in simulation where we construct single- and two-qubit mixed unitary controls which are robust to drift and uncertainty in the control parameters. We further present an experimental implementation of single-qubit mixed unitary controls on a superconducting qubit testbed at Rigetti Quantum Computing. Using randomized benchmarking, we are able to show a marked improvement in error rates, as well as a reduced variance in circuit outcome probabilities, indicating a reduction in the coherence of the error.
 
 % For instance, the repeated measurements that occur in quantum error correction are suspected to reduce the potential impact of coherent buildup of error. Modern devices, however, do not have sufficient numbers of qubits and their errors are above the threshold at which QEC becomes a viable option.
 
@@ -82,17 +82,17 @@ In this article we discuss various applications of mixed unitary controls, and s
 % ==============================================================================
 \section{Mathematical preliminaries}
 \label{sec:representing_quantum_gates}
-Quantum gate operations are implemented by applying a sequence of classical control fields to some set of qubits. Fluctuations in the environment or imperfections in the controls can cause the state of the qubits to change in a way that is different from what was intended.  But if the gates are fairly stable with time and context, then we can describe their action on the qubit state using \emph{process matrices}, linear, Markovian maps on the state of some qubits.  When working with process matrices, it is convenient to write the system density operator using a vectorized representation, and in this article, we'll make use of the generalized Bloch vector,
+Quantum gate operations are implemented by applying a sequence of classical control fields to some set of qubits. Fluctuations in the environment or imperfections in the controls can cause the state of the qubits to change in a way that is different from what was intended.  But if the gates are fairly stable with time and context\cite{1810.05651}, then we can describe their action on the qubit state using \emph{process matrices} -- linear, Markovian maps on the state of some qubits.  When working with process matrices, it is convenient to write the system density operator using a vectorized representation, and in this article, we'll make use of the generalized Bloch vector,
 \begin{equation}
   \vec \rho = \tr(\rho \vec \Sigma),
 \end{equation}
 where $\vec \Sigma$ is a vector of all $4^n$ $n$-qubit Pauli operators. The action of a gate is then given by the usual matrix multiplication:
-\begin{equation}
-  \rho \rightarrow \target\rho = \error \actual \rho.
+\begin{equation}\label{error_def}
+  \vec\rho \rightarrow \target\vec\rho = \error \actual \vec\rho.
 \end{equation}
-Here $\target_i$ is the target operation, $\actual$ is the actual gate as implemented, and $\error$ is the effective error channel. 
- 
-\begin{equation}
+Here $\target$ is the target operation, $\actual$ is the actual gate as implemented, and $\error$ is the effective error channel:
+
+\begin{equation}\label{eq:process_matrix}
 	\left(\begin{array}{c|cccc}
 		1 &  & \vec0 & \\ 
 		\hline & &  &  \\
@@ -102,16 +102,22 @@ Here $\target_i$ is the target operation, $\actual$ is the actual gate as implem
 	\right)
 \end{equation}
 
-The top row of all trace-preserving (TP) maps is fixed to $\{1,0,0,0,\cdots\}$.  The rest of the first column, $\vec{m}$, describes any deviations from unitality, such as could arise from amplitude damping. If the error channel is unitary, then the error is coherent, and the submatrix $R$ is perfectly antisymmetric, corresponding to a rotation of the generalized Bloch vector. If  $R$ is diagonal, then the error channel is Pauli stochastic, with each entry corresponding to the probability that the associated Pauli error occurs in each application of the gate. \note{Be more clear about what "associated" means here}.  If R is symmetric but not diagonal, then the channel is still stochastic, but the random errors consist of correlated Pauli operators (such as $X+Y$). For a single qubit, this describes everything, but the situation can be slightly more complicated for more qubits. 
+The top row of all trace-preserving (TP) maps is fixed to $\{1,0,0,0,\cdots\}$.  The rest of the first column, $\vec{m}$, describes any deviations from unitality, as could arise from amplitude damping. If the error channel is unitary, then the error is coherent, and the submatrix $R$ is perfectly antisymmetric, corresponding to a rotation of the generalized Bloch vector. If  $R$ is diagonal, then the error channel is Pauli stochastic, with each entry $\error_{ii}$ corresponding to the probability that the associated Pauli error:
+\begin{equation}
+\vec\rho \rightarrow \sigma_i^*\otimes\sigma_i\vec\rho
+\end{equation}
+ occurs in each application of the gate. 
 
-The channel that results is:
+ If R is symmetric but not diagonal, then the channel is still stochastic, but the random errors consist of correlated Pauli operators (such as $X+Y$). For a single qubit, this describes everything, but the situation can be slightly more complicated for more qubits. 
+
+For a collection of controls $\{U_i\}$ generated by $\{H_i\}$, the channel that results in general is:
 \begin{align}
 	\mathcal{M} 
 		=& \sum_i p_i U^*_i \otimes U_i \\
-		=& \sum_i p_i \exp(i \frac{\theta}{2}\hat n \cdot \vec\sigma^*) \otimes \exp(-i \frac{\theta}{2} \hat n \cdot \vec\sigma) \\
-		=& \sum_i p_i (\cos\theta + i \sin\theta H^*)\otimes(\cos\theta -i \sin\theta H) \\
-		=& \sum_i p_i (\cos\theta^2 I\otimes I + \sin\theta^2 H^*\otimes H \\ & + i\sin\theta\cos\theta H^*\otimes I
-								- i\sin\theta\cos\theta I\otimes H )
+		=& \sum_i p_i \exp(i \frac{\theta_i}{2}\hat n_i \cdot \vec\sigma^*) \otimes \exp(-i \frac{\theta_i}{2} \hat n_i \cdot \vec\sigma) \\
+		=& \sum_i p_i (\cos\theta_i + i \sin\theta_i H_i^*)\otimes(\cos\theta_i -i \sin\theta_i H_i) \\
+		=& \sum_i p_i (\cos\theta_i^2 I\otimes I + \sin\theta_i^2 H^*\otimes H_i \\ & + i\sin\theta_i\cos\theta_i H_i^*\otimes I
+								- i\sin\theta_i\cos\theta_i I\otimes H_i )
 \end{align}
 In this case, $\sin\theta^2$ is always positive, so we cannot hope to eliminate the second term, but $\sin\theta\cos\theta$ may be positive or negative, and so there is hope that we could possibly combine various implementations to eliminate this term. The result would be a purely stochastic channel. 
 
@@ -121,22 +127,21 @@ The \emph{size} of an error in quantum gates may  be quantified in a number of w
 	\vert\vert \error \vert\vert_\diamond = \sup_\rho \vert \vert (I\otimes I)(\rho) - (\error \otimes I)(\rho) \vert\vert_1
 \end{equation}
 \begin{equation}
-	\mathcal{F}(\error) = \frac{d^2 - \tr{(\error^*\otimes\error)}}{d^2 + d}
+	\mathcal{F}(\error) = \frac{\tr{\error} + d}{d^2 + d}
 \end{equation}
-The diamond norm is generally linear in the over-rotation angle of a quantum operation, while the AGI is generally quadratic in the over-rotation angle of a quantum operation. 
+The diamond norm is generally linear in the over-rotation angle of a quantum operation, while the average gate infidelity (AGI), given by 1-$\mathcal{F}$, is generally quadratic in the over-rotation angle of a quantum operation. 
 
-A mixed unitary channel consists of a set of unitary channels, $\actual_i$, and associated weights, $\sum_i p_i = 1$.  The process matrices for a mixed unitary channel are then the weighted sum of the component channels, $\actual_{\rm M} = \sum_i p_i \actual_i$, and the associated error channel is simply the weighted sum of the associated error channels, $\error_{\rm M} = \sum_i p_i \error_i$. 
+A \textit{mixed unitary process} (MUP) consists of a set of unitary channels, $\actual_i$, and associated weights, $\sum_i p_i = 1$.  The process matrix for a mixed unitary channel is then the weighted sum of the component channels, $\actual_{\rm M} = \sum_i p_i \actual_i$, and the associated error channel is simply the weighted sum of the associated error channels, $\error_{\rm M} = \sum_i p_i \error_i$. 
 
-Campbell considered the very important problem of minimizing the diamond norm of the resulting error channel. Given a collection of component channels with error at most $\epsilon$, Campbell and Hastings gave a sufficient condition for the diamond norm to be minimized to first order in $\epsilon$. In their their mixing lemmas\cite{Campbell2017, 1612.01011}, they show that the Hamiltonians should form a convex set containing the origin. The diamond norm is a particularly appealing target, because the diamond norm provides useful error metrics on quantum circuits. However, it is not the only optimization target that can be chosen. If the ultimate goal is to produce a channel whose effect can be easily simulated, then it may be useful instead to construct a channel whose errors are Pauli stochastic. Such a channel could be produced by instead minimizing the off-diagonal elements of the process matrix.
+Campbell\cite{Campbell2017} considered the very important problem of minimizing the diamond norm of the resulting error channel. Given a collection of component channels with error at most $\epsilon$, they show that if the Hamiltonians form a convex set containing the origin, then the diamond norm can be quadratically supressed. The diamond norm is a particularly appealing target because the it provides useful error metrics on quantum circuits. However, it is not the only optimization target that can be chosen. If the ultimate goal is to produce a channel whose effect can be efficiently simulated, then it may be useful instead to construct a channel whose errors are Pauli stochastic. Such a channel could be produced by instead minimizing the off-diagonal elements in (\ref{eq:process_matrix}).
 
-%\eq
 
 % ==============================================================================
 % Section: Example Mixed Unitary Processes
 % ==============================================================================
 \section{Example Mixed Unitary Processes}
 \label{sec:mixed_unitary_processes}
-There are often many possibly ways of implementing any given target quantum gate. Hastings and Campbell, for instance, consider gates compiled using the Solovey-Kitaev algorithm, for which  many approximate gate compilations are possible. By selecting from these various implementations at random, they show that the resulting quantum channel can be made to have significantly reduced coherent error. As a simple example of how this occurs, consider a scenario in which we have a single-qubit and four possible implementations of a $\pi$-pulse about the $\sigma_x$ axis. The error channels for these four implementations are themselves unitary rotations about the $\sigma_x$ axis with rotation angles of $\{-2\epsilon, -\epsilon, \epsilon, 2\epsilon\}$. Such a situation could appear, for instance, if there were amplitude errors on the fields used to affect the gates, and if the control could be implemented by a rotation about the positive or negative $\sigma_x$ axis.
+There are often many possibly ways of implementing any given target quantum gate. Campbell and Hastings, for instance, consider gates compiled using the Solovey-Kitaev algorithm, for which many approximate gate compilations are possible.\cite{Campbell2017, 1612.01011} By selecting from these various implementations at random, they show that the resulting quantum channel can be made to have significantly reduced coherent error.  As a simple example of how this occurs, consider a scenario in which we have a single-qubit and four possible implementations of a $\pi$-pulse about the $\sigma_x$ axis. The error channels for these four implementations are themselves unitary rotations about the $\sigma_x$ axis with rotation angles of $\{-2\epsilon, -\epsilon, \epsilon, 2\epsilon\}$. Such a situation could appear, for instance, if there were amplitude errors on the fields used to affect the gates, and if the control could be implemented by a rotation about the positive or negative $\sigma_x$ axis.
 
 \begin{center}
 
@@ -150,7 +155,6 @@ There are often many possibly ways of implementing any given target quantum gate
 \end{tabular}
 
 \end{center}
-\note{This example is really useful and should be expanded. We should discuss the various optimization problems, a mixed unitary strategy, the fidelity of the resulting channel.}
 
 \begin{figure}
   \centering
@@ -165,7 +169,7 @@ In this case, the MUP that minimizes the diamond norm is given by:
 \end{equation}
 Additionally, it is clear that because the AGI is linear, the AGI of any convex weighting of these two channels will be $\epsilon^2$. More generally, the problems remains: given a collection of channels, how can one efficiently compute a weighting that minimizes a particular metric.
 
-As discussed in \cite{Campbell2017}, a sufficient condition is:
+As discussed in \cite{Campbell2017}, a sufficient condition to minimize the diamond norm to first order is:
 \begin{equation}\label{eq:campbell-condition}
 \sum \omega_j H_j = 0
 \end{equation}
@@ -178,13 +182,21 @@ This condition can be satisfied by solving the following convex optimization pro
   \end{split}
 \end{equation}
 
-where $H$ is the matrix whose rows are the vectorized Hamiltonians.
+where $H$ is the matrix whose rows are the vectorized Hamiltonians, i.e. for $m$, $n\times n$ Hamiltonians:
+\begin{equation}\label{eq:vectorized_hamiltonians}
+	\left(\begin{array}{cccc}
+		H_{1_{11}} & H_{2_{21}} & \ldots   \\ 
+		\vdots\ & \ddots &    \\
+		H_{m_{11}} &  &  H_{m_{nn}} \\ 
+	\end{array} 	
+	\right)
+\end{equation}
 
-This minimization problem, while sufficient for quadratically decreasing the diamond norm relative to the \textit{worst} controls in the collection, does not preferentially select the controls with the least error. That is to say, both \{$U_{+2\epsilon}$, $U_{-2\epsilon}$\} and \{$U_{\epsilon}$, $U_{-\epsilon}$\} minimize this Equation\ref{eq:minimization}. To encourage the inclusion of controls with smaller error, we may impose an $\ell_2$ penalty to our cost function by rewriting it as:
+While this particular convex optimization problem can be solved through a system of linear equations, casting it as a convex optimization problem allows us to regularize the cost function, and introduce additional constraints. In particular, this minimization problem, while sufficient for quadratically decreasing the diamond norm relative to the \textit{worst} controls in the collection, does not preferentially select the controls with the least error. That is to say, both \{$U_{+2\epsilon}$, $U_{-2\epsilon}$\} and \{$U_{\epsilon}$, $U_{-\epsilon}$\} satisfy Equation \ref{eq:minimization}. To encourage the inclusion of controls with smaller error, we may impose an $\ell_2$ penalty to our cost function by rewriting it as:
 
 \begin{equation}\label{eq:minimization_l2}
   \begin{split}
-    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}:  }||H^T\omega||_2 + \eta\sum||H||_2^T\omega\\
+    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}:  }||H^T\omega||_2 + \eta\sum\omega_j||H_j||_2\\
   \end{split}
 \end{equation}
 with $\eta \geq 0$. 
@@ -196,7 +208,7 @@ with $\eta \geq 0$.
 %  \end{split}
 %\end{equation}
 
-To make sure the routine remains practical, we would also like to regularize our objective function to enforce sparsity. In this case, lasso regularization \cite{tibshirani1996regression} is insufficient as we already constrain the one norm of the vector we optimize over to be one. However, the problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends Equation \ref{eq:minimization}:
+To ensure the routine remains practical, we would also like to regularize our objective function to enforce sparsity. In this case, lasso regularization \cite{tibshirani1996regression} is insufficient as we already constrain the one norm of the vector we optimize over to be one. However, the problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends Equation \ref{eq:minimization}:
 
 \begin{equation}\label{eq:minimization_regularization}
 \begin{split}
@@ -221,33 +233,33 @@ To make sure the routine remains practical, we would also like to regularize our
 \section{Robustly Mixed Unitary Processes}
 \label{sec:robustly_mixed}
 
-While mixed unitary processes offer significant improvements to gate performance, they fail to take into account the reality that most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MUP will degrade. Thus, we would like to design mized unitary processes that are \textit{robust} to this drift. A mixed unitary process is said to be robust to order $\ell$ if for all $1 \leq j \leq \ell$:
+While mixed unitary processes offer significant improvements to gate performance, they fail to take into account the reality that most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MUP will degrade. Thus, we would like to design MUPs that are \textit{robust} to this drift. A mixed unitary process is said to be robust to order $\ell$ (an $\ell$MUP) if for all $1 \leq j \leq \ell$:
 \begin{equation}\label{eq:MUP}
 \begin{gathered}
 \sum_k\omega_k(\sum_{n=0}^j D^n_k)^j = 0\\
 D^n_k = \frac{1}{n!}\frac{\partial^{n}}{\partial\delta_{i_1}...\partial\delta{i_n}}H_k(t,\vec{\delta})|_{\delta=\vec{0}}
 \end{gathered}
 \end{equation}
-These conditions imply that an $\ell^{th}$ order MUP ($\ell$MUP) is insensitive to the $\ell^{th}$ order in drift in $\vec{\delta}$. To see this, write the error on each gate in the MUP as 
+These conditions imply that an $\ell$MUP is insensitive to the $\ell^{th}$ order in drift in $\vec{\delta}$. To see this, write the error on each control in the MUP as 
 \begin{equation}\label{eq:taylor}
 \begin{gathered}
-U_j(\vec{\delta}) = exp(-i(\tilde{H}_j(\vec{0}) + \frac{\partial}{\partial\delta_i}\tilde{H}_j(d\delta_i)\\ +  \frac{1}{2}\frac{\partial^2}{\partial\delta_i\partial\delta_k} \tilde{H}_j(d\delta_i d\delta_k) + ...)U_T
+\actual_j(\vec{\delta}) = exp(-i(H_j(\vec{0}) + \frac{\partial}{\partial\delta_i}H_j(d\delta_i)\\ +  \frac{1}{2}\frac{\partial^2}{\partial\delta_i\partial\delta_k} H_j(d\delta_i d\delta_k) + ...)\target
 \end{gathered}
 \end{equation}
-where $\tilde{H}(\delta)$ generates the error $U_j(\vec{\delta})U_T^{\dagger}$ over variations in $\vec{\delta}$. Then, by Taylor expanding $U_j(\vec{\delta})U_T^{\dagger}$ one finds that the the first $\ell$ derivatives of an $\ell RBC$ will be zero.
+where $H(\delta)$ generates $\error$, as in Equation \ref{error_def}. By Taylor expanding Equation \ref{eq:taylor} in $\delta$, one finds that the the first $\ell$ derivatives of an $\ell MUP$ will be zero.
 
-Following from Lemma 2 in \cite{Campbell2017}, if $0\in $ Conv$[\{\tilde{H}_i(t, \vec{\delta})\}]$, where Conv is the convex hull of its arguments, then we know that $\vec{\omega}$ exists that quadratically decreases the diamond norm. Then, following from the mixing lemma proven by both Campbell and Hastings\cite{1612.01011}, we can bound the the diamond distance from a balanced control to $U_T$ by $\epsilon^2$. We can relax Equation \ref{eq:MUP}, to be
+Furthermore, if we assume that the derivatives are all of norm $\epsilon$, we can relax Equation \ref{eq:MUP}, to be
 \begin{equation}\label{eq:MUP-relaxed}
 \begin{gathered}
 \sum_k\omega_kD^n_k = 0\\
 \end{gathered}
 \end{equation}
-In this context, since we are assuming that the derivatives are all of norm $\epsilon$, the above condition guarantees that the error unitary be no worse than $\sum^n\epsilon^2\delta^n$ near the origin -- all orders can be quadratically supressed. Figure \ref{fig:vectorspace} gives geometric intuition for the conditions required to produce an $\ell MUP$.
+This condition guarantees that errors will be supressed quadratically for all derivatives up to order $\ell$. Following from Lemma 2 in \cite{Campbell2017}, if $0\in $ Conv$[\{\tilde{H}_i(t, \vec{\delta})\}]$, where Conv is the convex hull of its arguments, then we know that an $\vec{\omega}$ exists that quadratically decreases the diamond norm. This condition is illustrated in Figure \ref{fig:vectorspace} gives geometric intuition for the conditions required to produce an $\ell MUP$.
 
 \begin{figure}
   \centering
   \includegraphics[width=\columnwidth]{vectorspace.pdf}
-  \caption{A target unitary gate can be implemented a number of ways, each with a different effective Hamiltonian error. These error Hamiltonians lie in a vector space. a) Four effective Hamiltonians. The origin is not contained in their convex hull, so there are no balanced control solutions. b) The origin is contained in the covex hull after adding an additional control solution. Because there are more than $n+1$ implementations, there exist an infinite number of balanced control solutions. c) The error Hamiltonians shown with their derivative with respect to a control parameter. As this parameter drifts, a $0^{\rm th}$-order balanced control solution may drift, leading to a first-order error. d) The derivatives also lie in a vector space. If the origin lies in their convex hull, then it may be possible to construct a $1^{\rm{st}}$-order robust balanced control solution.}
+  \caption{A target unitary gate can be implemented a number of ways, each with a different effective Hamiltonian error. These error Hamiltonians lie in a vector space. a) Four effective Hamiltonians. The origin is not contained in their convex hull, so there are no balanced control solutions. b) The origin is contained in the covex hull after adding an additional control solution. Because there are more than $n+1$ implementations, there exist an infinite number of balanced control solutions. c) The error Hamiltonians shown with their derivative with respect to a control parameter. As this parameter drifts, a $0^{\rm th}$-order balanced control solution may drift, leading to a first-order error. d) The derivatives also lie in a vector space. If the origin lies in their convex hull, then it may be possible to construct a $1^{\rm{st}}$-order mixed unitary process.}
   \label{fig:vectorspace}
 \end{figure}
 
@@ -260,8 +272,17 @@ To generate robustly mixed unitary processes, we can solve the following convex 
     &\textbf{subject to: } \forall i<\ell, \sum \omega_jD_j^i=0\\
   \end{split}
 \end{equation}
+with $D_k^n$ defined in Equation \ref{eq:MUP}. Equations \ref{eq:minimization_l2} and\ref{eq:minimization_regularization} extend in a straightforward way:
 
-Additionally, this can be extended in the obvious way to use Equations \ref{eq:minimization_l2} and\ref{eq:minimization_regularization}.
+\begin{equation}\label{eq:minimization_regularization}
+\begin{split}
+\underset{n\in[N]}{\textbf{minimize}}\{\\
+    &\underset{\omega_j\geq0, |\omega|_1=1, t\geq0}{\textbf{minimize}: } ||D_{\ell}^T\omega||+ \eta\sum\omega_j||H_j||_2 + t\\
+&\textbf{subject to: } \omega_n > \frac{\lambda}{t}\\
+&\phantom{\textbf{subject to: }} \forall i<\ell, \sum \omega_jD_j^i=0\\
+\}
+\end{split}
+\end{equation}
 
 % ==============================================================================
 % Section: Numerical Results
@@ -306,7 +327,7 @@ Because we our trying to generate high-order RBCs, we want to generate controls 
 \end{align}
 with $p(\vec{\delta})$ Gaussian distributed, as has been done in previous works \cite{Goerz2014} to ensure that the optimal control results are robust over a wide range of errors. To make this averaging tractable, we approximate this integral using Gaussian quadrature, approximating the cost function as a low order polynomial\cite{abramowiz1972handbook} (in particular degree 5). Note that despite updating the gradient, we did not change the cost function. The termination condition for the gradient ascent loop is still just that the controls perform well in the absence of drift. This is not a fundamental requirement of the routine, but rather was done to make finding solutions with $J(U) < 1 - \epsilon$  less computationally taxing.
 
-If the collection of controls generated this way is too small, a solution won't exist, in particular as in \cite{Campbell2017} we need  $0\in $ Conv$[D_j^i]$.  This can be accomplished by modifying the oracle in Campbell's algorithm to produce robust controls, in this case by updating the GRAPE cost function to include derivative information, one could produce controls with derivatives of order $\epsilon$. In our case, by using the Gaussian weighted cost function, we ensure that the controls generated should have vanishing first derivative.
+As discussed in Section \ref{sec:robustly_mixed}, for these controls to form an $\ell$MUP, we need $0\in $ Conv$[D_j^i]$.  This can be accomplished by modifying the oracle in Campbell's algorithm\cite{Campbell2017} to produce robust controls. In this case, by updating the GRAPE cost function to include derivative information, one could produce controls with derivatives of order $\epsilon$. In our case, by using the Gaussian weighted cost function, we ensure that the controls generated should have vanishing first derivative.
 
 \subsection{One Qubit Performance Analysis}
 \label{one_qubit_performance}
@@ -314,21 +335,7 @@ In the following numerical results, we explore using the methods in Section \ref
 \begin{equation}\label{eq:1Qham}
   H(\delta, \epsilon, t) = \epsilon\sigma_z + (1 + \delta)(c_x(t)\sigma_x + c_y(t)\sigma_y)
 \end{equation}
-We use the GRAPE algorithm as discussed in Section  \ref{sec:random_gate_synthesis} with N=25 steps and total evolution time of $\pi$ to generate 100 candidate controls, with a standard deviation of $\sigma=.001$ for the distribution in Equation \ref{eq:quadrature}. We assume that the errors on $\sigma_x$ and $\sigma_y$ are perfecly correlated, as is the case in systems that implement RZ rotations with phase shifts of the control signal. Solving the optimization problem defined in Section \ref{sec:robustly_mixed} yields similar MUPs for $RX(\frac{\pi}{2})$ and $RY(\frac{\pi}{2})$, with the results for $RY(\frac{\pi}{2})$ shown in Figure \ref{fig:YMUP}. These results demonstrate several properties that make MUPs both useful and tractable.
-
-\begin{figure*}
-  \centering
-  \includegraphics[width=\textwidth]{SQRTY.png}
-  \caption{Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac{\pi}{2})$. The results are quantitatively similar to those for $RX(\frac{\pi}{2})$, but in this case the 0MUP is worse at the origin. This can be improved by penalizing for the norms, or by simply trying to find a 1MUP, which both symmeterizes the performance at the origin and makes them better.}
-  \label{fig:YMUP}
-\end{figure*}
-
-%\begin{figure*}
-%  \centering
-%  \includegraphics[width=\textwidth]{SQRTX.png}
-%  \caption{Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RX(\frac{np.pi}{2})$. Shown with lower alpha values are example members of the control families, with diamond norms of around $10^{-2}$. The 0MUP can be seen to outperform the members of the control family by two orders of magnitude at the origin, and the 1MUP by an order of magnitude. However, the 1MUP can be seen to be flatter. In paritcular, for small detunings, the 1MUP performs better than the 0MUP.}
-%  \label{fig:XMUP}
-%\end{figure*}
+We use the GRAPE algorithm as discussed in Section \ref{sec:random_gate_synthesis} with N=25 steps and total evolution time of $\pi$ to generate 100 candidate controls, with a standard deviation of $\sigma=.001$ for the distribution in Equation \ref{eq:quadrature}. We assume that the errors on $\sigma_x$ and $\sigma_y$ are perfecly correlated, as is the case in systems that implement RZ rotations with phase shifts of the control signal. Solving the optimization problem defined in Section \ref{sec:robustly_mixed} yields similar MUPs for $RX(\frac{\pi}{2})$ and $RY(\frac{\pi}{2})$, with the results for $RY(\frac{\pi}{2})$ shown in Figure \ref{fig:YMUP}. These results demonstrate several properties that make MUPs both useful and tractable.
 
 
 First, naively generating a 0MUP results in nontrivial support on all the members of the control family. However, by rewriting the minimization to impose the sparsity constraint discussed in Section \ref{sec:robustly_mixed}, we can generate a 0MUP that uses just five of the controls. This shows that through adding constraints to our optimization routine, we can make the MUP practically useful. In both cases we impose the same $\ell_2$ penalty as described in Section \ref{sec:robustly_mixed}, so that the algorithm preferentially selects controls with smaller errors. Imposing this constraint allows us to trade off flatness at the origin for performance.
@@ -348,20 +355,12 @@ In this example it was infeasible to use GRAPE to return non-trivial solutions. 
 \begin{figure}
   \centering
   \includegraphics[width=\columnwidth]{bangbang.png}
-  \caption{Example bang-bang sequence, using both qubits' $\sigma_x$ controls. Not shown are the $\sigma_y$ controls, and the uncontrolled resonant exchange interaction.}
+  \caption{Example bang-bang sequence, using both qubits' $\sigma_x$ controls. Not shown are the unused $\sigma_y$ controls, and the uncontrolled resonant exchange interaction.}
   \label{fig:bangbang}
 \end{figure}
 
 
-In this example, we find more modest improvements to performance, as shown in Figure \ref{fig:2MUP}. There are now four free parameters to optimize over, and the uncontrolled entangling interaction means that there is little variation in the controls. Nonetheless, using a MUP improves performance by half of an order of magnitude at the origin, and up to an order of magnitude away from the origin, with the 1MUP performing just as well as the 0MUP, but also being more robust to drift. 
-
-
-\begin{figure*}
-  \centering
-  \includegraphics[width=\textwidth]{2QRBC.png}
-  \caption{Numerical results comparing a 0MUP to a 1MUP for a pair of tunable qubits, with a resonant exchange interaction. Shown with lower alpha values are example members of the control families. The 0MUP and 1MUP can be seen to outperform the members of the control family by half an order of magnitude at the origin. Away from the origin, the 1MUP can be seen to be flatter. Far away from the origin, the 1MUP outperforms members of the control famlies by almost an order of magnitude in diamond norm.}
-  \label{fig:2MUP}
-\end{figure*}
+In this example, we find more modest improvements to performance, as shown in Figure \ref{fig:2MUP}. There are now four free parameters to optimize over, and the uncontrolled entangling interaction means that there is little room for variation in the controls. Nonetheless, using a MUP improves performance by half of an order of magnitude at the origin relative to the constituent controls, and up to an order of magnitude away from the origin. For all values of the drifting parameters we see that the 1MUP performs as well or better than 0MUP.
 
 % ==============================================================================
 % Section: Experimental Results
@@ -391,13 +390,13 @@ Additionally, by minimizing the off-diagonal elements of the process matrix, rat
 
 
 \section{Conclusion and Future Work}
-We have shown numerically that using RBCs can reduce non-Markovian, coherent error on a quantum channel by more than an order of magnitude in diamond norm, over a wide range of quasi-static values of noise. In addition, we have demonstrated that these approximate controls can be generated through optimal control (GRAPE), and that the minimization problem is tractable.
+We have shown numerically that using MUPs can reduce coherent error on a quantum channel by more than an order of magnitude in diamond norm, over a wide range of quasi-static values of noise. In addition, we have demonstrated that these approximate controls can be generated through optimal control (GRAPE), and that the minimization problem is tractable.
 
-Future directions for this work include demonstrating the routine experimentally on a two-qubit gate, moving the random gate selection from a precompilation step to runtime logic onboard the FPGA, investigating other optimization routines such as CRAB \cite{Caneva2011} and GOAT\cite{Machnes2018}, and using more sophisticated benchmarking routines such as GST\cite{BlumeKohout2017} to quantitatively investigate the performance of our method.
+Future directions for this work include demonstrating the routine experimentally on a two-qubit gate, moving the random gate selection from a precompilation step to runtime logic onboard the control electronics, investigating other optimization routines such as CRAB \cite{Caneva2011} and GOAT\cite{Machnes2018}, and using more sophisticated benchmarking routines such as GST\cite{BlumeKohout2017} to quantitatively investigate the performance of our method.
 
-Another interesting area of research would be using model-free approaches. The numerical work in the paper assumes access to a model of the system, however an experimentalist may not have a model readily available to describe the system, e.g. in the presence of unknown on-chip crosstalk, or an uncalibrated transfer function of the system. Moreover, even if a model is available, it might be computationally inconvenient to simulate, i.e. for more than a few qubits.%, or for non-adiabatic gates, where the timestep is required to be much smaller than the gate-time.
+Another interesting area of research would be using model-free approaches. The numerical work in the paper assumes access to a model of the system, however an experimentalist may not have a model readily available to describe the system, e.g. in the presence of unknown on-chip crosstalk, or an uncalibrated transfer function of the system. Even if a model is available, it might be computationally inconvenient to simulate, i.e. for more than a few qubits.
 
-In these situations, one approach would be to use \textit{in-situ} optimal control techniques \cite{Wu2018, Kelly2014, Ferrie2015} to generate candidate controls, and then use an optimizer like Nealder-Mead to perform the minimization. While performing a complete optimization in this way would still be slow, requiring full process tomography, one could intead optimize via partial tomography. By selecting pre-- and post --rotations that correspond to measuring pauli moments of interest in the Hamiltonian, such as unwanted $Z\otimes Z$ crosstalk, one could perform optimization over fewer parameters.
+In these situations, one approach would be to use \textit{in-situ} optimal control techniques \cite{Wu2018, Kelly2014, Ferrie2015} to generate candidate controls, and then use an optimizer like Nealder-Mead to perform the minimization. While performing a complete optimization in this way would require full process tomography, one could intead optimize via partial tomography. By selecting pre-- and post --rotations that correspond to measuring Pauli-moments of interest in the Hamiltonian, such as unwanted $Z\otimes Z$ crosstalk, one could perform optimization over fewer parameters.
 
 
 % ==============================================================================
@@ -406,5 +405,22 @@ In these situations, one approach would be to use \textit{in-situ} optimal contr
 \section{Acknowledgements}
 \label{sec:acknowledgements}
 Sandia National Laboratories is a multimission laboratory managed and operated by National Technology and Engineering Solutions of Sandia, LLC, a wholly owned subsidiary of Honeywell International, Inc., for the U.S. Department of Energy's National Nuclear Security Administration under contract DE-NA0003525.
+
+
+\begin{figure*}[h]
+  \centering
+  \includegraphics[width=\textwidth]{SQRTY.png}
+  \caption{Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac{\pi}{2})$. The results are quantitatively similar to those for $RX(\frac{\pi}{2})$. In this case the 0MUP outperforms both the 1MUP by two orders of magnitude, and the constituent controls by three orders of magnitude at the origin. However, varying over $\delta$ we see that the 1MUP outperforms the 0MUP by up to an order of magnitude when there is $.1\%$ drift in the qubit control amplitudes.}
+  \label{fig:YMUP}
+\end{figure*}
+
+
+\begin{figure*}[h]
+  \centering
+  \includegraphics[width=\textwidth]{2QRBC.png}
+  \caption{Numerical results comparing a 0MUP to a 1MUP for a pair of tunable qubits, with a resonant exchange interaction. Shown with lower alpha values are example constituent controls. The 0MUP and 1MUP can be seen to outperform these controls by half of an order of magnitude at the origin. For all detuning values the 1MUP performs as well or better than the 0MUP. When there is $.2\%$ drift in the qubit frequency, the 1MUP outperforms members of the control famlies by almost an order of magnitude in diamond norm. Similarly, for $.2\%$ drift in the qubit control amplitude, we see that the 1MUP outperforms the the constituent controls by over half an order of magnitude.}
+  \label{fig:2MUP}
+\end{figure*}
+
 \bibliography{decorrelation.bib}
 \end{document}

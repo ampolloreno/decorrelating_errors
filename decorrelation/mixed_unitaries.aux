@@ -19,6 +19,7 @@
 \citation{Barends2014,Ballance2016}
 \citation{1203.5813}
 \citation{Campbell2017,1612.01011,1811.08017}
+\citation{1810.05651}
 \newlabel{FirstPage}{{}{1}{}{section*.1}{}}
 \@writefile{toc}{\contentsline {title}{Advantages of mixed unitary operators for quantum information processing}{1}{section*.2}}
 \@writefile{toc}{\contentsline {abstract}{Abstract}{1}{section*.1}}
@@ -26,94 +27,100 @@
 \newlabel{sec:introduction}{{I}{1}{}{section*.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {II}Mathematical preliminaries}{1}{section*.4}}
 \newlabel{sec:representing_quantum_gates}{{II}{1}{}{section*.4}{}}
+\citation{Campbell2017}
 \citation{Campbell2017,1612.01011}
+\newlabel{error_def}{{2}{2}{}{equation.2.2}{}}
+\newlabel{eq:process_matrix}{{3}{2}{}{equation.2.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {III}Example Mixed Unitary Processes}{2}{section*.5}}
 \newlabel{sec:mixed_unitary_processes}{{III}{2}{}{section*.5}{}}
 \citation{Campbell2017}
 \citation{tibshirani1996regression}
 \citation{NIPS2012_4504}
 \citation{Campbell2017}
-\citation{1612.01011}
-\citation{Khaneja2005,Caneva2011,Machnes2018}
-\citation{Khaneja2005}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces An example of a mixed unitary process. Using optimal control, two implementations of a $Z_\pi $ gate are designed to have equal and opposite sensitivity to errors (if one implementation over-rotates by angle $\theta $, then the other \emph  {under}-rotates by $\theta $). Each time the gate is used, one of these implementations is chosen at random. The resulting quantum channel is equivalent to a perfect implementation of the gate followed by dephasing of $\mathcal  {O}\left ( \theta ^2 \right )$.}}{3}{figure.1}}
 \newlabel{fig:simple_example}{{1}{3}{An example of a mixed unitary process. Using optimal control, two implementations of a $Z_\pi $ gate are designed to have equal and opposite sensitivity to errors (if one implementation over-rotates by angle $\theta $, then the other \emph {under}-rotates by $\theta $). Each time the gate is used, one of these implementations is chosen at random. The resulting quantum channel is equivalent to a perfect implementation of the gate followed by dephasing of $\order {\theta ^2}$}{figure.1}{}}
-\newlabel{eq:campbell-condition}{{12}{3}{}{equation.3.12}{}}
-\newlabel{eq:minimization}{{13}{3}{}{equation.3.13}{}}
-\newlabel{eq:minimization_l2}{{14}{3}{}{equation.3.14}{}}
-\newlabel{eq:minimization_regularization}{{15}{3}{}{equation.3.15}{}}
+\newlabel{eq:campbell-condition}{{13}{3}{}{equation.3.13}{}}
+\newlabel{eq:minimization}{{14}{3}{}{equation.3.14}{}}
+\newlabel{eq:vectorized_hamiltonians}{{15}{3}{}{equation.3.15}{}}
+\newlabel{eq:minimization_l2}{{16}{3}{}{equation.3.16}{}}
+\newlabel{eq:minimization_regularization}{{17}{3}{}{equation.3.17}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Robustly Mixed Unitary Processes}{3}{section*.6}}
 \newlabel{sec:robustly_mixed}{{IV}{3}{}{section*.6}{}}
-\newlabel{eq:MUP}{{16}{3}{}{equation.4.16}{}}
-\newlabel{eq:taylor}{{17}{3}{}{equation.4.17}{}}
-\newlabel{eq:MUP-relaxed}{{18}{3}{}{equation.4.18}{}}
-\newlabel{eq:robust_minimization}{{19}{3}{}{equation.4.19}{}}
+\newlabel{eq:MUP}{{18}{3}{}{equation.4.18}{}}
+\newlabel{eq:taylor}{{19}{3}{}{equation.4.19}{}}
+\newlabel{eq:MUP-relaxed}{{20}{3}{}{equation.4.20}{}}
+\citation{Khaneja2005,Caneva2011,Machnes2018}
 \citation{Khaneja2005}
-\citation{Goerz2014}
-\citation{abramowiz1972handbook}
-\citation{Campbell2017}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces A target unitary gate can be implemented a number of ways, each with a different effective Hamiltonian error. These error Hamiltonians lie in a vector space. a) Four effective Hamiltonians. The origin is not contained in their convex hull, so there are no balanced control solutions. b) The origin is contained in the covex hull after adding an additional control solution. Because there are more than $n+1$ implementations, there exist an infinite number of balanced control solutions. c) The error Hamiltonians shown with their derivative with respect to a control parameter. As this parameter drifts, a $0^{\rm  th}$-order balanced control solution may drift, leading to a first-order error. d) The derivatives also lie in a vector space. If the origin lies in their convex hull, then it may be possible to construct a $1^{\rm  {st}}$-order robust balanced control solution.}}{4}{figure.2}}
-\newlabel{fig:vectorspace}{{2}{4}{A target unitary gate can be implemented a number of ways, each with a different effective Hamiltonian error. These error Hamiltonians lie in a vector space. a) Four effective Hamiltonians. The origin is not contained in their convex hull, so there are no balanced control solutions. b) The origin is contained in the covex hull after adding an additional control solution. Because there are more than $n+1$ implementations, there exist an infinite number of balanced control solutions. c) The error Hamiltonians shown with their derivative with respect to a control parameter. As this parameter drifts, a $0^{\rm th}$-order balanced control solution may drift, leading to a first-order error. d) The derivatives also lie in a vector space. If the origin lies in their convex hull, then it may be possible to construct a $1^{\rm {st}}$-order robust balanced control solution}{figure.2}{}}
+\citation{Khaneja2005}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces A target unitary gate can be implemented a number of ways, each with a different effective Hamiltonian error. These error Hamiltonians lie in a vector space. a) Four effective Hamiltonians. The origin is not contained in their convex hull, so there are no balanced control solutions. b) The origin is contained in the covex hull after adding an additional control solution. Because there are more than $n+1$ implementations, there exist an infinite number of balanced control solutions. c) The error Hamiltonians shown with their derivative with respect to a control parameter. As this parameter drifts, a $0^{\rm  th}$-order balanced control solution may drift, leading to a first-order error. d) The derivatives also lie in a vector space. If the origin lies in their convex hull, then it may be possible to construct a $1^{\rm  {st}}$-order mixed unitary process.}}{4}{figure.2}}
+\newlabel{fig:vectorspace}{{2}{4}{A target unitary gate can be implemented a number of ways, each with a different effective Hamiltonian error. These error Hamiltonians lie in a vector space. a) Four effective Hamiltonians. The origin is not contained in their convex hull, so there are no balanced control solutions. b) The origin is contained in the covex hull after adding an additional control solution. Because there are more than $n+1$ implementations, there exist an infinite number of balanced control solutions. c) The error Hamiltonians shown with their derivative with respect to a control parameter. As this parameter drifts, a $0^{\rm th}$-order balanced control solution may drift, leading to a first-order error. d) The derivatives also lie in a vector space. If the origin lies in their convex hull, then it may be possible to construct a $1^{\rm {st}}$-order mixed unitary process}{figure.2}{}}
+\newlabel{eq:robust_minimization}{{21}{4}{}{equation.4.21}{}}
+\newlabel{eq:minimization_regularization}{{22}{4}{}{equation.4.22}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Numerical Results}{4}{section*.7}}
 \newlabel{sec:numerical_results}{{V}{4}{}{section*.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {A}Random Gate Synthesis}{4}{section*.8}}
 \newlabel{sec:random_gate_synthesis}{{V\tmspace  +\thinmuskip {.1667em}A}{4}{}{section*.8}{}}
-\newlabel{eq:3}{{20}{4}{}{equation.5.20}{}}
-\newlabel{eq:update}{{21}{4}{}{equation.5.21}{}}
-\newlabel{eq:quadrature}{{22}{4}{}{equation.5.22}{}}
+\newlabel{eq:3}{{23}{4}{}{equation.5.23}{}}
+\citation{Goerz2014}
+\citation{abramowiz1972handbook}
+\citation{Campbell2017}
 \citation{McKay2016}
 \citation{bangbang}
+\newlabel{eq:update}{{24}{5}{}{equation.5.24}{}}
+\newlabel{eq:quadrature}{{25}{5}{}{equation.5.25}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B}One Qubit Performance Analysis}{5}{section*.9}}
+\newlabel{one_qubit_performance}{{V\tmspace  +\thinmuskip {.1667em}B}{5}{}{section*.9}{}}
+\newlabel{eq:1Qham}{{26}{5}{}{equation.5.26}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example bang-bang sequence, using both qubits' $\sigma _x$ controls. Not shown are the unused $\sigma _y$ controls, and the uncontrolled resonant exchange interaction.}}{5}{figure.3}}
+\newlabel{fig:bangbang}{{3}{5}{Example bang-bang sequence, using both qubits' $\sigma _x$ controls. Not shown are the unused $\sigma _y$ controls, and the uncontrolled resonant exchange interaction}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C}Two Qubit Performance Analysis}{5}{section*.10}}
+\newlabel{two_qubit_performance}{{V\tmspace  +\thinmuskip {.1667em}C}{5}{}{section*.10}{}}
+\newlabel{eq:2Qham}{{27}{5}{}{equation.5.27}{}}
 \citation{1712.05771}
 \citation{Magesan2011}
 \citation{Ball2016}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B}One Qubit Performance Analysis}{5}{section*.9}}
-\newlabel{one_qubit_performance}{{V\tmspace  +\thinmuskip {.1667em}B}{5}{}{section*.9}{}}
-\newlabel{eq:1Qham}{{23}{5}{}{equation.5.23}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {C}Two Qubit Performance Analysis}{5}{section*.10}}
-\newlabel{two_qubit_performance}{{V\tmspace  +\thinmuskip {.1667em}C}{5}{}{section*.10}{}}
-\newlabel{eq:2Qham}{{24}{5}{}{equation.5.24}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Experimental Results}{5}{section*.11}}
-\newlabel{sec:experimental_results}{{VI}{5}{}{section*.11}{}}
 \citation{Caneva2011}
 \citation{Machnes2018}
 \citation{BlumeKohout2017}
 \citation{Wu2018,Kelly2014,Ferrie2015}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac  {\pi }{2})$. The results are quantitatively similar to those for $RX(\frac  {\pi }{2})$, but in this case the 0MUP is worse at the origin. This can be improved by penalizing for the norms, or by simply trying to find a 1MUP, which both symmeterizes the performance at the origin and makes them better.}}{6}{figure.3}}
-\newlabel{fig:YMUP}{{3}{6}{Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac {\pi }{2})$. The results are quantitatively similar to those for $RX(\frac {\pi }{2})$, but in this case the 0MUP is worse at the origin. This can be improved by penalizing for the norms, or by simply trying to find a 1MUP, which both symmeterizes the performance at the origin and makes them better}{figure.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Example bang-bang sequence, using both qubits' $\sigma _x$ controls. Not shown are the $\sigma _y$ controls, and the uncontrolled resonant exchange interaction.}}{6}{figure.4}}
-\newlabel{fig:bangbang}{{4}{6}{Example bang-bang sequence, using both qubits' $\sigma _x$ controls. Not shown are the $\sigma _y$ controls, and the uncontrolled resonant exchange interaction}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Randomized benchmarking experiments ran using different pulse definitions. The four plots on the left are from the incorrectly calibrated pulse, while the top right is the calibrated pulse, and the bottom right is the BCS.}}{6}{figure.4}}
+\newlabel{fig:rb}{{4}{6}{Randomized benchmarking experiments ran using different pulse definitions. The four plots on the left are from the incorrectly calibrated pulse, while the top right is the calibrated pulse, and the bottom right is the BCS}{figure.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Experimental Results}{6}{section*.11}}
+\newlabel{sec:experimental_results}{{VI}{6}{}{section*.11}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion and Future Work}{6}{section*.12}}
 \bibdata{mixed_unitariesNotes,decorrelation.bib}
 \bibcite{Barends2014}{{1}{2014}{{Barends\ \emph  {et~al.}}}{{Barends, Kelly, Megrant, Veitia, Sank, Jeffrey, White, Mutus, Fowler, Campbell, Chen, Chen, Chiaro, Dunsworth, Neill, O'Malley, Roushan, Vainsencher, Wenner, Korotkov, Cleland,\ and\ Martinis}}}
 \bibcite{Ballance2016}{{2}{2016}{{Ballance\ \emph  {et~al.}}}{{Ballance, Harty, Linke, Sepiol,\ and\ Lucas}}}
 \bibcite{1203.5813}{{3}{2012}{{Preskill}}{{}}}
-\bibcite{1612.01011}{{4}{2016}{{Hastings}}{{}}}
-\bibcite{Campbell2017}{{5}{2017}{{Campbell}}{{}}}
-\bibcite{Khaneja2005}{{6}{2005}{{Khaneja\ \emph  {et~al.}}}{{Khaneja, Reiss, Kehlet, Schulte-Herbr\"{u}ggen,\ and\ Glaser}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Numerical results comparing a 0MUP to a 1MUP for a pair of tunable qubits, with a resonant exchange interaction. Shown with lower alpha values are example members of the control families. The 0MUP and 1MUP can be seen to outperform the members of the control family by half an order of magnitude at the origin. Away from the origin, the 1MUP can be seen to be flatter. Far away from the origin, the 1MUP outperforms members of the control famlies by almost an order of magnitude in diamond norm.}}{7}{figure.5}}
-\newlabel{fig:2MUP}{{5}{7}{Numerical results comparing a 0MUP to a 1MUP for a pair of tunable qubits, with a resonant exchange interaction. Shown with lower alpha values are example members of the control families. The 0MUP and 1MUP can be seen to outperform the members of the control family by half an order of magnitude at the origin. Away from the origin, the 1MUP can be seen to be flatter. Far away from the origin, the 1MUP outperforms members of the control famlies by almost an order of magnitude in diamond norm}{figure.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Randomized benchmarking experiments ran using different pulse definitions. The four plots on the left are from the incorrectly calibrated pulse, while the top right is the calibrated pulse, and the bottom right is the BCS.}}{7}{figure.6}}
-\newlabel{fig:rb}{{6}{7}{Randomized benchmarking experiments ran using different pulse definitions. The four plots on the left are from the incorrectly calibrated pulse, while the top right is the calibrated pulse, and the bottom right is the BCS}{figure.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Acknowledgements}{7}{section*.13}}
-\newlabel{sec:acknowledgements}{{VIII}{7}{}{section*.13}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {}References}{7}{section*.14}}
-\bibcite{Caneva2011}{{7}{2011}{{Caneva\ \emph  {et~al.}}}{{Caneva, Calarco,\ and\ Montangero}}}
-\bibcite{Machnes2018}{{8}{2018}{{Machnes\ \emph  {et~al.}}}{{Machnes, Ass{\'{e}}mat, Tannor,\ and\ Wilhelm}}}
-\bibcite{Goerz2014}{{9}{2014}{{Goerz\ \emph  {et~al.}}}{{Goerz, Halperin, Aytac, Koch,\ and\ Whaley}}}
-\bibcite{abramowiz1972handbook}{{10}{1972}{{Abramowiz\ and\ Stegun}}{{}}}
-\bibcite{tibshirani1996regression}{{11}{1996}{{Tibshirani}}{{}}}
-\bibcite{NIPS2012_4504}{{12}{2012}{{Pilanci\ \emph  {et~al.}}}{{Pilanci, Ghaoui,\ and\ Chandrasekaran}}}
-\bibcite{McKay2016}{{13}{2016}{{McKay\ \emph  {et~al.}}}{{McKay, Filipp, Mezzacapo, Magesan, Chow,\ and\ Gambetta}}}
-\bibcite{bangbang}{{14}{1998}{{Viola\ and\ Lloyd}}{{}}}
-\bibcite{1712.05771}{{15}{2017}{{Otterbach\ \emph  {et~al.}}}{{Otterbach, Manenti, Alidoust, Bestwick, Block, Bloom, Caldwell, Didier, Fried, Hong, Karalekas, Osborn, Papageorge, Peterson, Prawiroatmodjo, Rubin, Ryan, Scarabelli, Scheer, Sete, Sivarajah, Smith, Staley, Tezak, Zeng, Hudson, Johnson, Reagor, da~Silva,\ and\ Rigetti}}}
-\bibcite{Magesan2011}{{16}{2011}{{Magesan\ \emph  {et~al.}}}{{Magesan, Gambetta,\ and\ Emerson}}}
-\bibcite{Ball2016}{{17}{2016}{{Ball\ \emph  {et~al.}}}{{Ball, Stace, Flammia,\ and\ Biercuk}}}
-\bibcite{BlumeKohout2017}{{18}{2017}{{Blume-Kohout\ \emph  {et~al.}}}{{Blume-Kohout, Gamble, Nielsen, Rudinger, Mizrahi, Fortier,\ and\ Maunz}}}
-\bibcite{Wu2018}{{19}{2018}{{Wu\ \emph  {et~al.}}}{{Wu, Chu, Owens,\ and\ Rabitz}}}
-\bibcite{Kelly2014}{{20}{2014}{{Kelly\ \emph  {et~al.}}}{{Kelly, Barends, Campbell, Chen, Chen, Chiaro, Dunsworth, Fowler, Hoi, Jeffrey, Megrant, Mutus, Neill, O'Malley, Quintana, Roushan, Sank, Vainsencher, Wenner, White, Cleland,\ and\ Martinis}}}
-\bibcite{Ferrie2015}{{21}{2015}{{Ferrie\ and\ Moussa}}{{}}}
+\bibcite{Campbell2017}{{4}{2017}{{Campbell}}{{}}}
+\bibcite{1612.01011}{{5}{2016}{{Hastings}}{{}}}
+\bibcite{1811.08017}{{6}{2018}{{Campbell}}{{}}}
+\bibcite{1810.05651}{{7}{2018}{{Rudinger\ \emph  {et~al.}}}{{Rudinger, Proctor, Langharst, Sarovar, Young,\ and\ Blume-Kohout}}}
+\bibcite{tibshirani1996regression}{{8}{1996}{{Tibshirani}}{{}}}
+\bibcite{NIPS2012_4504}{{9}{2012}{{Pilanci\ \emph  {et~al.}}}{{Pilanci, Ghaoui,\ and\ Chandrasekaran}}}
+\bibcite{Khaneja2005}{{10}{2005}{{Khaneja\ \emph  {et~al.}}}{{Khaneja, Reiss, Kehlet, Schulte-Herbr\"{u}ggen,\ and\ Glaser}}}
+\bibcite{Caneva2011}{{11}{2011}{{Caneva\ \emph  {et~al.}}}{{Caneva, Calarco,\ and\ Montangero}}}
+\bibcite{Machnes2018}{{12}{2018}{{Machnes\ \emph  {et~al.}}}{{Machnes, Ass{\'{e}}mat, Tannor,\ and\ Wilhelm}}}
+\bibcite{Goerz2014}{{13}{2014}{{Goerz\ \emph  {et~al.}}}{{Goerz, Halperin, Aytac, Koch,\ and\ Whaley}}}
+\bibcite{abramowiz1972handbook}{{14}{1972}{{Abramowiz\ and\ Stegun}}{{}}}
+\bibcite{McKay2016}{{15}{2016}{{McKay\ \emph  {et~al.}}}{{McKay, Filipp, Mezzacapo, Magesan, Chow,\ and\ Gambetta}}}
+\bibcite{bangbang}{{16}{1998}{{Viola\ and\ Lloyd}}{{}}}
+\bibcite{1712.05771}{{17}{2017}{{Otterbach\ \emph  {et~al.}}}{{Otterbach, Manenti, Alidoust, Bestwick, Block, Bloom, Caldwell, Didier, Fried, Hong, Karalekas, Osborn, Papageorge, Peterson, Prawiroatmodjo, Rubin, Ryan, Scarabelli, Scheer, Sete, Sivarajah, Smith, Staley, Tezak, Zeng, Hudson, Johnson, Reagor, da~Silva,\ and\ Rigetti}}}
+\bibcite{Magesan2011}{{18}{2011}{{Magesan\ \emph  {et~al.}}}{{Magesan, Gambetta,\ and\ Emerson}}}
+\bibcite{Ball2016}{{19}{2016}{{Ball\ \emph  {et~al.}}}{{Ball, Stace, Flammia,\ and\ Biercuk}}}
+\bibcite{BlumeKohout2017}{{20}{2017}{{Blume-Kohout\ \emph  {et~al.}}}{{Blume-Kohout, Gamble, Nielsen, Rudinger, Mizrahi, Fortier,\ and\ Maunz}}}
+\bibcite{Wu2018}{{21}{2018}{{Wu\ \emph  {et~al.}}}{{Wu, Chu, Owens,\ and\ Rabitz}}}
+\bibcite{Kelly2014}{{22}{2014}{{Kelly\ \emph  {et~al.}}}{{Kelly, Barends, Campbell, Chen, Chen, Chiaro, Dunsworth, Fowler, Hoi, Jeffrey, Megrant, Mutus, Neill, O'Malley, Quintana, Roushan, Sank, Vainsencher, Wenner, White, Cleland,\ and\ Martinis}}}
+\bibcite{Ferrie2015}{{23}{2015}{{Ferrie\ and\ Moussa}}{{}}}
 \bibstyle{apsrev4-1}
 \citation{REVTEX41Control}
 \citation{apsrev41Control}
-\newlabel{LastBibItem}{{21}{8}{}{section*.14}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Acknowledgements}{7}{section*.13}}
+\newlabel{sec:acknowledgements}{{VIII}{7}{}{section*.13}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {}References}{7}{section*.14}}
+\newlabel{LastBibItem}{{23}{7}{}{section*.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac  {\pi }{2})$. The results are quantitatively similar to those for $RX(\frac  {\pi }{2})$. In this case the 0MUP outperforms both the 1MUP by two orders of magnitude, and the constituent controls by three orders of magnitude at the origin. However, varying over $\delta $ we see that the 1MUP outperforms the 0MUP by up to an order of magnitude when there is $.1\%$ drift in the qubit control amplitudes.}}{8}{figure.5}}
+\newlabel{fig:YMUP}{{5}{8}{Numerical results comparing a 0MUP to a 1MUP for a single tunable qubit, for $RY(\frac {\pi }{2})$. The results are quantitatively similar to those for $RX(\frac {\pi }{2})$. In this case the 0MUP outperforms both the 1MUP by two orders of magnitude, and the constituent controls by three orders of magnitude at the origin. However, varying over $\delta $ we see that the 1MUP outperforms the 0MUP by up to an order of magnitude when there is $.1\%$ drift in the qubit control amplitudes}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Numerical results comparing a 0MUP to a 1MUP for a pair of tunable qubits, with a resonant exchange interaction. Shown with lower alpha values are example constituent controls. The 0MUP and 1MUP can be seen to outperform these controls by half of an order of magnitude at the origin. For all detuning values the 1MUP performs as well or better than the 0MUP. When there is $.2\%$ drift in the qubit frequency, the 1MUP outperforms members of the control famlies by almost an order of magnitude in diamond norm. Similarly, for $.2\%$ drift in the qubit control amplitude, we see that the 1MUP outperforms the the constituent controls by over half an order of magnitude.}}{8}{figure.6}}
+\newlabel{fig:2MUP}{{6}{8}{Numerical results comparing a 0MUP to a 1MUP for a pair of tunable qubits, with a resonant exchange interaction. Shown with lower alpha values are example constituent controls. The 0MUP and 1MUP can be seen to outperform these controls by half of an order of magnitude at the origin. For all detuning values the 1MUP performs as well or better than the 0MUP. When there is $.2\%$ drift in the qubit frequency, the 1MUP outperforms members of the control famlies by almost an order of magnitude in diamond norm. Similarly, for $.2\%$ drift in the qubit control amplitude, we see that the 1MUP outperforms the the constituent controls by over half an order of magnitude}{figure.6}{}}
 \newlabel{LastPage}{{}{8}{}{}{}}
