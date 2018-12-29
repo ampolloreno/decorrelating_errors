@@ -320,7 +320,7 @@ In general these gradients can be computed by propagating partial derivatives of
   \end{split}
 \end{equation}
 
-Because we our trying to generate high-order RBCs, we want to generate controls that perform well even in the presence of drift. To do this, we modified the gradient in GRAPE to instead be:
+Because we our trying to generate high-order MUPs, we want to generate controls that perform well even in the presence of drift. To do this, we modified the gradient in GRAPE to instead be:
 \begin{align}\label{eq:quadrature}
 \frac{\partial \tilde J(U)}{\partial u_{ij}} =
 \int p(\vec{\delta})\frac{\partial J(U(\vec{\delta}))}{\partial u_{ij}} d\vec{\delta}
@@ -374,7 +374,7 @@ Here we present experimental results from implementing our routine on a fixed-fr
 \begin{figure}
   \centering
   \includegraphics[width=\columnwidth]{rb_data.pdf}
-  \caption{Randomized benchmarking experiments ran using different pulse definitions. The four plots on the left are from the incorrectly calibrated pulse, while the top right is the calibrated pulse, and the bottom right is the BCS.}
+  \caption{Randomized benchmarking experiments ran using different pulse definitions. The four plots on the left are from the incorrectly calibrated pulse, while the top right is the calibrated pulse, and the bottom right is the MUP.}
   \label{fig:rb}
 \end{figure}
 
