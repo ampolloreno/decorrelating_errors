@@ -2,14 +2,15 @@
 \BOOKMARK [1][-]{section*.1}{Abstract}{section*.2}% 1
 \BOOKMARK [1][-]{section*.3}{Introduction}{section*.2}% 3
 \BOOKMARK [1][-]{section*.4}{Mathematical preliminaries}{section*.2}% 4
-\BOOKMARK [1][-]{section*.5}{Example Mixed Unitary Processes}{section*.2}% 5
-\BOOKMARK [1][-]{section*.6}{Robustly Mixed Unitary Processes}{section*.2}% 6
-\BOOKMARK [1][-]{section*.7}{Numerical Results}{section*.2}% 7
-\BOOKMARK [2][-]{section*.8}{Random Gate Synthesis}{section*.7}% 8
-\BOOKMARK [2][-]{section*.9}{One Qubit Performance Analysis}{section*.7}% 9
-\BOOKMARK [2][-]{section*.10}{Two Qubit Performance Analysis}{section*.7}% 10
-\BOOKMARK [1][-]{section*.11}{Experimental Results}{section*.2}% 11
-\BOOKMARK [1][-]{section*.12}{Conclusion and Future Work}{section*.2}% 12
-\BOOKMARK [1][-]{section*.13}{Acknowledgements}{section*.2}% 13
-\BOOKMARK [1][-]{section*.14}{References}{section*.2}% 14
-\BOOKMARK [1][-]{section*.15}{Appendix}{section*.2}% 15
+\BOOKMARK [1][-]{section*.5}{Constructing Useful Unitary Processes}{section*.2}% 5
+\BOOKMARK [2][-]{section*.6}{Mixed Unitary Processes}{section*.5}% 6
+\BOOKMARK [2][-]{section*.7}{Norm Regularization}{section*.5}% 7
+\BOOKMARK [2][-]{section*.8}{Sparsity Constraints}{section*.5}% 8
+\BOOKMARK [2][-]{section*.9}{Robustly Mixed Unitary Processes}{section*.5}% 9
+\BOOKMARK [1][-]{section*.10}{Numerical Results}{section*.2}% 10
+\BOOKMARK [2][-]{section*.11}{Two Qubit Performance Analysis}{section*.10}% 11
+\BOOKMARK [1][-]{section*.12}{Experimental Results}{section*.2}% 12
+\BOOKMARK [1][-]{section*.13}{Conclusion and Future Work}{section*.2}% 13
+\BOOKMARK [1][-]{section*.14}{Acknowledgements}{section*.2}% 14
+\BOOKMARK [1][-]{section*.15}{References}{section*.2}% 15
+\BOOKMARK [1][-]{section*.16}{Appendix}{section*.2}% 16
