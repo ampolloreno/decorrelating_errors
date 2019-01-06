@@ -71,9 +71,11 @@ The past decade has seen a dramatic increase in the performance and scale of qua
 
 The impact of an error in a quantum gate depends strongly on both the magnitude and the nature of the errors. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations that induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time and add up coherently. They are are  computationally expensive to model and it is difficult to place tight analytic bounds on circuit performance. Contrast this against random, or \emph{stochastic}, errors, which result from high-frequency noise in the controls or the environment. Systems with stochastic errors can be  modeled by defining a rate of various discrete errors in the system, such as a bit flip or phase flip. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate.
 
-Despite the relative ease of modeling stochastic errors, coherent errors are often much more likely to appear in QIPs. Drifting control parameters or environmental variables can easily have long correlation times that result in errors which are strongly coherent over the length of a quantum circuit. While these errors can often be reconstructed using various tomographic techniques, their impact is difficult to predict. The diamond distance can be used to bound the TVD of a quantum circuit, but it is in general sensitive at first order torepeated application of gate with coherent errors. For long circuits, this can add up extremely quickly. Recent work by Campbell and Hastings\cite{Campbell2017, 1612.01011, 1811.08017}, however, has shown that coherent noise can be strongly suppressed by probabilistic sampling over several distinct implementations of the target quantum gates. The resulting effective quantum process has a diamond distancea that grow only quadratically in the over/under rotation angle of the component gates.
+Despite the relative ease of modeling stochastic errors, coherent errors are often much more likely to appear in QIPs. While these errors can often be reconstructed using various tomographic techniques, their impact is difficult to predict. The diamond distance can be used to bound the total variation distance (TVD) of a quantum circuit, but it is in general sensitive at first order to repeated application of gate with coherent errors. For long circuits, this can add up extremely quickly. Recent work by Campbell and Hastings\cite{Campbell2017, 1612.01011, 1811.08017}, however, has shown that coherent noise can be strongly suppressed by probabilistically mixing several distinct implementations of the target quantum gates. The resulting effective quantum process has a diamond distance that grows only quadratically in the over/under rotation angle of the component gates.
 
-In this article we discuss various applications of mixed unitary controls, and show that the advantages of this approach can be made robust to drift in the target gates. We present an optimal control approach to the mixed unitary control design problem, and apply our methods in simulation where we construct single- and two-qubit mixed unitary controls which are robust to drift and uncertainty in the control parameters. We further present an experimental implementation of single-qubit mixed unitary controls on a superconducting qubit testbed at Rigetti Quantum Computing. Using randomized benchmarking, we are able to show a marked improvement in error rates, as well as a reduced variance in circuit outcome probabilities, indicating a reduction in the coherence of the error. We demonstrate that, depending on the objective, different numerical optimzations may be prefered. 
+%Drifting control parameters or environmental variables can easily have long correlation times that result in errors which are strongly coherent over the length of a quantum circuit. 
+
+In this article we discuss various applications of these mixed unitary controls, and show that the advantages of this approach can be made robust to drift in the target gates. We demonstrate that, depending on the objective, different numerical optimzations may be prefered. We present an experimental implementation of single-qubit mixed unitary controls on a superconducting qubit testbed at Rigetti Computing. Using randomized benchmarking, we are able to show a marked improvement in error rates, as well as a reduced variance in circuit outcome probabilities, indicating a reduction in the coherence of the error. We further provide an optimal control approach to the mixed unitary control design problem, and apply our methods in simulation where we construct single- and two-qubit mixed unitary controls which are robust to drift and uncertainty in the control parameters.   
 
 % For instance, the repeated measurements that occur in quantum error correction are suspected to reduce the potential impact of coherent buildup of error. Modern devices, however, do not have sufficient numbers of qubits and their errors are above the threshold at which QEC becomes a viable option.
 
@@ -103,24 +105,22 @@ Here $\target$ is the target operation, $\actual$ is the actual gate as implemen
 	\end{array} 	
 	\right)
 \end{equation}
-The top row of all trace-preserving (TP) maps is fixed to $\{1,0,0,0,\cdots\}$.  The rest of the first column, $\vec{m}$, describes any deviations from unitality, as could arise from amplitude damping. If the error channel is unitary, then the error is coherent, and the submatrix $R$ is perfectly antisymmetric, corresponding to a rotation of the generalized Bloch vector. If  $R$ is diagonal, then the error channel is Pauli stochastic, with each entry $\error_{ii}$ corresponding to the probability that the associated Pauli error:
+The top row of all trace-preserving (TP) maps is fixed to $\{1,0,0,0,\cdots\}$.  The rest of the first column, $\vec{m}$, describes any deviations from unitality, as could arise from amplitude damping. If the error channel is unitary, then the error is coherent, and the submatrix $R$ is perfectly antisymmetric, corresponding to a rotation of the generalized Bloch vector. If  $R$ is diagonal, then the error channel is Pauli stochastic, with each entry  corresponding to the probability that the associated Pauli error occurs in each application of the gate. That is to say that $\error_{ii}$ gives the probability that the following map is applied:
 \begin{equation}
 \vec\rho \rightarrow \tr{(\sigma_j^{\dagger}\sigma_i\sigma_k\sigma_i^{\dagger})}\vec{\rho}
 \end{equation}
- occurs in each application of the gate. 
-
  If R is symmetric but not diagonal, then the channel is still stochastic, but the random errors consist of correlated Pauli operators (such as $X+Y$). For a single qubit, this describes everything, but the situation can be slightly more complicated for more qubits. 
 
-For a collection of single qubit controls $\{U_i\}$ generated by $\{H_i\}$, the channel that results in general is:
+For a collection of single qubit controls $\{U_i\}$ generated by $\{H_i\}$, the channel that results in general has elements:
 \begin{align}
 	\mathcal{M}_{jk} 
 		=& \sum_i p_i \tr{(\sigma_j^{\dagger}U\sigma_kU^{\dagger})} \\
 		=& \sum_i p_i \tr{(\sigma_j^{\dagger} \exp(i \frac{\theta_i}{2} H_i)\sigma_k		\exp(-i \frac{\theta_i}{2} H_i)}) \\
 		=& \tr{\sum_i p_i (\sigma_j^{\dagger} (\cos\theta_i + i \sin\theta_i H_i) \sigma_k		(\cos\theta_i - i \sin\theta_i H_i))} \\
-		=&\tr (\sum_i p_i (\sigma_j\sigma_k\cos\theta_i^2 + \sigma_jH_i\sigma_k H_i\sin\theta_i^2 \\ 
+		=& \tr (\sum_i p_i (\sigma_j\sigma_k\cos\theta_i^2 + \sigma_jH_i\sigma_k H_i\sin\theta_i^2 \\ 
 		&+ iH_i\sigma_k\sin\theta_i\cos\theta_i - i\sigma_j H_i\sin\theta_i\cos\theta_i))
 \end{align}
-In this case, the first term corresponds to the identity. $\sin\theta^2$ is always positive, so we cannot hope to eliminate the second term, but $\sin\theta\cos\theta$ may be positive or negative, and so there is hope that we could possibly combine various implementations to eliminate this term. The result would be a purely stochastic channel. 
+The first term corresponds to the identity, and $\sin\theta^2$ is always positive, so we cannot hope to eliminate the second term, but $\sin\theta\cos\theta$ may be positive or negative, and so there is hope that we could possibly combine various implementations to eliminate this term. The result would be a purely stochastic channel. 
 
 \begin{figure}
   \centering
@@ -129,28 +129,43 @@ In this case, the first term corresponds to the identity. $\sin\theta^2$ is alwa
   \label{fig:vectorspace}
 \end{figure}
 
-In fact, the problem of minimizing $\sin\theta\cos\theta$ can be seen equivalently as in Figure \ref{fig:vectorspace}. The problem can reduced to trying to construct a family of vectors, whose convex hull contains the origin.
+The problem of minimizing $\sin\theta\cos\theta$ can equivalently be cast as trying to construct a family of vectors, $\sin\theta\cos\theta(H_i\sigma_k - \sigma_jH_i)$ whose convex hull contains the origin. This can be seen in Figure \ref{fig:vectorspace} a) and b).
 
-The \emph{size} of an error in quantum gates may  be quantified in a number of ways. Two of the most common metrics are the average gate fidelity, $\mathcal{F}$, and the diamond norm, $\vert\vert\cdot\vert\vert_\diamond$. These may be represented in terms of the error maps as
+In addition to the type of errors, we care about the size of an error. The \emph{size} of an error in quantum gates may  be quantified in a number of ways. Two of the most common metrics are the average gate fidelity, $\mathcal{F}$, and the diamond norm, $\vert\vert\cdot\vert\vert_\diamond$. These may be represented in terms of the error maps as
 \begin{equation}
 	\vert\vert I - \error \vert\vert_\diamond = \sup_\rho \vert \vert (I\otimes I)(\rho) - (\error \otimes I)(\rho) \vert\vert_1
 \end{equation}
 \begin{equation}\label{eq: fid}
 	\mathcal{F}(\error) = \frac{\tr{\error} + d}{d^2 + d}
 \end{equation}
-The diamond norm is generally linear in the over-rotation angle of a quantum operation, while the average gate infidelity (AGI), given by 1-$\mathcal{F}$, is generally quadratic in the over-rotation angle of a quantum operation. It's interesting, however, to consider how these metrics assess the quality of stochastic quantum processes.
+Which metric is relevant depends on the application, and can yield very different numbers. For instance, the diamond norm is generally linear in the over-rotation angle of a quantum operation, while the average gate infidelity (AGI), given by 1-$\mathcal{F}$, is generally quadratic in the over-rotation angle of a quantum operation. Similarly, these two metric perform very differently on stochastic quantum processes, that can be achieved by probabilistically mixing unitary operators.
 
-A \textit{mixed unitary process} (MUP) consists of a set of unitary channels, $\actual_j$, and associated weights, $\sum_j \omega_j = 1$.  The process matrix for a mixed unitary channel is then the weighted sum of the component channels, $\actual_{\rm M} = \sum_j \omega_j \actual_j$, and the associated error channel is simply the weighted sum of the associated error channels, $\error_{\rm M} = \sum_j \omega_j \error_j$. It is clear from Equation \ref{eq: fid} that the AGI is linear, and therefore we see that the AGI of any MUP will be the convex sum of the consituent fidelities, with the same weighting. The diamond norm, however, is non-linear, and can in general be smaller for a MUP than any of the processes being mixed. 
+A \textit{mixed unitary process} (MUP) consists of a set of unitary channels, $\actual_j$, and associated weights, $\sum_j \omega_j = 1$.  The process matrix for a mixed unitary channel is then the weighted sum of the component channels, $\actual_{\rm M} = \sum_j \omega_j \actual_j$, and the associated error channel is simply the weighted sum of the associated error channels, $\error_{\rm M} = \sum_j \omega_j \error_j$. From this definition, we can compute the AGI of a MUP, by first computing the AGI of an convex combination of channels:
+\begin{align}
+\mathcal{F}(\alpha\error_1 + (1-\alpha)\error_2) &= \frac{\tr(\alpha\error_1 + (1-\alpha)\error_2) + d}{d^2 + d} \\
+&= \alpha\frac{\tr(\error_1) + d}{d^2 + d} + (1-\alpha)\frac{\tr(\error_2) + d}{d^2 + d} 
+\end{align}
+where we have used the linearity of the trace.
+%\begin{align}
+%\mathcal{F}(\error_{\rm M}) &= \mathcal{F}(\sum_j \omega_j \error_j)\\
+%&= \frac{\tr (\sum_j \omega_j \error_j) + d}{d^2 + d}\\
+%&= \frac{\sum_j(\tr (\omega_j \error_j)) + d}{d^2 + d}\\
+%&= \frac{\sum_j(\tr (\omega_j (\error_j + d))}{d^2 + d}\\
+%&= \sum_j\frac{(\tr (\omega_j (\error_j + d))}{d^2 + d}\\ 
+%\end{align}
 
-Campbell\cite{Campbell2017} considered the very important problem of minimizing the diamond norm of the resulting error channel. Given a collection of component channels with error at most $\epsilon$, they show that if the Hamiltonians form a convex set containing the origin, then the diamond norm can be quadratically supressed. The diamond norm is a particularly appealing target because the it provides useful error metrics on quantum circuits. However, it is not the only optimization target that can be chosen. If the ultimate goal is to produce a channel whose effect can be efficiently simulated, then it may be useful instead to construct a channel whose errors are Pauli stochastic. Such a channel could be produced by instead minimizing the off-diagonal elements in (\ref{eq:process_matrix}).
+We therefore see that the AGI of any MUP will be the convex sum of the consituent fidelities, with the same weighting. The diamond norm, however, is non-linear, and can in general be smaller for a MUP than any of the processes being mixed. 
+
+Campbell\cite{Campbell2017} considered this important problem of minimizing the diamond norm of the resulting error channel. Given a collection of component channels with error at most $\epsilon$, they show that if the Hamiltonians form a convex set containing the origin, then the diamond norm can be quadratically supressed. The diamond norm is a particularly appealing target because the it provides useful error metrics on quantum circuits. However, it is not the only optimization target that can be chosen. If the ultimate goal is to produce a channel whose effect can be Monte Carlo simulated, then it may be useful instead to construct a channel whose errors are Pauli stochastic. Using a constrained numerical optimization routine, such a channel could be produced by minimizing the off-diagonal elements of $R$ in Equation \ref{eq:process_matrix}. Indeed, this is the approach we consider in Section \ref{sec:experimental_results}. More generally, the are a number of options one may wish to consider when selecting weights to prepare a mixed unitary process.
 
 
 % ==============================================================================
-% Section: Example Mixed Unitary Processes
+% Section: Constructing Useful Unitary Processes
 % ==============================================================================
 \section{Constructing Useful Unitary Processes}
 \label{sec:mixed_unitary_processes}
-\subsection{Mixed Unitary Processes}
+\subsection{Mixed Unitary Processes with Small Diamond Norm}
+\label{sec:small_diamond_norm}
 There are often many possibly ways of implementing any given target quantum gate. Campbell and Hastings, for instance, consider gates compiled using the Solovey-Kitaev algorithm, for which many approximate gate compilations are possible.\cite{Campbell2017, 1612.01011} By selecting from these various implementations at random, they show that the resulting quantum channel can be made to have significantly reduced coherent error.  As a simple example of how this occurs, consider a scenario in which we have a single-qubit and four possible implementations of a $\pi$-pulse about the $\sigma_x$ axis. The error channels for these four implementations are themselves unitary rotations about the $\sigma_x$ axis with rotation angles of $\{-2\epsilon, -\epsilon, \epsilon, 2\epsilon\}$. Such a situation could appear, for instance, if there were amplitude errors on the fields used to affect the gates, and if the control could be implemented by a rotation about the positive or negative $\sigma_x$ axis.
 
 \begin{center}
@@ -183,7 +198,7 @@ As discussed in \cite{Campbell2017}, a sufficient condition to minimize the diam
 \begin{equation}\label{eq:campbell-condition}
 \sum \omega_j H_j = 0
 \end{equation}
-In \cite{Campbell2017}, Campbell constructs an algorithm that, using an abstract oracle to produce particular unitary controls, finds a MUP with this property. Alternatively, one can use convex optimization to solve this problem. Consider the matrix whose rows are the vectorized Hamiltonians at our disposal, i.e. for $m$, $n\times n$ Hamiltonians:
+In \cite{Campbell2017} Campbell constructs an algorithm that, given an oracle to approximate unitaries, finds a MUP with this property. Alternatively, one can use convex optimization to solve this problem. Consider the matrix whose rows are the vectorized Hamiltonians at our disposal, i.e. for $m$, $n\times n$ Hamiltonians:
 \begin{equation}\label{eq:vectorized_hamiltonians}
 	H = \left(\begin{array}{cccc}
 		H_{1_{11}} & H_{2_{21}} & \ldots   \\ 
@@ -192,78 +207,63 @@ In \cite{Campbell2017}, Campbell constructs an algorithm that, using an abstract
 	\end{array} 	
 	\right)
 \end{equation}
-Then, if our weighting vector for our MUP is $\omega$, we rewrite this sum as a matrix product, two-norm will be zero if and only if the sum is zero. That is we can instead consider solving the following convex optimization problem:
+If our weighting vector for our MUP is $\omega$, we can rewrite this sum as a matrix product whose two-norm will be zero if and only if the sum is zero. That is, we can instead consider solving the following convex optimization problem:
 
 \begin{equation}\label{eq:minimization}
   \begin{split}
     &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||H^T\omega||_2\\
   \end{split}
 \end{equation}
-
-\subsection{Norm Regularization}
-While this particular convex optimization problem can be solved through a system of linear equations, casting it as a convex optimization problem allows us to regularize the cost function, and introduce additional constraints. In particular, this minimization problem, while sufficient for quadratically decreasing the diamond norm relative to the \textit{worst} controls in the collection, does not preferentially select the controls with the least error. That is to say, both \{$U_{+2\epsilon}$, $U_{-2\epsilon}$\} and \{$U_{\epsilon}$, $U_{-\epsilon}$\} satisfy Equation \ref{eq:minimization}. To encourage the inclusion of controls with smaller error, we may impose an $\ell_2$ penalty to our cost function by rewriting it as:
-
-\begin{equation}\label{eq:minimization_l2}
-  \begin{split}
-    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}:  }||H^T\omega||_2 + \eta\sum\omega_j||H_j||_2\\
-  \end{split}
-\end{equation}
-with $\eta \geq 0$. 
-
-
-%\begin{equation}\label{eq:minimization_l2}
-%  \begin{split}
-%    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||D_{\ell}^T\omega||_2 + \eta\sum||D_0^T\omega||_2\\
-%  \end{split}
-%\end{equation}
-\subsection{Sparsity Constraints}
-To ensure the routine remains practical, we would also like to regularize our objective function to enforce sparsity. In this case, lasso regularization \cite{tibshirani1996regression} is insufficient as we already constrain the one norm of the vector we optimize over to be one. However, the problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends Equation \ref{eq:minimization}:
-
-\begin{equation}\label{eq:minimization_regularization}
-\begin{split}
-\underset{n\in[N]}{\textbf{minimize}}\{
-    &\underset{\omega_j\geq0, |\omega|_1=1, t\geq0}{\textbf{minimize}: } ||H^T\omega|| + t\\
-    &\textbf{subject to: } \omega_n > \frac{\lambda}{t}\}
-\end{split}
-\end{equation} where $\lambda$ is a hyperparameter to be optimized over.
-
-
+where the minimization is over all valid probability distributions.
 \subsection{Robustly Mixed Unitary Processes}
 \label{sec:robustly_mixed}
 
-While mixed unitary processes offer significant improvements to gate performance, they fail to take into account the reality that most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MUP will degrade. Thus, we would like to design MUPs that are \textit{robust} to this drift. A mixed unitary process is said to be robust to order $\ell$ (an $\ell$MUP) if for all $1 \leq j \leq \ell$:
+While mixed unitary processes offer significant improvements to gate performance, they fail to take into account the reality that most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MUP will degrade. Thus, we would like to design MUPs that are \textit{robust} to this drift. To enforce robustness, we can consider higher derivatives of the Hamiltonians in \ref{eq:campbell-condition}. Instead of just requiring that the $0^{th}$ derivative averages to zero, we should impose a similar condition on the derivatives of the Hamiltonians with respect to parameters that may drift:
+\begin{equation}
+D^n_j = \frac{1}{n!}\frac{\partial^{n}}{\partial\delta_{i_1}\ldots\partial\delta_{i_n}}H_j(\vec{\delta})|_{\delta=\vec{0}}
+\end{equation}
+Then we say that a mixed unitary process is said to be robust to order $\ell$ (an $\ell$MUP) if for all $1 \leq j \leq \ell$:
 \begin{equation}\label{eq:MUP}
 \begin{gathered}
-\sum_k\omega_k(\sum_{n=0}^j D^n_k)^j = 0\\
-D^n_k = \frac{1}{n!}\frac{\partial^{n}}{\partial\delta_{i_1}...\partial\delta{i_n}}H_k(t,\vec{\delta})|_{\delta=\vec{0}}
+\sum_j\omega_j(\sum_{n=0}^k D^n_j)^k = 0\\
 \end{gathered}
 \end{equation}
-These conditions imply that an $\ell$MUP is insensitive to the $\ell^{th}$ order in drift in $\vec{\delta}$. To see this, write the error on each control in the MUP as 
+In particular, we see that a 0MUP satisfies Equation \ref{eq:campbell-condition}. More generally, these conditions imply that an $\ell$MUP is insensitive to the $\ell^{th}$ order in drift in $\vec{\delta}$. To see this, we can rewrite the error on each control in the MUP as:
 \begin{equation}\label{eq:taylor}
 \begin{gathered}
-\actual_j(\vec{\delta}) = exp(-i(H_j(\vec{0}) + \frac{\partial}{\partial\delta_i}H_j(d\delta_i)\\ +  \frac{1}{2}\frac{\partial^2}{\partial\delta_i\partial\delta_k} H_j(d\delta_i d\delta_k) + ...)\target
+\actual_j(\vec{\delta}) = \exp(-i(H_j(\vec{0}) + \frac{\partial}{\partial\delta_i}H_j(d\delta_i)\\ +  \frac{1}{2}\frac{\partial^2}{\partial\delta_i\partial\delta_k} H_j(d\delta_i d\delta_k) + \ldots))\target
 \end{gathered}
 \end{equation}
-where $H(\delta)$ generates $\error$, as in Equation \ref{error_def}. By Taylor expanding Equation \ref{eq:taylor} in $\delta$, one finds that the the first $\ell$ derivatives of an $\ell MUP$ will be zero.
-
-Furthermore, if we assume that the derivatives are all of norm $\epsilon$, we can relax Equation \ref{eq:MUP}, to be
+By Taylor expanding Equation \ref{eq:taylor} in $\vec{\delta}$, one finds that the the first $\ell$ derivatives of an $\ell MUP$ will be zero. Furthermore, if we are only interested in being first order insensitve to drift and can select controls such that $|D_j^n|\approx\epsilon$, we see that Equation \ref{eq:MUP} can be approximated as:
 \begin{equation}\label{eq:MUP-relaxed}
 \begin{gathered}
-\sum_k\omega_kD^n_k = 0\\
+\sum_k\omega_jD^n_j = 0\\
 \end{gathered}
 \end{equation}
-This condition guarantees that errors will be supressed quadratically for all derivatives up to order $\ell$. Following from Lemma 2 in \cite{Campbell2017}, if $0\in $ Conv$[\{\tilde{H}_i(t, \vec{\delta})\}]$, where Conv is the convex hull of its arguments, then we know that an $\vec{\omega}$ exists that quadratically decreases the diamond norm. This condition is illustrated in Figure \ref{fig:vectorspace} gives geometric intuition for the conditions required to produce an $\ell MUP$.
+This condition guarantees that errors will be supressed quadratically for all derivatives up to order $\ell$. Following from Lemma 2 in \cite{Campbell2017}, if $0\in $ Conv$[\{H_i(\vec{\delta})\}]$, where Conv is the convex hull of its arguments, then we know that an $\vec{\omega}$ exists that quadratically decreases the diamond norm. This condition is illustrated in Figure \ref{fig:vectorspace} gives geometric intuition for the conditions required to produce an $\ell MUP$.
 
-To generate robustly mixed unitary processes, we can solve the following convex optimization problem, generalizing Equation \ref{eq:minimization}:
+To generate robustly mixed unitary processes, we first define the vectorized derivative matrix ${D^{\ell}}$ in a similar way to \ref{eq:vectorized_hamiltonians}:
+\begin{equation}
+{D^{\ell}}^T =  \left(\begin{array}{cccc}
+		D^\ell_{1_{11}} & D^\ell_{2_{21}} & \ldots   \\ 
+		\vdots\ & \ddots &    \\
+		D^\ell_{m_{11}} &  &  D^\ell_{m_{nn}} \\ 
+	\end{array} 	
+	\right)
+\end{equation}
+
+Using this, we can then solve the following convex optimization problem, generalizing Equation \ref{eq:minimization}:
 
 \begin{equation}\label{eq:robust_minimization}
   \begin{split}
-    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||D_{\ell}^T\omega||\\
-    &\textbf{subject to: } \forall i<\ell, \sum \omega_jD_j^i=0\\
+    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||{D^{\ell}}^T\omega||\\
+    &\textbf{subject to: } \forall n<\ell, \sum \omega_jD_j^n=0\\
   \end{split}
 \end{equation}
-with $D_k^n$ defined in Equation \ref{eq:MUP}. Equations \ref{eq:minimization_l2} and\ref{eq:minimization_regularization} extend in a straightforward way:
+with $D_k^n$ defined in Equation \ref{eq:MUP}. 
 
+\subsection{Hamiltonian Norm Regularization}
+While these particular convex optimization problem can be solved through a system of linear equations, casting it as a convex optimization problem allows us to regularize the cost function, and introduce additional constraints. In particular, while this minimization problem is sufficient for quadratically decreasing the diamond norm relative to the \textit{worst} controls in the collection, it does not preferentially select the controls with the least error. That is to say, both \{$U_{+2\epsilon}$, $U_{-2\epsilon}$\} and \{$U_{\epsilon}$, $U_{-\epsilon}$\} from Section \ref{sec:small_diamond_norm} satisfy Equation \ref{eq:minimization}. To encourage the inclusion of controls with smaller error, we may impose an $\ell_2$ penalty to our cost function by rewriting it as:
 
 \newcommand{\bunderbrace}[2]{%
   \begin{array}[t]{@{}c@{}}
@@ -272,17 +272,36 @@ with $D_k^n$ defined in Equation \ref{eq:MUP}. Equations \ref{eq:minimization_l2
   \end{array}
 }
 
+\begin{equation}\label{eq:minimization_l2}
+\begin{split}
+&\underset{n\in[N]}{\textbf{minimize}}\{\\
+&\ \ \bunderbrace{\textbf{minimize}: }{\omega_j\geq0, |\omega|_1=1} ||{D^{\ell}}^T\omega||+ \eta\sum\omega_j||D^0_j||_2\\
+&\ \ \textbf{subject to: } \forall n<\ell, \sum \omega_jD_j^n=0\\
+&\}
+\end{split}
+\end{equation}
+with $\eta \geq 0$. By making $\eta$ larger, we can require that the solver decreases the diamond norm of the constituent channel, while using only the best controls.
 
+
+
+%\begin{equation}\label{eq:minimization_l2}
+%  \begin{split}
+%    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||D_{\ell}^T\omega||_2 + \eta\sum||D_0^T\omega||_2\\
+%  \end{split}
+%\end{equation}
+\subsection{Sparsity Constraints}
+As a practical consideration, we would also like to regularize our objective function to enforce sparsity. Control electronics often have a limited amount of waveform memory, and thus it is important that MUPs have non-trivial probability support on a small number of controls. As an example of where this would be necessary is Figure\ref{fig:vectorspace}. In Subfigure b, it's clear that $H_4$ is unecessary to contain the origin in the convex hull of the error generators. However, if we additionally want our controls to form a 1MUP, we see from Subfigure D that we need $H_4$ in our control set. Thus we would like the solver to be frugal in which controls it selects. In many machine learning situation, lasso regularization \cite{tibshirani1996regression} can be used to enforce sparsity, however here it is insufficient as we already constrain the one norm of the vector we optimize over to be one. Conveniently, the problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends Equation \ref{eq:minimization}:
 
 \begin{equation}\label{eq:minimization_regularization}
 \begin{split}
 &\underset{n\in[N]}{\textbf{minimize}}\{\\
-&\ \ \bunderbrace{\textbf{minimize}: }{\omega_j\geq0, |\omega|_1=1,\\ t\geq0} ||D_{\ell}^T\omega||+ \eta\sum\omega_j||H_j||_2 + t\\
+&\ \ \bunderbrace{\textbf{minimize}: }{\omega_j\geq0, |\omega|_1=1,\\ t\geq0} ||{D^{\ell}}^T\omega|| + t\\
 &\ \ \textbf{subject to: } \omega_n > \frac{\lambda}{t}\\
-&\ \ \phantom{\textbf{subject to: }} \forall i<\ell, \sum \omega_jD_j^i=0\\
-\}
+&\ \ \phantom{\textbf{subject to: }} \forall n<\ell, \sum \omega_jD_j^n=0\\
+&\}
 \end{split}
-\end{equation}
+\end{equation} where $\lambda$ is a hyperparameter to be optimized over.
+
 
 % ==============================================================================
 % Section: Numerical Results

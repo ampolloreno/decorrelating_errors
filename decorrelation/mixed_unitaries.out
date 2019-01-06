@@ -3,10 +3,10 @@
 \BOOKMARK [1][-]{section*.3}{Introduction}{section*.2}% 3
 \BOOKMARK [1][-]{section*.4}{Mathematical preliminaries}{section*.2}% 4
 \BOOKMARK [1][-]{section*.5}{Constructing Useful Unitary Processes}{section*.2}% 5
-\BOOKMARK [2][-]{section*.6}{Mixed Unitary Processes}{section*.5}% 6
-\BOOKMARK [2][-]{section*.7}{Norm Regularization}{section*.5}% 7
-\BOOKMARK [2][-]{section*.8}{Sparsity Constraints}{section*.5}% 8
-\BOOKMARK [2][-]{section*.9}{Robustly Mixed Unitary Processes}{section*.5}% 9
+\BOOKMARK [2][-]{section*.6}{Mixed Unitary Processes with Small Diamond Norm}{section*.5}% 6
+\BOOKMARK [2][-]{section*.7}{Robustly Mixed Unitary Processes}{section*.5}% 7
+\BOOKMARK [2][-]{section*.8}{Hamiltonian Norm Regularization}{section*.5}% 8
+\BOOKMARK [2][-]{section*.9}{Sparsity Constraints}{section*.5}% 9
 \BOOKMARK [1][-]{section*.10}{Numerical Results}{section*.2}% 10
 \BOOKMARK [2][-]{section*.11}{Two Qubit Performance Analysis}{section*.10}% 11
 \BOOKMARK [1][-]{section*.12}{Experimental Results}{section*.2}% 12
