@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  5 JAN 2019 20:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  5 JAN 2019 20:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -505,83 +505,75 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 61.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (13.8955pt too wide) detected at line 122
-[]
- []
-
-
 
 pdfTeX warning: pdflatex (file ./figures/vectorspace.pdf): PDF inclusion: found
  PDF version <1.7>, but at most version <1.5> allowed
 <./figures/vectorspace.pdf, id=96, 995.72pt x 990.19937pt>
 File: ./figures/vectorspace.pdf Graphic file (type pdf)
 <use ./figures/vectorspace.pdf>
-Package pdftex.def Info: ./figures/vectorspace.pdf  used on input line 127.
+Package pdftex.def Info: ./figures/vectorspace.pdf  used on input line 126.
 (pdftex.def)             Requested size: 246.0pt x 244.63315pt.
 [2pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.142 
-       <./figures/vectorspace.pdf>]
-Overfull \hbox (1.68156pt too wide) detected at line 147
-[]
- []
-
-<./figures/simple_example.pdf, id=131, 464.5762pt x 132.89963pt>
+l.143 \begin{align}
+                    <./figures/vectorspace.pdf>]
+<./figures/simple_example.pdf, id=130, 464.5762pt x 132.89963pt>
 File: ./figures/simple_example.pdf Graphic file (type pdf)
 <use ./figures/simple_example.pdf>
-Package pdftex.def Info: ./figures/simple_example.pdf  used on input line 186.
+Package pdftex.def Info: ./figures/simple_example.pdf  used on input line 185.
 (pdftex.def)             Requested size: 246.0pt x 70.3736pt.
-[3pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) 
-has been already used, duplicate ignored
+ [3pdfTeX warning (ext4): destination with the same identifier (name{figure.2})
+ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.211 
-       <./figures/simple_example.pdf>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 266.
+l.217 \subsection
+                 {Robustly Mixed Unitary Processes} <./figures/simple_example.p
+df>]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 265.
 
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 266.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 265.
  [4]
 
 LaTeX Warning: Reference `sec:random_gate_synthesis' on page 5 undefined on inp
-ut line 316.
+ut line 315.
 
 
-LaTeX Warning: Reference `eq:quadrature' on page 5 undefined on input line 316.
+LaTeX Warning: Reference `eq:quadrature' on page 5 undefined on input line 315.
 
 
-<./figures/bangbang.png, id=203, 612.2875pt x 325.215pt>
+<./figures/bangbang.png, id=202, 612.2875pt x 325.215pt>
 File: ./figures/bangbang.png Graphic file (type png)
 <use ./figures/bangbang.png>
-Package pdftex.def Info: ./figures/bangbang.png  used on input line 335.
+Package pdftex.def Info: ./figures/bangbang.png  used on input line 334.
 (pdftex.def)             Requested size: 246.0pt x 130.65932pt.
 [5pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.350 
+l.349 
        <./figures/bangbang.png>]
-<./figures/rb_data.pdf, id=222, 867.24pt x 505.89pt>
+<./figures/rb_data.pdf, id=221, 867.24pt x 505.89pt>
 File: ./figures/rb_data.pdf Graphic file (type pdf)
 <use ./figures/rb_data.pdf>
-Package pdftex.def Info: ./figures/rb_data.pdf  used on input line 354.
+Package pdftex.def Info: ./figures/rb_data.pdf  used on input line 353.
 (pdftex.def)             Requested size: 246.0pt x 143.49312pt.
  (./mixed_unitaries.bbl [6pdfTeX warning (ext4): destination with the same iden
 tifier (name{figure.4}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.9 \begin{thebibliography}{23}
-                               % <./figures/rb_data.pdf>]
+l.83   \bibnamefont {Martinis}},\ }
+                                   \href {\doibase 10.1038/nature13171} {\bi...
+ <./figures/rb_data.pdf>]
 Underfull \hbox (badness 6910) in paragraph at lines 83--88
  []\OT1/cmr/m/n/9 R. Barends, J. Kelly, A. Megrant, A. Veitia,
  []
@@ -619,16 +611,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 314--320
  []
 
 ) [7]
-<./figures/SQRTY_no_member.png, id=351, 1218.5525pt x 620.3175pt>
+<./figures/SQRTY_no_member.png, id=350, 1218.5525pt x 620.3175pt>
 File: ./figures/SQRTY_no_member.png Graphic file (type png)
 <use ./figures/SQRTY_no_member.png>
-Package pdftex.def Info: ./figures/SQRTY_no_member.png  used on input line 398.
+Package pdftex.def Info: ./figures/SQRTY_no_member.png  used on input line 397.
 
 (pdftex.def)             Requested size: 510.0pt x 259.62291pt.
-<./figures/2QRBC_no_member.png, id=352, 2510.37875pt x 1217.54875pt>
+<./figures/2QRBC_no_member.png, id=351, 2510.37875pt x 1217.54875pt>
 File: ./figures/2QRBC_no_member.png Graphic file (type png)
 <use ./figures/2QRBC_no_member.png>
-Package pdftex.def Info: ./figures/2QRBC_no_member.png  used on input line 405.
+Package pdftex.def Info: ./figures/2QRBC_no_member.png  used on input line 404.
 
 (pdftex.def)             Requested size: 510.0pt x 247.35114pt.
 
@@ -640,19 +632,19 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.411 \end{document}
+l.410 \end{document}
                      <./figures/SQRTY_no_member.png>] [9pdfTeX warning (ext4): 
 destination with the same identifier (name{figure.6}) has been already used, du
 plicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.411 \end{document}
+l.410 \end{document}
                      <./figures/2QRBC_no_member.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 411.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 410.
  (./mixed_unitaries.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 411.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 411.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 410.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 410.
 Package rerunfilecheck Info: File `mixed_unitaries.out' has not changed.
 (rerunfilecheck)             Checksum: D023A9C04CCBFF09B40C78092431F68B;1153.
 
@@ -661,13 +653,13 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 9140 strings out of 492982
- 128572 string characters out of 6134895
- 244041 words of memory out of 5000000
- 12477 multiletter control sequences out of 15000+600000
+ 9138 strings out of 492982
+ 128551 string characters out of 6134895
+ 259721 words of memory out of 5000000
+ 12476 multiletter control sequences out of 15000+600000
  18505 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 34i,23n,29p,1271b,397s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,23n,29p,1271b,481s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texli
@@ -690,10 +682,10 @@ ic/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9
 .pfb>
-Output written on mixed_unitaries.pdf (9 pages, 540616 bytes).
+Output written on mixed_unitaries.pdf (9 pages, 540416 bytes).
 PDF statistics:
- 456 PDF objects out of 1000 (max. 8388607)
- 357 compressed objects within 4 object streams
- 82 named destinations out of 1000 (max. 500000)
+ 455 PDF objects out of 1000 (max. 8388607)
+ 356 compressed objects within 4 object streams
+ 81 named destinations out of 1000 (max. 500000)
  159 words of extra memory for PDF output out of 10000 (max. 10000000)
 
