@@ -407,26 +407,30 @@ Sandia National Laboratories is a multimission laboratory managed and operated b
 \section{Appendix}
 \label{sec:appendix}
 \subsection{Robust Mixing Lemma}
-We begin by generalizing Lemma 2 from \cite{Campbell2017}. From A3 in \cite{Campbell2017}, we know that $||e^{iM}| - (\id + iM)|| \leq \frac{1}{2}||M||^2$.
-
-Thus we can Taylor expand any mixture of unitaries, as:
+We begin by generalizing Lemma 2 from \cite{Campbell2017}. If all of our error Hamiltonians $\{H_j\}$ have bounded error, that is:
 \begin{equation}
-\deriv\sum_j \omega_je^{iH_j} = \deriv(\id + (\sum_ji\omega_jH_j) + \sum \omega_j\sum_{n=2}^{\infty}\frac{(iH_j)^n}{n!}))
+||H_j||\leq c
 \end{equation}
-By assumption, the derivatives of the first order term sum to zero, and so we see by A3 that
+Then we may consider the derivative of any mixture of unitaries as:
+%\begin{equation}
+%\deriv\sum_j \omega_je^{iH_j} = \deriv(\id + (\sum_ji%\omega_jH_j) + \sum \omega_j\sum_{n=2}^{\infty}%\frac{(iH_j)^n}{n!}))
+%\end{equation}
 \begin{equation}
-||\deriv\sum_j\omega_je^{iH_j}|| \leq \sum_j\omega_j\frac{c^2}{2} \leq \frac{c^2}{2}
+\deriv\sum_j \omega_je^{iH_j} = \sum_j\omega_ji\deriv (H_j)e^{iH_j}
 \end{equation}
-
+By assumption, the derivatives of the first order term sum to zero, and so we see by A3 in \cite{Campbell2017} that
+\begin{equation}
+||\deriv\sum_j\omega_je^{iH_j}|| \leq \sum_j\omega_j||i\deriv (H_j)(iH_j + \sum_{n=2}^{\infty}\frac{(iH_j)^n}{n!})|| \leq \sum_j\omega_j(c^2 + \frac{c^2}{2}) \leq c^2 + \frac{c^3}{2}
+\end{equation}
+Where we have used the fact that $||AB|| \leq ||A||||B||$ with $||\cdot||$ being the $\infty$-norm.
 Additionally, 
 \begin{align}
 ||\deriv e^{iH_j}|| &= ||\deriv(iH_j)e^{iH_j}|| \\
 &\leq ||\deriv(iH_j)|| + ||\deriv(iH_j)H_j|| +  ||\deriv(iH_j)\sum^{\infty}_{n=2}\frac{1}{(n)!}(iH_j)^n|| \\
 &\leq ||\deriv(iH_j)|| + ||\deriv(iH_j)||\cdot||H_j|| +  ||\deriv(iH_j)||\cdot||\sum^{\infty}_{n=2}\frac{1}{(n)!}(iH_j)^n||\\
-&\leq c + c^2 + \frac{1}{2}c^3
+&\leq c + c^2 + \frac{c^3}{2}
 \end{align}
-And so we see that Lemma 2 generalizes. In all of the above $||\cdot||$ is the Schatten 0-norm, which we will use to upper bound the 1-norm (and hence diamond norm) in the following.
-%Where we have used H\"older's inequality. 
+And so we see that Lemma 2 generalizes. We will use the above to upper bound the 1-norm (and hence diamond norm) in the following.
 
 Next we generalize the Mixing Lemma from \cite{Campbell2017}. We must assume that the 1-norm is uniformly differentiable. In that case, we see that:
 
@@ -452,5 +456,5 @@ By assumption, all of these terms are neglible, and therefore we find:
 \begin{align}
 ||\deriv(\mathcal{V}\circ\mathcal{E} - \id)(X)||_1\leq 2a^2 + 2b^2
 \end{align}
-\end{document}
 And so we see that the mixing lemma extends to first order. In a similar way, it can be extended to arbitary order, and thus if we can find constructions that satisfy the generalized Lemma 2, we can use the Robust Mixing Lemma to conclude that there exists a weighting with linearly supressed diamond norm.
+\end{document}
