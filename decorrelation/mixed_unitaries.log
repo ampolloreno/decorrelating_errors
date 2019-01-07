@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  6 JAN 2019 18:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  6 JAN 2019 22:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -624,11 +624,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 314--320
  []\OT1/cmr/m/n/9 R. Blume-Kohout, J. K. Gam-ble, E. Nielsen,
  []
 
-) [7] [8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 444.
+) [7] [8] [9]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 455.
  (./mixed_unitaries.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 444.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 444.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 455.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 455.
 Package rerunfilecheck Info: File `mixed_unitaries.out' has not changed.
 (rerunfilecheck)             Checksum: 1D3648CF4224844AE90670CCE02ADB4B;1199.
 
@@ -637,9 +637,9 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 9147 strings out of 492982
- 128603 string characters out of 6134895
- 243781 words of memory out of 5000000
+ 9154 strings out of 492982
+ 128679 string characters out of 6134895
+ 248781 words of memory out of 5000000
  12476 multiletter control sequences out of 15000+600000
  18505 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -666,10 +666,10 @@ ic/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9
 .pfb>
-Output written on mixed_unitaries.pdf (8 pages, 533488 bytes).
+Output written on mixed_unitaries.pdf (9 pages, 535975 bytes).
 PDF statistics:
- 466 PDF objects out of 1000 (max. 8388607)
- 371 compressed objects within 4 object streams
- 91 named destinations out of 1000 (max. 500000)
+ 478 PDF objects out of 1000 (max. 8388607)
+ 382 compressed objects within 4 object streams
+ 98 named destinations out of 1000 (max. 500000)
  162 words of extra memory for PDF output out of 10000 (max. 10000000)
 

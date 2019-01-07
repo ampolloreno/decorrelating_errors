@@ -407,14 +407,6 @@ Sandia National Laboratories is a multimission laboratory managed and operated b
 \section{Appendix}
 \label{sec:appendix}
 \subsection{Robust Mixing Lemma}
-We must assume that the 1-norm is uniformly differentiable. In that case, we see that:
-
-\begin{align}
-&= \deriv\sup|\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I}|_1 \\
-&= \sup\deriv|\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I}|_1 \\
-&\leq \sup|\deriv(\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I})|_1 \\
-\end{align}
-
 We begin by generalizing Lemma 2 from \cite{Campbell2017}. From A3 in \cite{Campbell2017}, we know that $||e^{iM}| - (\id + iM)|| \leq \frac{1}{2}||M||^2$.
 
 Thus we can Taylor expand any mixture of unitaries, as:
@@ -433,12 +425,32 @@ Additionally,
 &\leq ||\deriv(iH_j)|| + ||\deriv(iH_j)||\cdot||H_j|| +  ||\deriv(iH_j)||\cdot||\sum^{\infty}_{n=2}\frac{1}{(n)!}(iH_j)^n||\\
 &\leq c + c^2 + \frac{1}{2}c^3
 \end{align}
-And so we see that Lemma 2 generalizes.
+And so we see that Lemma 2 generalizes. In all of the above $||\cdot||$ is the Schatten 0-norm, which we will use to upper bound the 1-norm (and hence diamond norm) in the following.
 %Where we have used H\"older's inequality. 
 
-Next we generalize the Mixing Lemma from \cite{Campbell2017}:\ldots
+Next we generalize the Mixing Lemma from \cite{Campbell2017}. We must assume that the 1-norm is uniformly differentiable. In that case, we see that:
 
-
-
-
+\begin{align}
+&= \deriv\sup|\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I}|_1 \\
+&= \sup\deriv|\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I}|_1 \\
+&\leq \sup|\deriv(\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I})|_1 \\
+\end{align}
+And so we see it is sufficient to upperbound:
+\begin{equation}
+|\deriv(\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I})|_1
+\end{equation}
+From Equation 18 in \cite{Campbell2017}:
+\begin{align}
+&(\mathcal{V}\circ\mathcal{E} - \id)(X) = \sum_j \omega_j(\tilde{\delta}_jX + X\tilde{\delta}_j^{\dagger} + \tilde{\delta}_jX\delta_j^{\dagger})\\
+&\deriv(\mathcal{V}\circ\mathcal{E} - \id)(X) = \sum_j \omega_j(\deriv\tilde{\delta}_jX + X\deriv\tilde{\delta}_j^{\dagger} + \deriv\tilde{\delta}_jX\delta_j^{\dagger} + \tilde{\delta}_jX\deriv\delta_j^{\dagger})\\
+\end{align}
+Thus, by H\"older's inequality we find:
+\begin{align}
+&||\deriv(\mathcal{V}\circ\mathcal{E} - \id)(X)||_1\leq||\sum_j \omega_j\deriv\tilde{\delta}_j|| + ||\sum_j\omega_j\deriv\tilde{\delta}_j^{\dagger}|| + \sum_j\omega_j|| \deriv\tilde{\delta}_j||\cdot||\delta_j^{\dagger}|| + \sum_j\omega_j||\tilde{\delta}_j||\cdot||\deriv\delta_j^{\dagger}||
+\end{align}
+By assumption, all of these terms are neglible, and therefore we find:
+\begin{align}
+||\deriv(\mathcal{V}\circ\mathcal{E} - \id)(X)||_1\leq 2a^2 + 2b^2
+\end{align}
 \end{document}
+And so we see that the mixing lemma extends to first order. In a similar way, it can be extended to arbitary order, and thus if we can find constructions that satisfy the generalized Lemma 2, we can use the Robust Mixing Lemma to conclude that there exists a weighting with linearly supressed diamond norm.
