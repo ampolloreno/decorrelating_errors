@@ -3,7 +3,7 @@
 \BOOKMARK [1][-]{section*.3}{Introduction}{section*.2}% 3
 \BOOKMARK [1][-]{section*.4}{Mathematical preliminaries}{section*.2}% 4
 \BOOKMARK [1][-]{section*.5}{Constructing Useful Unitary Processes}{section*.2}% 5
-\BOOKMARK [2][-]{section*.6}{Mixed Unitary Processes with Small Diamond Norm}{section*.5}% 6
+\BOOKMARK [2][-]{section*.6}{Diamond Norm Minimization}{section*.5}% 6
 \BOOKMARK [2][-]{section*.7}{Robustly Mixed Unitary Processes}{section*.5}% 7
 \BOOKMARK [2][-]{section*.8}{Hamiltonian Norm Regularization}{section*.5}% 8
 \BOOKMARK [2][-]{section*.9}{Sparsity Constraints}{section*.5}% 9
@@ -14,3 +14,4 @@
 \BOOKMARK [1][-]{section*.14}{Acknowledgements}{section*.2}% 14
 \BOOKMARK [1][-]{section*.15}{References}{section*.2}% 15
 \BOOKMARK [1][-]{section*.16}{Appendix}{section*.2}% 16
+\BOOKMARK [2][-]{section*.17}{Robust Mixing Lemma}{section*.16}% 17
