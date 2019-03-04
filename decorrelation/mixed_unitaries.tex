@@ -68,11 +68,15 @@ Coherent errors in quantum operations are ubiquitous. Whether arising from spuri
 \section{Introduction}
 \label{sec:introduction}
 
-The past decade has seen a dramatic increase in the performance and scale of quantum information processors (QIPs). Gate fidelities are now routinely in the 99\% to 99.99\% range \cite{Barends2014, Ballance2016, 1901.08035}, and dozens of individually-addressable qubits are becoming available on integrated devices. While these advances are promising steps forward on the path towards a computationally useful QIP, the quantum supremacy \cite{1203.5813} milestone has yet to be definitively reached. The limiting factor, of course, is errors in the quantum gate operations.
+The past decade has seen a dramatic increase in the performance and scale of quantum information processors (QIPs). Gate fidelities are now routinely in the 99\% to 99.99\% range \cite{Barends2014, Ballance2016, 1901.08035}, and dozens of individually-addressable qubits are becoming available on integrated devices. While these advances are promising steps forward on the path towards a computationally useful QIP, the quantum supremacy \cite{1203.5813} milestone has yet to be definitively reached. A critical limiting factor, of course, is errors in the quantum gate operations.
 
-The impact of an error in a quantum gate depends strongly on both the magnitude and the nature of the errors. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations that induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time may add up constructively or destructively, depending on the circuit. They are are  computationally expensive to model and it can be difficult to place tight analytic bounds on circuit performance. Contrast this against random, or \emph{stochastic}, errors, which result from high-frequency noise in the controls or the environment. Systems with stochastic errors can be  modeled by defining a rate of various discrete errors in the system, such as a bit flips or phase flips. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate [Ken Brown, Steve Flammia].
+The ultimate impact of a gate error on a quantum circuit depends strongly on both the magnitude and the nature of the error. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations that induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time may add up constructively or destructively, depending on the circuit. They are are  computationally expensive to model and it can be difficult to place tight analytic bounds on circuit performance [cite]. Contrast this against random, or \emph{stochastic}, errors, which often result from high-frequency noise in the controls or the environment. Systems with stochastic errors can usually be modeled by defining a rate of various discrete errors in the system, such as a bit flips or phase flips. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate [Ken Brown, Steve Flammia].
 
-Quantitative bounds on the performance of quantum circuits can be constructed using the diamond distance, $||\cdot||_\diamond$. This particular metric, defined in Section \ref{sec:representing_quantum_gates}, has the appealing property of being subadditive, namely for a channels $\mathcal{F}_1$, $\mathcal{F}_2$ we have:
+
+
+
+
+Quantitative bounds on the performance of a quantum circuit composed of faulty gates can be constructed using the diamond distance, $||\cdot||_\diamond$. This particular metric, defined in Section \ref{sec:representing_quantum_gates}, has the appealing property of being subadditive, namely for a channels $\mathcal{F}_1$, $\mathcal{F}_2$ we have:
 \begin{equation}
 ||\mathcal{F}_1\circ\mathcal{F}_2||_\diamond \leq ||\mathcal{F}_1||_\diamond + ||\mathcal{F}_2||_\diamond
 \end{equation}
@@ -94,17 +98,17 @@ In this article we discuss various applications of these mixed unitary controls,
 % ==============================================================================
 \section{Mixed quantum channels}
 \label{sec:representing_quantum_gates}
-Quantum gate operations are implemented by applying a sequence of classical control fields to some set of qubits. Fluctuations in the environment or imperfections in the controls can cause the state of the qubits to change in a way that is different from what was intended.  But if the gates are fairly stable with time and context\cite{1810.05651}, then we can usually describe their action on the qubit state using \emph{process matrices} -- linear, Markovian maps on the state of some qubits.  When working with process matrices, it is convenient to write the system density operator using a vectorized representation, and in this article, we'll make use of the generalized Bloch vector,
+Quantum gate operations are implemented by applying a sequence of classical control fields to some set of qubits. Fluctuations in the environment or imperfections in the controls can cause the state of the qubits to change in a way that is different from what was intended.  But if the gates are fairly stable with time and context\cite{1810.05651}, then we can model their action with completely positive, trace-preserving (CPTP) maps. These maps have a number of useful representations, including as Kraus operators[], Choi matrices[], and Jamiolkowsi states[]. But for the purposes of this article, \emph{process matrices} will be most convenient. The process matrix representation of a quantum gate acts through the usual matrix multiplication on a vectorized representation of the denity matrix. \note{Write some more...}
+
+it is convenient to write the system density operator using a vectorized representation, and in this article, we'll make use of the generalized Bloch vector,
 \begin{equation}
   \vec \rho = \tr(\rho \vec \Sigma)/2^n,
 \end{equation}
-where $\vec \Sigma$ is a vector of all $4^n$ $n$-qubit Pauli operators. For a single qubit, this is $\vec\Sigma = \left\{I, \sigma_x, \sigma_y, \sigma_z\right\}$.  The action of a gate is then given by the usual matrix multiplication:
+where $\vec \Sigma$ is a vector of all $4^n$ $n$-qubit Pauli operators. For a single qubit, this is $\vec\Sigma = \left\{I, \sigma_x, \sigma_y, \sigma_z\right\}$.  We can then represent the action of a CPTP map using a \emph{process matrix}, which acts on a vectorized quantum state by the usual matrix multiplication:
 \begin{equation}\label{error_def}
-  \vec\rho \rightarrow \target\vec\rho = \error \actual \vec\rho.
+  \vec\rho \rightarrow \actual\vec\rho = \error \target \vec\rho.
 \end{equation}
-Here $\target$ is the target operation, $\actual$ is the actual gate as implemented, and $\error$ is the effective error channel:
-
-
+Here $\actual$ is the actual gate as implemented, $\target$ is the target operation, and $\error$ is the effective error channel:
 \begin{equation}\label{eq:process_matrix}
 \error =
 	\left(\begin{array}{c|cccc}

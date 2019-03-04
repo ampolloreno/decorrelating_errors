@@ -8,3 +8,4 @@ __pycache__
 *.aux
 *.synctex.gz
 *.fls
+/decorrelation/mixed_unitaries.log
