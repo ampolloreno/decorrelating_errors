@@ -38,6 +38,7 @@
 \newcommand{\actual}{\ensuremath{\tilde{\mathcal{G}}}}
 \newcommand{\target}{\ensuremath{{\mathcal{G}}}}
 \newcommand{\error}{\ensuremath{{\mathcal{E}}}}
+\newcommand{\generator}{\ensuremath{{\mathsf{G}}}}
 \def\id{\mbox{\small 1} \!\! \mbox{1}}
 
 %-------------Header begins here----------------------------------------
@@ -74,7 +75,7 @@ The ultimate impact of a gate error on a quantum circuit depends strongly on bot
 
 
 
-
+\note{don't define diamond norm here}
 
 Quantitative bounds on the performance of a quantum circuit composed of faulty gates can be constructed using the diamond distance, $||\cdot||_\diamond$. This particular metric, defined in Section \ref{sec:representing_quantum_gates}, has the appealing property of being subadditive, namely for a channels $\mathcal{F}_1$, $\mathcal{F}_2$ we have:
 \begin{equation}
@@ -98,16 +99,24 @@ In this article we discuss various applications of these mixed unitary controls,
 % ==============================================================================
 \section{Mixed quantum channels}
 \label{sec:representing_quantum_gates}
-Quantum gate operations are implemented by applying a sequence of classical control fields to some set of qubits. Fluctuations in the environment or imperfections in the controls can cause the state of the qubits to change in a way that is different from what was intended.  But if the gates are fairly stable with time and context\cite{1810.05651}, then we can model their action with completely positive, trace-preserving (CPTP) maps. These maps have a number of useful representations, including as Kraus operators[], Choi matrices[], and Jamiolkowsi states[]. But for the purposes of this article, \emph{process matrices} will be most convenient. The process matrix representation of a quantum gate acts through the usual matrix multiplication on a vectorized representation of the denity matrix. \note{Write some more...}
-
-it is convenient to write the system density operator using a vectorized representation, and in this article, we'll make use of the generalized Bloch vector,
+\begin{enumerate}
+	\item Specify the process matrix representation of a quantum channel in terms of the generalized Bloch vector
+	\item 
+\end{enumerate}
+Quantum gate operations are implemented by applying a sequence of classical control fields to some set of qubits. Fluctuations in the environment or imperfections in the controls can cause the state of the qubits to change in a way that is different from what was intended.  But if the gates are fairly stable with time and context\cite{1810.05651}, then we can model their action with completely positive, trace-preserving (CPTP) maps. These maps have a number of useful representations, including as Kraus operators[], Choi matrices[], and Jamiolkowsi states[]. But for the purposes of this article, \emph{process matrices} will be most convenient. The process matrix representation of a quantum gate acts through the usual matrix multiplication on a vectorized representation of the system density matrix. \note{Write some more...}
+\begin{equation}\label{error_def}
+  \vec\rho \rightarrow \actual\vec\rho = \error \target \vec\rho.
+\end{equation}
+We vectorize the density matrix as
 \begin{equation}
   \vec \rho = \tr(\rho \vec \Sigma)/2^n,
 \end{equation}
 where $\vec \Sigma$ is a vector of all $4^n$ $n$-qubit Pauli operators. For a single qubit, this is $\vec\Sigma = \left\{I, \sigma_x, \sigma_y, \sigma_z\right\}$.  We can then represent the action of a CPTP map using a \emph{process matrix}, which acts on a vectorized quantum state by the usual matrix multiplication:
-\begin{equation}\label{error_def}
-  \vec\rho \rightarrow \actual\vec\rho = \error \target \vec\rho.
-\end{equation}
+
+
+
+An important consequence of the linearity of this representation is that classical randomness can be easily encoded in the density matrix. Suppose that each time a gate is implemented, a different version of the gate is applied at random. 
+
 Here $\actual$ is the actual gate as implemented, $\target$ is the target operation, and $\error$ is the effective error channel:
 \begin{equation}\label{eq:process_matrix}
 \error =
@@ -212,7 +221,7 @@ The effective generator vanishes at first order.
 \end{tabular}
 \end{center}
 
-Alternatively, we might consider eliminating off-diagonal entries of G:
+Alternatively, we might consider eliminating off-diagonal entries of $\error(\epsilon)$ \note{fix this}:
 \begin{equation}
 	\left(\begin{array}{@{}ccccc@{}}
 		0 & 0 & 0 & 0 \\ 
@@ -262,15 +271,15 @@ Alternatively, we might consider eliminating off-diagonal entries of G:
 % ==============================================================================
 \section{Constructing Useful Unitary Processes}
 \label{sec:mixed_unitary_processes}
-\note{write an introduction to this section here} 
+\note{write an introduction to this section here, change notation to be consistent with other sections} 
 In general, we want to construct a problem so that 0 is in the convex hull of some set of vectors. These vectors might represent the off-diagonal elements of the error maps, or they could be the error generator. As we'll see in section ... we could also include the derivatives with respect to various parameters. With appropriate weighting, we could minimize any number of effects. Which optimization we choose will depend on the approach. \note{Then go into examples below. }
 
 
 % ==============================================================================
 % Section: Generators
 % ==============================================================================
-
-\subsection{First-order generators} % (fold)
+\subsection{Optimization Targets}
+\subsubsection{First-order generators} % (fold)
 \label{sub:first_order_generators}
 \note{say that we are linearizing the diamond distance calculation -  rewrite this whole thing}
 If our primary goal is for our MQC to have increased performance, then a useful target for constructing MQCs is instead minimizing the diamond norm. As in Section \ref{sec:simple_example}, the MQC that minimizes the diamond norm has matrix elements given by:
@@ -311,19 +320,19 @@ Linearly constrained minimization problems with quadratic cost functions like th
 % Section: Off-diagonals
 % ==============================================================================
 
-\subsection{Off-diagonals} % (fold)
+\subsubsection{Off-diagonals} % (fold)
 \label{sub:off_diagonals}
-
+\note{write this section to basically discuss the original optimization problem (from years ago)}
 % subsection off_diagonals (end)
 
 
 % ==============================================================================
 % Section: Robustness
 % ==============================================================================
-
-\subsection{Adding robustness} % (fold)
+\subsection{Additional Constraints}
+\subsubsection{Adding robustness} % (fold)
 \label{sub:adding_robustness}
-\note{this section is a little bit heavy on the notation - is there anything we can do to ease that? Perhaps in the introduction we can specify the problem a little more clearly and then this can be just a restriction of that general model }
+\note{ Try to make this more readable }
 While mixed quantum channels offer significant improvements to gate performance, they fail to take into account the reality that most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MQC will degrade. Thus, we would like to design MQCs that are \textit{robust} to this drift. To enforce robustness, we can consider higher derivatives of the Hamiltonians in Equation \ref{eq:campbell-condition}. Instead of only requiring that the $0^{th}$ derivative averages to zero, we will impose a similar condition on the derivatives of the Hamiltonians with respect to parameters that may drift:
 \begin{equation}
 D^n_j = \frac{1}{n!}\frac{\partial^{n}}{\partial\delta_{i_1}\ldots\partial\delta_{i_n}}H_j(\vec{\delta})|_{\delta=\vec{0}}
@@ -375,7 +384,7 @@ with $D_n^j$ defined in Equation \ref{eq:taylor}. The time to solve these convex
 % Section: Norm regularization
 % ==============================================================================
 
-\subsection{Hamiltonian Norm Regularization}
+\subsubsection{Hamiltonian Norm Regularization}
 \label{sec:norm}
 While up until this point, these particular convex optimization problem could be solved using a system of linear equations, casting them as convex optimization problems allows us to penalize the cost function to encourage different behavior in the solution. In particular, while this minimization problem is sufficient for quadratically decreasing the diamond norm relative to the \textit{worst} controls in the collection, it does not preferentially select the controls with the least error. That is to say, both \{$U_{+2\epsilon}$, $U_{-2\epsilon}$\} and \{$U_{\epsilon}$, $U_{-\epsilon}$\} from Section \ref{sec:simple_example} satisfy Equation \ref{eq:minimization}. To encourage the inclusion of controls with smaller error, we may impose a penalty proportional to the norm of the included Hamiltonians. In our case, we choose to penalize for the $\ell_2$ ($||\cdot||_2$) norm, and thus we modify our cost function to be:
 
@@ -401,7 +410,7 @@ with $\eta \geq 0$. By making $\eta$ larger, we can supress the diamond norm to 
 % Section: Sparsity
 % ==============================================================================
 
-\subsection{Sparsity Constraints}
+\subsubsection{Sparsity Constraints}
 As a practical consideration, we would also like to regularize our objective function to enforce sparsity. Control electronics often have a limited amount of waveform memory, and thus it is important that MQCs have non-trivial probability support on a small number of controls. As an example of where this would be necessary is given in Figure \ref{fig:vectorspace}. In b), it is clear that $H_4$ is unecessary to contain the origin in the convex hull of the error generators. Thus we would prefer that our solution, if we are forming a $0$MQC, ignores $H_4$. However, if we additionally want our controls to form a 1MQC, we see from Subfigure D that we need $H_4$ in our control set, in which case we would like our algorithm to exclude $H_1$, since its derivative is contained in the convex hull of the others'. Thus we would like to be frugal in which controls we select. In many machine learning contexts, lasso regularization \cite{tibshirani1996regression} can be used to enforce sparsity in solutions, however this is insufficient in this context as we already constrain the one norm of $\omega$ to be one. Conveniently, the problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends Equation \ref{eq:minimization}:
 
 \begin{equation}\label{eq:minimization_regularization}
