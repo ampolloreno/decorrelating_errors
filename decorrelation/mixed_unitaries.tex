@@ -267,13 +267,11 @@ Alternatively, we might consider eliminating off-diagonal entries of $\error(\ep
 
 
 % ==============================================================================
-% Section: Constructing Useful Unitary Processes
+% Section: Constructing Useful Mixed Quantum Channels
 % ==============================================================================
-\section{Constructing Useful Unitary Processes}
+\section{Constructing Useful Mixed Quantum Channels}
 \label{sec:mixed_unitary_processes}
-\note{write an introduction to this section here, change notation to be consistent with other sections} 
-In general, we want to construct a problem so that 0 is in the convex hull of some set of vectors. These vectors might represent the off-diagonal elements of the error maps, or they could be the error generator. As we'll see in section ... we could also include the derivatives with respect to various parameters. With appropriate weighting, we could minimize any number of effects. Which optimization we choose will depend on the approach. \note{Then go into examples below. }
-
+Motivated by the simple example provided in Section \ref{sec:simple_example}, we would like to find a general methodology for producing \textit{useful} mixed quantum channels. In each of the optimization targets we considered, the problem reduces to finding a collection of vectors whose convex hull contains the origin. These vectors might represent a collection of error generators or the off-diagonal elements of a collection of error maps. As we'll see in Section \ref{sub:adding_robustness}, we can also consider the derivates of the error generators, if we want to consider the sensitivity of the controls to drift. By considering the appropriate collection of vectors and weightings, we can minimize any number of effects. Which routine we choose will depend on the quantities we are trying to minimize.
 
 % ==============================================================================
 % Section: Generators
@@ -281,21 +279,20 @@ In general, we want to construct a problem so that 0 is in the convex hull of so
 \subsection{Optimization Targets}
 \subsubsection{First-order generators} % (fold)
 \label{sub:first_order_generators}
-\note{say that we are linearizing the diamond distance calculation -  rewrite this whole thing}
-If our primary goal is for our MQC to have increased performance, then a useful target for constructing MQCs is instead minimizing the diamond norm. As in Section \ref{sec:simple_example}, the MQC that minimizes the diamond norm has matrix elements given by:
+If our primary goal is for our MQC to have increased performance, then a useful target for constructing MQCs is to minimize the diamond norm. The diamond norm is a non-linear function that in general requires a convex optimizer to compute. However, if our errors are small enough, we can consider the linearized problem, and minimize the diamond norm to first-order. As in Section \ref{sec:simple_example}, the MQC that minimizes the diamond norm to first-order in $\epsilon$ is:
 \begin{equation}\label{eq:balanced}
 \mathcal{M}_{jk} = \frac{1}{2}\tr(\sigma_j^{\dagger}U_{-\epsilon}\sigma_kU_{-\epsilon}^{\dagger}) + \frac{1}{2}\tr(\sigma_j^{\dagger}U_{\epsilon}\sigma_kU_{\epsilon}^{\dagger})
 \end{equation}
-This channel will have a diamond norm proportional to $\epsilon^2$, whereas any other combination will have a linear dependence on $\epsilon$. Contrast this with the fact that any linear combination of $\{U_{\epsilon}, U_{-\epsilon}\}$ minimizes the AGI of the resulting channel with a value of $\epsilon^2$. While selecting the convex mixture of unitaries that minimizes the AGI is  trivial, the problem of efficiently minimizing the diamond norm can be difficult, and may be the relevant quantity to consider depending on the application. However, as discussed in \cite{Campbell2017}, a sufficient condition to minimize the diamond norm of a MQC with error generators $\{H_j\}$ to first order is:
+This channel will have a diamond norm proportional to $\epsilon^2$, whereas any other combination will have a linear dependence on $\epsilon$. Contrast this with the fact that any linear combination of $\{U_{\epsilon}, U_{-\epsilon}\}$ minimizes the AGI of the resulting channel with a value of $\epsilon^2$. While selecting the convex mixture of unitaries that minimizes the AGI is  trivial, the problem of efficiently minimizing the diamond norm can be difficult, and may be the relevant quantity to consider depending on the application. However, as discussed in \cite{Campbell2017}, a sufficient condition to minimize the diamond norm of a MQC with error generators $\{G_j\}$ to first order is:
 \begin{equation}\label{eq:campbell-condition}
-\sum \omega_j H_j = 0
+\sum \omega_j G_j = 0
 \end{equation}
-In \cite{Campbell2017} Campbell constructs an algorithm that, given an oracle to approximate unitaries, finds a MQC with this property. Alternatively one might ask the question: \textit{Given a collection of controls, how can I produce a MQC with minimal diamond norm?} Such a situation may arise if there is a natural family of controls that implement a desired gate, or if, as we consider later (Section \ref{sec:numerical_results}), we simply randomly generate a collection of gate implementations. In these situations, one can equivantly use convex optimization to solve this problem. Consider the matrix whose rows are the vectorized Hamiltonians at our disposal, i.e. for $m$, $n\times n$ Hamiltonians:
+In \cite{Campbell2017} Campbell constructs an algorithm that, given an oracle to approximate unitaries, generates controls and weightings to find an MQC with this property. Alternatively one might ask the question: \textit{Given a fixed collection of controls, how can I produce weighting a weighting with minimal diamond norm?} Such a situation may arise if there is a natural family of controls that implement a desired gate, or if, as we consider later (Section \ref{sec:numerical_results}), we randomly generate a collection of gate implementations. In these situations, one can equivantly use convex optimization to solve this problem. Consider the matrix whose columns are the vectorized Hamiltonians at our disposal, i.e. for $m$, $n\times n$ Hamiltonians:
 \begin{equation}\label{eq:vectorized_hamiltonians}
-	\bold{H} = \left(\begin{array}{cccc}
-		H_{1_{11}} & H_{2_{21}} & \ldots   \\ 
+	\bold{G} = \left(\begin{array}{cccc}
+		G_{1_{11}} & G_{2_{11}} & \ldots   \\ 
 		\vdots\ & \ddots &    \\
-		H_{m_{11}} &  &  H_{m_{nn}} \\ 
+		G_{1_{nn}} &  &  G_{m_{nn}} \\ 
 	\end{array} 	
 	\right)
 \end{equation}
@@ -303,11 +300,11 @@ If our weighting vector for our MQC is $\omega$, we can rewrite this sum as a ma
 
 \begin{equation}\label{eq:minimization}
   \begin{split}
-    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||\bold{H}^T\omega||_2\\
+    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||\bold{G}\omega||_2\\
   \end{split}
 \end{equation}
 
-Linearly constrained minimization problems with quadratic cost functions like this have been proven to be efficiently solvable by methods like the Elipsoid Method\needcite, however these have very poor average case performance. However, there are many existing convex solver software packages that solve these problems efficiently in practice, with some formal proofs showing runtimes as good as $\mathcal{O}(\log{\frac{1}{\epsilon}}L^2n^4)$, where $\epsilon$ is the accuracy in the solution, $L$ is the number of bits in the input, and $n^4$ is the number of variables.
+Linearly constrained minimization problems with quadratic cost functions like this have been proven to be efficiently solvable by methods like the Elipsoid Method\cite{wright1999numerical, khachiyan}, and there are many existing convex solver software packages that solve these problems efficiently in practice, with some formal proofs showing runtimes as good as $\mathcal{O}(\log{\frac{1}{\epsilon}}L^2n^4)$, where $\epsilon$ is the accuracy in the solution, $L$ is the number of bits in the input, and $n^4$ is the number of variables.
 
 %In both cases it is clear that we should select the gates with smaller error, i.e. $\{U_{\epsilon}, U_{-\epsilon}\}$, rather than those with larger error, to minimize the multiplicative coefficient on the error. Despite this, literature commonly assumes that all controls are less than some threshold value, below which differences in performance don't matter. \cite{Campbell2017} In realistic scenarios, some controls will have better performance than others, and it is important to select from those controls when able to. We will discuss numerical approaches to solving this Section \ref{sec:norm}.
 
@@ -322,9 +319,17 @@ Linearly constrained minimization problems with quadratic cost functions like th
 
 \subsubsection{Off-diagonals} % (fold)
 \label{sub:off_diagonals}
-\note{write this section to basically discuss the original optimization problem (from years ago)}
-% subsection off_diagonals (end)
+Instead of targeting the diamond norm and vectorizing the error generators, we can instead consider error channels $\error_i$ such that $\error_i\actual_i=\target$, where $\target$ is again the target gate. To approximate a depolarizing channel we may define a different minimization problem to  minimize the off-diagonal terms:
+\begin{equation}\label{eq:minimization}
+  \begin{split}
+    &\underset{w_0, ..., w_N}{\textbf{minimize}} \{\sum_{i\neq j}^N|\sigma_i\Lambda(\sigma_j)|^2\}\\
+    &\textbf{where}\ \Lambda(\sigma_j) := \sum^N_{i=1}w_i\mathcal{E}_i^{\dagger}\sigma_j\mathcal{E}_i\\
+    &\textbf{subject to} \sum_{i=1}^Nw_i = 1
+  \end{split}
+\end{equation}
 
+Previous authors have considered minimizing the diamond distance to the nearest Pauli or Clifford Channel \cite{Magesan2013}, and while this gives a good theoretical framework, it requires the use of a convex solver, and in particular does not have the restriction that the optimal channel be decomposable into a given family of controls. Therefore we can view our approach as a regularization of this method, where we have imposed the condition that our final channel must arise from a BCS. In doing so, we move from computing the diamond norm to needing to computing a sum. In the next section we give a simple example, followed by numerical results for one qubit and two qubits gates.
+% subsection off_diagonals (end)
 
 % ==============================================================================
 % Section: Robustness
@@ -333,7 +338,7 @@ Linearly constrained minimization problems with quadratic cost functions like th
 \subsubsection{Adding robustness} % (fold)
 \label{sub:adding_robustness}
 \note{ Try to make this more readable }
-While mixed quantum channels offer significant improvements to gate performance, they fail to take into account the reality that most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MQC will degrade. Thus, we would like to design MQCs that are \textit{robust} to this drift. To enforce robustness, we can consider higher derivatives of the Hamiltonians in Equation \ref{eq:campbell-condition}. Instead of only requiring that the $0^{th}$ derivative averages to zero, we will impose a similar condition on the derivatives of the Hamiltonians with respect to parameters that may drift:
+While mixed quantum channels offer significant improvements to gate performance, they fail to take into account the reality that most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MQC will degrade. Thus, we would like to design MQCs that are \textit{robust} to this drift. To enforce robustness, we can consider higher derivatives of the generators in Equation \ref{eq:campbell-condition}. Instead of only requiring that the $0^{th}$-order derivatives average to zero, we will impose a similar condition on the higher-order derivatives with respect to parameters that may drift:
 \begin{equation}
 D^n_j = \frac{1}{n!}\frac{\partial^{n}}{\partial\delta_{i_1}\ldots\partial\delta_{i_n}}H_j(\vec{\delta})|_{\delta=\vec{0}}
 \end{equation}
@@ -451,6 +456,7 @@ Additionally, by minimizing the off-diagonal elements of the process matrix, we 
 % Section: Numerical Results
 % ==============================================================================
 \subsection{Numerical Implementation}
+\label{sec:numerical_results}
 In the following numerical results, we explore using the methods in Section \ref{sec:mixed_unitary_processes} to build MQCs. We consider the following model for a single tunable qubit: 
 \begin{equation}\label{eq:1Qham}
   H(\delta, \epsilon, t) = \epsilon\sigma_z + (1 + \delta)(c_x(t)\sigma_x + c_y(t)\sigma_y)
