@@ -35,15 +35,17 @@
 \newcommand{\kcy}[1]{{\color{red}[#1]_{\rm{KCY}}}}
 \newcommand{\amp}[1]{{\color{red}[#1]_{\rm{AMP}}}}
 \newcommand{\deriv}[0]{{\frac{d}{d\vec{\delta}}}}
-\newcommand{\actual}{\ensuremath{\tilde{\mathcal{G}}}}
-\newcommand{\target}{\ensuremath{{\mathcal{G}}}}
-\newcommand{\error}{\ensuremath{{\mathcal{E}}}}
+
+\newcommand{\actual}{\ensuremath{\tilde{\mathsf{G}}}}
+\newcommand{\target}{\ensuremath{{\mathsf{G}}}}
+\newcommand{\error}{\ensuremath{{\mathsf{E}}}}
 \newcommand{\generator}{\ensuremath{{\mathsf{G}}}}
+\newcommand{\vectorize}[1]{\ensuremath{\mathsf{vec}\left(#1\right)}}
 \def\id{\mbox{\small 1} \!\! \mbox{1}}
 
 %-------------Header begins here----------------------------------------
 \begin{document}
-\title{Advantages of mixed quantum channels for information processing}
+\title{Advantages of mixed quantum gates for information processing}
 
 \author{Anthony M. Polloreno}
 \email[Email: ]{anthony@rigetti.com}
@@ -68,7 +70,7 @@ Coherent errors in quantum operations are ubiquitous. Whether arising from spuri
 % ==============================================================================
 \section{Introduction}
 \label{sec:introduction}
-
+\note{discuss variance narrowing and cite Biercuk}
 The past decade has seen a dramatic increase in the performance and scale of quantum information processors (QIPs). Gate fidelities are now routinely in the 99\% to 99.99\% range \cite{Barends2014, Ballance2016, 1901.08035}, and dozens of individually-addressable qubits are becoming available on integrated devices. While these advances are promising steps forward on the path towards a computationally useful QIP, the quantum supremacy \cite{1203.5813} milestone has yet to be definitively reached. A critical limiting factor, of course, is errors in the quantum gate operations.
 
 The ultimate impact of a gate error on a quantum circuit depends strongly on both the magnitude and the nature of the error. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations that induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time may add up constructively or destructively, depending on the circuit. They are are  computationally expensive to model and it can be difficult to place tight analytic bounds on circuit performance [cite]. Contrast this against random, or \emph{stochastic}, errors, which often result from high-frequency noise in the controls or the environment. Systems with stochastic errors can usually be modeled by defining a rate of various discrete errors in the system, such as a bit flips or phase flips. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate [Ken Brown, Steve Flammia].
@@ -86,7 +88,7 @@ The diamond distance can be used to bound the total variation distance (TVD) of 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{simple_example.pdf}
-  \caption{An example of a mixed quantum channel. Using optimal control, two implementations of a $Z_\pi$ gate are designed to have equal and opposite sensitivity to errors (if one implementation over-rotates by angle $\theta$, then the other \emph{under}-rotates by $\theta$). Each time the gate is used, one of these implementations is chosen at random. The resulting quantum channel is equivalent to a perfect implementation of the gate followed by dephasing of $\order{\theta^2}$.}
+  \caption{An example of a mixed quantum gate. Using optimal control, two implementations of a $Z_\pi$ gate are designed to have equal and opposite sensitivity to errors (if one implementation over-rotates by angle $\theta$, then the other \emph{under}-rotates by $\theta$). Each time the gate is used, one of these implementations is chosen at random. The resulting quantum channel is equivalent to a perfect implementation of the gate followed by dephasing of $\order{\theta^2}$.}
   \label{fig:simple_example}
 \end{figure}
 
@@ -94,32 +96,41 @@ The diamond distance can be used to bound the total variation distance (TVD) of 
 
 In this article we discuss various applications of these mixed unitary controls, and show that the advantages of this approach can be made robust to drift in the gate implementations. We demonstrate that, depending on the objective, different numerical optimizations may be preferred. We present an experimental implementation of single-qubit mixed unitary controls on a superconducting qubit testbed at Rigetti Computing. Using randomized benchmarking, we are able to show a marked improvement in error rates, as well as a reduced variance in circuit outcome probabilities, indicating a reduction in the coherence of the error. We further provide an optimal control approach to the mixed unitary control design problem, and apply our methods in simulation where we construct single- and two-qubit mixed unitary controls which are robust to drift and uncertainty in the control parameters.   
 
+\note{Discuss the advantages of convex/quadratic programs. Discuss randomized compiling.}
+
 % ==============================================================================
 % Section: Mathematical preliminaries
 % ==============================================================================
-\section{Mixed quantum channels}
+\section{Mixed quantum gates}
 \label{sec:representing_quantum_gates}
-\begin{enumerate}
-	\item Specify the process matrix representation of a quantum channel in terms of the generalized Bloch vector
-	\item 
-\end{enumerate}
-Quantum gate operations are implemented by applying a sequence of classical control fields to some set of qubits. Fluctuations in the environment or imperfections in the controls can cause the state of the qubits to change in a way that is different from what was intended.  But if the gates are fairly stable with time and context\cite{1810.05651}, then we can model their action with completely positive, trace-preserving (CPTP) maps. These maps have a number of useful representations, including as Kraus operators[], Choi matrices[], and Jamiolkowsi states[]. But for the purposes of this article, \emph{process matrices} will be most convenient. The process matrix representation of a quantum gate acts through the usual matrix multiplication on a vectorized representation of the system density matrix. \note{Write some more...}
-\begin{equation}\label{error_def}
-  \vec\rho \rightarrow \actual\vec\rho = \error \target \vec\rho.
-\end{equation}
-We vectorize the density matrix as
+
+\noindent Suppose that one wishes to apply a unitary gate, $\mathsf{G}$, on some quantum device. Implementing this operation on a real system generally involves the application of a sequence of classical control fields to some set of qubits.  But fluctuations in the environment or imperfections in these controls can cause the state of the qubits to change in a way that is different from what was intended. If the device is fairly stable with time and context\cite{1810.05651}, then we can accurately model the actual gate dynamics action using a completely positive, trace-preserving (CPTP) map, $\mathsf{\tilde G}$. This map can always be written as $\mathsf{\tilde G} = \mathsf{E}\circ\mathsf{G}$, where $\mathsf{E} = \mathsf{\tilde G}\circ\mathsf{G}^{-1}$ is the \emph{error map}, which is itself CPTP because $\mathsf{G}$ is unitary.
+
+% \begin{equation}
+% 	\tr\left(\mathsf{G}(\rho) \cdot\Sigma_i\right)/2^n = 
+% 	 \sum_{j} \mathcal{G}_{ij} \tr\left(\rho \cdot\Sigma_j\right)/2^n
+% 	% (\mathcal{G})_{ij} = 
+% \end{equation}
+% if $\rho=\Sigma_j$, then the only term that survives is 
+
+\subsection{Representing CPTP maps}
+\noindent CPTP maps possesses a number of useful representations, including Kraus operators[], Choi matrices[], and Jamiolkowsi states[]. But for the purposes of this article, the \emph{process matrix} representation will be particularly convenient [], and we shall denote the process matrix associated with a given CPTP map $\mathsf{G}$ with the corresponding calligraphic character, $\mathcal{G}$. A key feature of process matrices is that they act through the usual matrix multiplication on the vectorized quantum state:
+\begin{align}
+	\vectorize{\mathsf{\tilde G}(\rho)}
+		&= \mathcal{\tilde G}\cdot\vectorize{\rho} \\
+		&= \mathcal{E}\cdot\mathcal{G}\cdot\vectorize{\rho}
+\end{align}
+We shall work in the basis Pauli matrices, defining $\Sigma = \left\{I, \sigma_x, \sigma_y, \sigma_z\right\}^{\otimes n}$ as the collection of all $4^n$ $n$-qubit Pauli operators.  In this basis,
 \begin{equation}
-  \vec \rho = \tr(\rho \vec \Sigma)/2^n,
+  \vectorize{\rho}_i = \tr\!\left(\rho \cdot\Sigma_i\right)/2^n,
 \end{equation}
-where $\vec \Sigma$ is a vector of all $4^n$ $n$-qubit Pauli operators. For a single qubit, this is $\vec\Sigma = \left\{I, \sigma_x, \sigma_y, \sigma_z\right\}$.  We can then represent the action of a CPTP map using a \emph{process matrix}, which acts on a vectorized quantum state by the usual matrix multiplication:
-
-
-
-An important consequence of the linearity of this representation is that classical randomness can be easily encoded in the density matrix. Suppose that each time a gate is implemented, a different version of the gate is applied at random. 
-
-Here $\actual$ is the actual gate as implemented, $\target$ is the target operation, and $\error$ is the effective error channel:
+and
+\begin{equation}
+	(\mathcal{\tilde G})_{ij} = \tr\!\left(\mathsf{\tilde G}\left(\Sigma_j\right) \cdot\Sigma_i\right)/2^n.
+\end{equation}
+Process matrices written in Pauli basis are is often referred to as a \emph{Pauli transfer matrix} []. Error maps take an especially nice form in this representation:
 \begin{equation}\label{eq:process_matrix}
-\error =
+\mathcal{E} =
 	\left(\begin{array}{c|cccc}
 		1 &  & \vec{0}^T & \\ 
 		\hline & &  &  \\
@@ -128,20 +139,35 @@ Here $\actual$ is the actual gate as implemented, $\target$ is the target operat
 	\end{array} 	
 	\right)
 \end{equation}
-The top row of all trace-preserving (TP) maps is fixed to $\{1,0,0,0,\cdots\}$.  The rest of the first column, $\vec{m}$, describes any deviations from unitality, as could arise from amplitude damping. If the error channel is unitary, then the error is coherent, and the submatrix $R$ is perfectly antisymmetric, corresponding to a rotation of the generalized Bloch vector. If  $R$ is diagonal, then the error channel is Pauli stochastic, with each entry  corresponding to the probability that the associated Pauli error occurs in each application of the gate. Any such Pauli error is expressible as a unitary matrix $U$ that acts on the density matrix by conjugation, and has an action on the vectorized density matrix given by: 
-\begin{equation}
-\vec{\rho}\rightarrow \rho_i\vec{\Sigma}_{ijk}U^{\dagger}_{kl}\vec{\Sigma}_{lmn}U_{mj}\end{equation}
- If R is symmetric but not diagonal, then the channel is still stochastic, but the random errors consist of correlated Pauli operators (such as $X+Y$). For a single qubit, this describes everything, but the situation can be slightly more complicated for more qubits. 
+The top row of all trace-preserving (TP) maps is fixed to $\{1,0,0,0,\cdots\}$ and the remainder of the first column, $\vec{m}$, describes any deviations from unitality, as could arise from amplitude damping. If the error map is unitary, then the error is coherent, and the unital submatrix $R$ is perfectly antisymmetric, corresponding to a rotation of the generalized Bloch vector. Importantly, if $R$ is diagonal, then the error  is Pauli stochastic, with each diagonal entry corresponding to the probability that its associated Pauli error occurs in each application of the gate. 
+% If R is symmetric but not diagonal, then the channel is still stochastic, but the random errors consist of correlated Pauli operators (such as $X+Y$). For a single qubit, this describes everything, but the situation can be slightly more complicated for more qubits. 
 
-In addition to the type of errors, we care about the size of an error. The \emph{size} of an error in quantum gates may  be quantified in a number of ways. Two of the most common metrics are the average gate fidelity, $\mathcal{F}$, and the diamond norm, $\vert\vert\cdot\vert\vert_\diamond$. These may be represented in terms of the error maps as
+\subsection{Defining Mixed Quantum Gates}
+\noindent Now suppose that we have access to an ensemble of different implementations of the target gate $\{\mathsf{\tilde G}_i\}$.
+% , each associated with a different process matrix, $\mathcal{\tilde G}_i = \mathcal{E}_i\circ \mathcal{G}$. 
+Each time the gate is to be applied to the system, we randomly select an implementation from this ensemble such that the probability of drawing $\mathsf{E}_i$ is $w_i$ (and we ensure that $\sum_i w_i=1$). This procedure is operationally indistinguishable from a situation in which we always apply the effective operation, 
 \begin{align}
-	&\vert\vert I - \error \vert\vert_\diamond = \sup_\rho \vert \vert (I\otimes I)(\rho) - (\error \otimes I)(\rho) \vert\vert_1\\
-	&\mathcal{F}(\error) = \frac{\tr{\error} + d}{d^2 + d} 
+	\mathsf{\tilde G}_{\rm eff} &= \sum_i w_i \mathsf{\tilde G}_i,
 \end{align}
+which we call a \emph{mixed quantum gate} or MQG. Error metrics can then be computed in terms of the effective error map, 
+\begin{equation}
+	\mathsf{E}_{\rm eff} = \sum_i w_i \mathsf{E}_i.
+\end{equation}
+Two important error metrics are the average gate infidelity, $\epsilon_\mathcal{F}$, and the diamond distance, $\epsilon_\diamond$ \cite{}. These may be represented in terms of the error maps as
+\begin{align}
+	&\epsilon_\diamond \left(\mathsf{E}\right)
+		= \frac{1}{2} \sup_\rho \vert \vert (\mathsf{I}_d\otimes \mathsf{I}_d)(\rho) 
+										  - (\error \otimes \mathsf{I}_d)(\rho) \vert\vert_1,\\
+	&\epsilon_\mathcal{F}(\mathsf{E}) = \frac{\tr{\error} + d}{d^2 + d},
+\end{align}
+where $d=2^n$ and $\mathsf{I}_d$ is the $d$-dimensional identity operator.  If the error channel is purely stochastic, then $\epsilon_\diamond(\error) = \epsilon_\mathcal{F}(\error)$, but if the error channel has a unitary component, then the diamond distance will generically be larger than the average gate infidelity. 
+One may ultimately be interested in constructing bounds on quantum circuit performance, but which metric will provide the best proxy for that will depend strongly on the circuit in question. the diamond distance is approximately linear in the over-rotation angle of a quantum operation, while the average gate infidelity (AGI), given by 1-$\mathcal{F}$, is generally quadratic in the over-rotation angle of a quantum operation. 
 
-Which metric is relevant depends on the application, and can yield very different numbers. For instance, the diamond norm is generally linear in the over-rotation angle of a quantum operation, while the average gate infidelity (AGI), given by 1-$\mathcal{F}$, is generally quadratic in the over-rotation angle of a quantum operation. These two metrics also vary significantly in performance on mixed processes.
+These two metrics also vary significantly in performance on mixed processes.  
 
-A \textit{mixed quantum channel} (MQC) consists of a set of unitary channels, $\actual_j$, and associated weights, $\sum_j \omega_j = 1$.  The process matrix for a mixed unitary channel is then the weighted sum of the component channels, $\actual_{\rm M} = \sum_j \omega_j \actual_j$, and the associated error channel is simply the weighted sum of the associated error channels, $\error_{\rm M} = \sum_j \omega_j \error_j$. From this definition, we can use linearity to compute the AGI of a MQC. We see that the AGI of any MQC will be the convex sum of the consituent fidelities, with the same weighting. The diamond norm, however, is non-linear function of the channel, and can in general be smaller for a MQC than any of the processes being mixed. 
+From this definition, we can use linearity to compute the AGI of a MQC. We see that the AGI of any MQC will be the convex sum of the constituent fidelities, with the same weighting. The diamond norm, however, is non-linear function of the channel, and can in general be smaller for a MQC than any of the processes being mixed. 
+
+% A \textit{mixed quantum gate} (MQC) consists of a set of unitary channels, $\actual_j$, and associated weights, $\sum_j \omega_j = 1$.  The process matrix for a mixed unitary channel is then the weighted sum of the component channels, $\actual_{\rm M} = \sum_j \omega_j \actual_j$, and the associated error channel is simply the weighted sum of the associated error channels, $\error_{\rm M} = \sum_j \omega_j \error_j$. 
 
 When performing a quantum gate, there are often many possible ways of it might be implemented. Campbell and Hastings, for instance, consider gates compiled using the Solovey-Kitaev algorithm, for which many approximate gate compilations are possible.\cite{Campbell2017, 1612.01011} Following this, Campbell considered the important problem of minimizing the diamond norm of the resulting error channel. Given a collection of component channels with error at most $\epsilon$, he showed that if the Hamiltonians form a convex set containing the origin, then the diamond norm can be quadratically supressed. The diamond norm is a particularly appealing target because the it provides useful error bounds on quantum circuits. However, it is not the only optimization target that can be chosen. 
 
@@ -267,11 +293,11 @@ Alternatively, we might consider eliminating off-diagonal entries of $\error(\ep
 
 
 % ==============================================================================
-% Section: Constructing Useful Mixed Quantum Channels
+% Section: Constructing Useful mixed quantum gates
 % ==============================================================================
-\section{Constructing Useful Mixed Quantum Channels}
+\section{Constructing Useful mixed quantum gates}
 \label{sec:mixed_unitary_processes}
-Motivated by the simple example provided in Section \ref{sec:simple_example}, we would like to find a general methodology for producing \textit{useful} mixed quantum channels. In each of the optimization targets we considered, the problem reduces to finding a collection of vectors whose convex hull contains the origin. These vectors might represent a collection of error generators or the off-diagonal elements of a collection of error maps. As we'll see in Section \ref{sub:adding_robustness}, we can also consider the derivates of the error generators, if we want to consider the sensitivity of the controls to drift. By considering the appropriate collection of vectors and weightings, we can minimize any number of effects. Which routine we choose will depend on the quantities we are trying to minimize.
+Motivated by the simple example provided in Section \ref{sec:simple_example}, we would like to find a general methodology for producing \textit{useful} mixed quantum gates. In each of the optimization targets we considered, the problem reduces to finding a collection of vectors whose convex hull contains the origin. These vectors might represent a collection of error generators or the off-diagonal elements of a collection of error maps. As we'll see in Section \ref{sub:adding_robustness}, we can also consider the derivates of the error generators, if we want to consider the sensitivity of the controls to drift. By considering the appropriate collection of vectors and weightings, we can minimize any number of effects. Which routine we choose will depend on the quantities we are trying to minimize.
 
 % ==============================================================================
 % Section: Generators
@@ -279,6 +305,7 @@ Motivated by the simple example provided in Section \ref{sec:simple_example}, we
 \subsection{Optimization Targets}
 \subsubsection{First-order generators} % (fold)
 \label{sub:first_order_generators}
+\note{There are simple examples where you can make the error perfectly stochastic, but you may make the average gate fidelity very bad to do that.}
 If our primary goal is for our MQC to have increased performance, then a useful target for constructing MQCs is to minimize the diamond norm. The diamond norm is a non-linear function that in general requires a convex optimizer to compute. However, if our errors are small enough, we can consider the linearized problem, and minimize the diamond norm to first-order. As in Section \ref{sec:simple_example}, the MQC that minimizes the diamond norm to first-order in $\epsilon$ is:
 \begin{equation}\label{eq:balanced}
 \mathcal{M}_{jk} = \frac{1}{2}\tr(\sigma_j^{\dagger}U_{-\epsilon}\sigma_kU_{-\epsilon}^{\dagger}) + \frac{1}{2}\tr(\sigma_j^{\dagger}U_{\epsilon}\sigma_kU_{\epsilon}^{\dagger})
@@ -319,6 +346,7 @@ Linearly constrained minimization problems with quadratic cost functions like th
 
 \subsubsection{Off-diagonals} % (fold)
 \label{sub:off_diagonals}
+\note{Discuss why this can make simulation easier. }
 Instead of targeting the diamond norm and vectorizing the error generators, we can instead consider error channels $\error_i$ such that $\error_i\actual_i=\target$, where $\target$ is again the target gate. To approximate a depolarizing channel we may define a different minimization problem to  minimize the off-diagonal terms. Consider the matrix of off-diagonal terms in Equation \ref{eq:process_matrix}:
 
 \begin{equation}\label{eq:vectorized_off_diagonal}
@@ -348,12 +376,12 @@ Depending on which properties are desired of a MQC, many different optimization 
 \subsection{Additional Constraints}
 \subsubsection{Adding robustness} % (fold)
 \label{sub:adding_robustness}
-While mixed quantum channels offer significant improvements to gate performance, they fail to take into account the reality that most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MQC will degrade. Thus, we would like to design MQCs that are robust to this drift. To enforce robustness, we can consider higher derivatives of the generators in Equation \ref{eq:campbell-condition}. Instead of only requiring that the error generators average to zero, we will impose a similar condition on the higher-order derivatives with respect to parameters that may drift. If our control Hamiltonian is parameterized by a vector $\vec{\delta}$, then the quantity we will be interested in is:
+While mixed quantum gates offer significant improvements to gate performance, they fail to take into account the reality that most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MQC will degrade. Thus, we would like to design MQCs that are robust to this drift. To enforce robustness, we can consider higher derivatives of the generators in Equation \ref{eq:campbell-condition}. Instead of only requiring that the error generators average to zero, we will impose a similar condition on the higher-order derivatives with respect to parameters that may drift. If our control Hamiltonian is parameterized by a vector $\vec{\delta}$, then the quantity we will be interested in is:
 \begin{equation}
 D^n_j = \frac{1}{n!}\frac{\partial^{n}}{\partial\delta_{i_1}\ldots\partial\delta_{i_n}}H_j(\vec{\delta})|_{\delta=\vec{0}}
 \end{equation}
 If the dimension of $\vec{\delta}$ is $d$, the indices $i_0, \ldots, i_n$ take on values in $1, \ldots, d$ and this matrix has $d^n$ entries. 
-We say that a mixed quantum channel is robust to order $\ell$ (an $\ell$MQC) if for all $1 \leq k \leq \ell$:
+We say that a mixed quantum gate is robust to order $\ell$ (an $\ell$MQC) if for all $1 \leq k \leq \ell$:
 \begin{equation}\label{eq:MQC}
 \begin{gathered}
 \sum_j\omega_j(\sum_{n=0}^k D^n_j)^n = \vec{0}\\
@@ -373,7 +401,7 @@ By Taylor expanding Equation \ref{eq:taylor} in $\vec{\delta}$, one finds that t
 \end{equation}
 This condition guarantees that errors will be supressed quadratically for all derivatives up to order $\ell$. A proof is included in the appendix that generalizes the Hastings-Campbell Mixing Lemma in \cite{Campbell2017}. Namely, Campbell showed that if $0\in $ Conv$[\{H_i(\vec{\delta})\}]$, where Conv is the convex hull of its arguments, then an $\vec{\omega}$ exists that quadratically decreases the diamond norm. We prove that $0\in $ Conv$[\{D_j^n(\vec{\delta})\}]$ implies there is an $\vec{\omega}$ exists that quadratically decreases the $\ell^{th}$-order sensitivity of the diamond norm of an $\ell$MQC. Figure \ref{fig:vectorspace} gives geometric intuition for the conditions required to produce an $\ell$MQC.
 
-To generate robustly mixed quantum channels, we first define the vectorized derivative matrix ${D^{\ell}}$ in a similar way to Equation \ref{eq:vectorized_hamiltonians}:
+To generate robustly mixed quantum gates, we first define the vectorized derivative matrix ${D^{\ell}}$ in a similar way to Equation \ref{eq:vectorized_hamiltonians}:
 \begin{equation}
 {\bold{D}^{\ell}} =  \left(\begin{array}{cccc}
 		D^\ell_{1_{1,1}} & D^\ell_{2_{1,1}} & \ldots   \\ 
