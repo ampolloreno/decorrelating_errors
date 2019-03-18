@@ -179,7 +179,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="224.15763"
+     inkscape:cx="184.77248"
      inkscape:cy="48.955898"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -201,7 +201,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -391,14 +391,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:18.55287361px;line-height:125%;font-family:'Helvetica Neue';-inkscape-font-specification:'Helvetica Neue, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="543.98828"
+       x="559.07672"
        y="208.68256"
        id="text5585"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5587"
-         x="543.98828"
-         y="208.68256">depolarization</tspan></text>
+         x="559.07672"
+         y="208.68256">dephasing</tspan></text>
     <g
        transform="matrix(-1.6475765,0,0,1.4817758,684.62929,-57.955504)"
        id="g5596"

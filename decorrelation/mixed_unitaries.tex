@@ -15,7 +15,7 @@
 \usepackage{graphicx}
 \usepackage{calc}
 \graphicspath{{./figures/}}
-\hypersetup{colorlinks=true, pdfauthor=Kevin C. Young, pdftitle=Decorrelating Errors}
+\hypersetup{colorlinks=true, pdfauthor=Anthony M. Polloreno, pdftitle=Advantages of mixed quantum gates for information processing, citecolor=blue}
 \newcommand{\tr}{{\rm Tr\thinspace}}
 \newcommand{\bra}[1]{\ensuremath{\left\langle{#1}\right\vert}}
 \newcommand{\ket}[1]{\ensuremath{\left\vert{#1}\right\rangle}}
@@ -104,6 +104,7 @@ In this article we discuss various applications of these mixed unitary controls,
 \section{Mixed quantum gates}
 \label{sec:representing_quantum_gates}
 
+\subsection{Representing errors in quantum gates}
 \noindent Suppose that one wishes to apply a unitary gate, $\mathsf{G}$, on some quantum device. Implementing this operation on a real system generally involves the application of a sequence of classical control fields to some set of qubits.  But fluctuations in the environment or imperfections in these controls can cause the state of the qubits to change in a way that is different from what was intended. If the device is fairly stable with time and context\cite{1810.05651}, then we can accurately model the actual gate dynamics action using a completely positive, trace-preserving (CPTP) map, $\mathsf{\tilde G}$. This map can always be written as $\mathsf{\tilde G} = \mathsf{E}\circ\mathsf{G}$, where $\mathsf{E} = \mathsf{\tilde G}\circ\mathsf{G}^{-1}$ is the \emph{error map}, which is itself CPTP because $\mathsf{G}$ is unitary.
 
 % \begin{equation}
@@ -112,15 +113,13 @@ In this article we discuss various applications of these mixed unitary controls,
 % 	% (\mathcal{G})_{ij} = 
 % \end{equation}
 % if $\rho=\Sigma_j$, then the only term that survives is 
-
-\subsection{Representing CPTP maps}
-\noindent CPTP maps possesses a number of useful representations, including Kraus operators[], Choi matrices[], and Jamiolkowsi states[]. But for the purposes of this article, the \emph{process matrix} representation will be particularly convenient [], and we shall denote the process matrix associated with a given CPTP map $\mathsf{G}$ with the corresponding calligraphic character, $\mathcal{G}$. A key feature of process matrices is that they act through the usual matrix multiplication on the vectorized quantum state:
+ CPTP maps possesses a number of useful representations, including Kraus operators[], Choi matrices[], and Jamiolkowsi states[]. But for the purposes of this article, the \emph{process matrix} representation will be particularly convenient [], and we shall denote the process matrix associated with a given CPTP map $\mathsf{G}$ with the corresponding calligraphic character, $\mathcal{G}$. A key feature of process matrices is that they act through the usual matrix multiplication on the vectorized quantum state:
 \begin{align}
 	\vectorize{\mathsf{\tilde G}(\rho)}
 		&= \mathcal{\tilde G}\cdot\vectorize{\rho} \\
 		&= \mathcal{E}\cdot\mathcal{G}\cdot\vectorize{\rho}
 \end{align}
-We shall work in the basis Pauli matrices, defining $\Sigma = \left\{I, \sigma_x, \sigma_y, \sigma_z\right\}^{\otimes n}$ as the collection of all $4^n$ $n$-qubit Pauli operators.  In this basis,
+We shall work in the basis Pauli matrices, defining $\Sigma = \left\{I, \sigma_x, \sigma_y, \sigma_z\right\}^{\otimes n}$ as the collection of all $4^n$ $n$-qubit Pauli operators (including the identity).  In this basis,
 \begin{equation}
   \vectorize{\rho}_i = \tr\!\left(\rho \cdot\Sigma_i\right)/2^n,
 \end{equation}
@@ -128,7 +127,7 @@ and
 \begin{equation}
 	(\mathcal{\tilde G})_{ij} = \tr\!\left(\mathsf{\tilde G}\left(\Sigma_j\right) \cdot\Sigma_i\right)/2^n.
 \end{equation}
-Process matrices written in Pauli basis are is often referred to as a \emph{Pauli transfer matrix} []. Error maps take an especially nice form in this representation:
+Process matrices written in Pauli basis are is often referred to as \emph{Pauli transfer matrices} []. Error maps take an especially nice form in this representation:
 \begin{equation}\label{eq:process_matrix}
 \mathcal{E} =
 	\left(\begin{array}{c|cccc}
@@ -139,13 +138,12 @@ Process matrices written in Pauli basis are is often referred to as a \emph{Paul
 	\end{array} 	
 	\right)
 \end{equation}
-The top row of all trace-preserving (TP) maps is fixed to $\{1,0,0,0,\cdots\}$ and the remainder of the first column, $\vec{m}$, describes any deviations from unitality, as could arise from amplitude damping. If the error map is unitary, then the error is coherent, and the unital submatrix $R$ is perfectly antisymmetric, corresponding to a rotation of the generalized Bloch vector. Importantly, if $R$ is diagonal, then the error  is Pauli stochastic, with each diagonal entry corresponding to the probability that its associated Pauli error occurs in each application of the gate. 
-% If R is symmetric but not diagonal, then the channel is still stochastic, but the random errors consist of correlated Pauli operators (such as $X+Y$). For a single qubit, this describes everything, but the situation can be slightly more complicated for more qubits. 
+The top row of all trace-preserving (TP) maps is fixed to $\{1,0,0,0,\cdots\}$ and the remainder of the first column, $\vec{m}$, describes any deviations from unitality, as could arise from amplitude damping []. If the error map is unitary, then the error is coherent, and the unital submatrix $R$ is perfectly antisymmetric, corresponding to a rotation of the generalized Bloch vector. Importantly, if $R$ is diagonal, then the error is Pauli stochastic, with each diagonal entry corresponding to the probability that its associated Pauli error occurs in each application of the gate. \footnote{If $R$ is symmetric but not diagonal, then the channel is stochastic, but the random errors consist of \emph{correlated} Pauli operators (such as $X+Y$). For a single qubit, this rounds out the possibilities, but the situation can be slightly more complicated for more qubits.} 
 
 \subsection{Defining Mixed Quantum Gates}
 \noindent Now suppose that we have access to an ensemble of different implementations of the target gate $\{\mathsf{\tilde G}_i\}$.
 % , each associated with a different process matrix, $\mathcal{\tilde G}_i = \mathcal{E}_i\circ \mathcal{G}$. 
-Each time the gate is to be applied to the system, we randomly select an implementation from this ensemble such that the probability of drawing $\mathsf{E}_i$ is $w_i$ (and we ensure that $\sum_i w_i=1$). This procedure is operationally indistinguishable from a situation in which we always apply the effective operation, 
+Each time the gate is to be applied to the system, we randomly select an implementation from this ensemble such that the probability of drawing $\mathsf{\tilde G}_i$ is $w_i$ (and we ensure that $\sum_i w_i=1$). This procedure is operationally indistinguishable from a situation in which we always apply the effective operation, 
 \begin{align}
 	\mathsf{\tilde G}_{\rm eff} &= \sum_i w_i \mathsf{\tilde G}_i,
 \end{align}
@@ -158,9 +156,20 @@ Two important error metrics are the average gate infidelity, $\epsilon_\mathcal{
 	&\epsilon_\diamond \left(\mathsf{E}\right)
 		= \frac{1}{2} \sup_\rho \vert \vert (\mathsf{I}_d\otimes \mathsf{I}_d)(\rho) 
 										  - (\error \otimes \mathsf{I}_d)(\rho) \vert\vert_1,\\
-	&\epsilon_\mathcal{F}(\mathsf{E}) = \frac{\tr{\error} + d}{d^2 + d},
+	&\epsilon_\mathcal{F}(\mathsf{E}) = \frac{\tr{\mathcal{E}} + d}{d^2 + d},
 \end{align}
-where $d=2^n$ and $\mathsf{I}_d$ is the $d$-dimensional identity operator.  If the error channel is purely stochastic, then $\epsilon_\diamond(\error) = \epsilon_\mathcal{F}(\error)$, but if the error channel has a unitary component, then the diamond distance will generically be larger than the average gate infidelity. 
+where $d=2^n$ and $\mathsf{I}_d$ is the $d$-dimensional identity operator.  If the error channel is purely stochastic, then $\epsilon_\diamond(\error) = \epsilon_\mathcal{F}(\error)$, but if the error channel has a unitary component, then the diamond distance will generically be larger than the average gate infidelity [Wallman - Error rates in quantum circuits]. The diamond distance is subaddative [Watroos TQI book] under gate composition, so is particularly useful for constructing bounds on quantum circuit performance: the diamond distance of a circuit is less than or equal to the sum of the diamond distances for the component gates. 
+
+Because $\epsilon_{\mathcal{F}}$ is linear in the error map, we have:
+\begin{equation}
+	\epsilon_{\mathcal{F}}\!\left(\mathsf{E}_{\rm eff}\right) = \sum_i w_i \,\epsilon_{\mathcal{F}}(\mathsf{E}_i).
+\end{equation}
+So there can be little hope of reducing the AGI by combining various implementations. However, the diamond distance is a nonlinear function of error map. The Ky Fan singular value inequality [K. Fan, Maximum properties and inequalities for the eigenvalues of completely continuous operators, Proc. Nat. Acad. Sci. U.S.A. 37 (1951), 760–766] implies that:
+\begin{equation}
+	\epsilon_\diamond\!\left(\mathsf{E}_{\rm eff}\right) \le \sum_i w_i \, \epsilon_\diamond(\mathsf{E}_i).
+\end{equation}
+
+
 One may ultimately be interested in constructing bounds on quantum circuit performance, but which metric will provide the best proxy for that will depend strongly on the circuit in question. the diamond distance is approximately linear in the over-rotation angle of a quantum operation, while the average gate infidelity (AGI), given by 1-$\mathcal{F}$, is generally quadratic in the over-rotation angle of a quantum operation. 
 
 These two metrics also vary significantly in performance on mixed processes.  
