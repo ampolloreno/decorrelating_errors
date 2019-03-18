@@ -438,13 +438,15 @@ While up until this point, these particular convex optimization problem could be
 &\}
 \end{split}
 \end{equation}
-with $\eta \geq 0$. By making $\eta$ larger, we can ensure that we are selecting the controls that will give us a smaller prefactor. The absolute value of $\eta$ depends on the particular numerical values in $\bold{D}^\ell$. Naively generating the 1Q 0MQC in the previous section results in nontrivial support on all the members of the control family. However, as we will see in the next section, we can rewrite the minimization to impose a sparsity constraint, and the resulting 0MQC uses just five of the controls. 
+with $\eta \geq 0$. By varying $\eta$, we encourage the optimizer to include better controls in addition to minimizing the diamon norm. The absolute value of $\eta$ depends on the particular numerical values in $\bold{D}^\ell$.
 
+%Naively generating the 1Q 0MQC in the previous section results in nontrivial support on all the members of the control family. However, as we will see in the next section, we can rewrite the minimization to impose a sparsity constraint, and the resulting 0MQC uses just five of the controls. 
 % ==============================================================================
 % Section: Sparsity
 % ==============================================================================
 
 \subsubsection{Sparsity Constraints}
+
 As a practical consideration, we would also like to regularize our objective function to enforce sparsity. Control electronics often have a limited amount of waveform memory, and thus it is important that MQCs have non-trivial probability support on a small number of controls. As an example of where this would be necessary is given in Figure \ref{fig:vectorspace}. In b), it is clear that $H_4$ is unecessary to contain the origin in the convex hull of the error generators. Thus we would prefer that our solution, if we are forming a $0$MQC, ignores $H_4$. However, if we additionally want our controls to form a 1MQC, we see from Subfigure D that we need $H_4$ in our control set, in which case we would like our algorithm to exclude $H_1$, since its derivative is contained in the convex hull of the others'. Thus we would like to be frugal in which controls we select. In many machine learning contexts, lasso regularization \cite{tibshirani1996regression} can be used to enforce sparsity in solutions, however this is insufficient in this context as we already constrain the one norm of $\omega$ to be one. Conveniently, the problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends Equation \ref{eq:minimization}:
 
 \begin{equation}\label{eq:minimization_regularization}
