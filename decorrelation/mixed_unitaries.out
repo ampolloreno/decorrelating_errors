@@ -2,7 +2,7 @@
 \BOOKMARK [1][-]{section*.1}{Abstract}{section*.2}% 1
 \BOOKMARK [1][-]{section*.3}{Introduction}{section*.2}% 3
 \BOOKMARK [1][-]{section*.4}{Mixed quantum gates}{section*.2}% 4
-\BOOKMARK [2][-]{section*.5}{Representing errors in quantum gates}{section*.4}% 5
+\BOOKMARK [2][-]{section*.5}{Representing CPTP maps}{section*.4}% 5
 \BOOKMARK [2][-]{section*.6}{Defining Mixed Quantum Gates}{section*.4}% 6
 \BOOKMARK [2][-]{section*.7}{A simple example}{section*.4}% 7
 \BOOKMARK [1][-]{section*.8}{Constructing Useful mixed quantum gates}{section*.2}% 8
