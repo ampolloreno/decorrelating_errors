@@ -76,13 +76,15 @@ The past decade has seen a dramatic increase in the performance and scale of qua
 The ultimate impact of a gate error on a quantum circuit depends strongly on both the magnitude and the nature of the error. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations that induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time may add up constructively or destructively, depending on the circuit. They are are  computationally expensive to model and it can be difficult to place tight analytic bounds on circuit performance [cite]. Contrast this against random, or \emph{stochastic}, errors, which often result from high-frequency noise in the controls or the environment. Systems with stochastic errors can usually be modeled by defining a rate of various discrete errors in the system, such as a bit flips or phase flips. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate \cite{Beale2018}.
 
 
-\note{don't define diamond norm here}
+% \note{don't define diamond norm here}
 
 Quantitative bounds on the performance of a quantum circuit composed of faulty gates can be constructed using the diamond distance, $||\cdot||_\diamond$. This particular metric, defined in Section \ref{sec:representing_quantum_gates}, has the appealing property of being subadditive, namely for a channels $\mathcal{F}_1$, $\mathcal{F}_2$ we have:
 \begin{equation}
 ||\mathcal{F}_1\circ\mathcal{F}_2||_\diamond \leq ||\mathcal{F}_1||_\diamond + ||\mathcal{F}_2||_\diamond
 \end{equation}
 The diamond distance can be used to bound the total variation distance (TVD) of a quantum circuit, but it is in general sensitive at first order to repeated application of a gate with coherent errors. For long circuits, this can add up extremely quickly, and while these errors can often be identified and reconstructed using various tomographic techniques, their impact on a given quantum  difficult to predict. Additionally, despite the relative ease of modeling stochastic errors, coherent errors are often much more likely to appear in QIPs. Recent work by Campbell and Hastings\cite{Campbell2017, 1612.01011, 1811.08017}, however, has shown that coherent noise can be strongly suppressed by probabilistically mixing several distinct implementations of the target quantum gates. In this case, the resulting effective quantum process has a diamond distance that grows only quadratically in the over/under rotation angle of the component gates. 
+
+\note{Discuss randomized compiling}
 
 \begin{figure}[t]
   \centering
@@ -100,20 +102,19 @@ In this article we discuss various applications of these mixed unitary controls,
 % ==============================================================================
 % Section: Mathematical preliminaries
 % ==============================================================================
-\section{Mixed quantum gates}
+\section{Representing Errors }
 \label{sec:representing_quantum_gates}
 
-\subsection{Representing errors in quantum gates}
+\subsection{Representing Errors in Quantum Gates}
 \noindent Suppose that one wishes to apply a unitary gate, $\mathsf{G}$, on some quantum device. Implementing this operation on a real system generally involves the application of a sequence of classical control fields to some set of qubits.  But fluctuations in the environment or imperfections in these controls can cause the state of the qubits to change in a way that is different from what was intended. If the device is fairly stable with time and context\cite{1810.05651}, then we can accurately model the actual gate dynamics action using a completely positive, trace-preserving (CPTP) map, $\mathsf{\tilde G}$. This map can always be written as $\mathsf{\tilde G} = \mathsf{E}\circ\mathsf{G}$, where $\mathsf{E} = \mathsf{\tilde G}\circ\mathsf{G}^{-1}$ is the \emph{error map}, which is itself CPTP because $\mathsf{G}$ is unitary.
 
-\subsection{Representing CPTP maps}
-\noindent CPTP maps possesses a number of useful representations, including Kraus operators\cite{1983}, Choi matrices\cite{Choi1975}, and Jamiolkowsi states\cite{yczkowski2004}. But for the purposes of this article, the \emph{process matrix} representation will be particularly convenient\cite{OBrien2004}, and we shall denote the process matrix associated with a given CPTP map $\mathsf{G}$ with the corresponding calligraphic character, $\mathcal{G}$. A key feature of process matrices is that they act through the usual matrix multiplication on the vectorized quantum state:
+CPTP maps possesses a number of useful representations, including Kraus operators\cite{1983}, Choi matrices\cite{Choi1975}, and Jamiolkowsi states\cite{yczkowski2004}. But for the purposes of this article, the \emph{process matrix} representation will be particularly convenient\cite{OBrien2004}, and we shall denote the process matrix associated with a given CPTP map $\mathsf{G}$ with the corresponding calligraphic character, $\mathcal{G}$. For a $d$-dimensional quantum state, the process matrix is a $d^2\times d^2$ matrix. A key feature of process matrices is that they act through the usual matrix multiplication on the vectorized quantum state:
 \begin{align}
 	\vectorize{\mathsf{\tilde G}(\rho)}
 		&= \mathcal{\tilde G}\cdot\vectorize{\rho} \\
 		&= \mathcal{E}\cdot\mathcal{G}\cdot\vectorize{\rho}
 \end{align}
-We shall work in the basis Pauli matrices, defining $\Sigma = \left\{I, \sigma_x, \sigma_y, \sigma_z\right\}^{\otimes n}$ as the collection of all $4^n$ $n$-qubit Pauli operators.  In this basis,
+We shall work in the basis Pauli matrices, defining $\Sigma = \left\{I, \sigma_x, \sigma_y, \sigma_z\right\}^{\otimes n}$ as the collection of all $4^n$ $n$-qubit Pauli operators (including the identity).  In this basis,
 \begin{equation}
   \vectorize{\rho}_i = \tr\!\left(\rho \cdot\Sigma_i\right)/2^n,
 \end{equation}
@@ -121,7 +122,7 @@ and
 \begin{equation}
 	(\mathcal{\tilde G})_{ij} = \tr\!\left(\mathsf{\tilde G}\left(\Sigma_j\right) \cdot\Sigma_i\right)/2^n.
 \end{equation}
-Process matrices written in Pauli basis are is often referred to as a \emph{Pauli transfer matrix} \cite{Chow2012}. Error maps take an especially nice form in this representation:
+Process matrices written in Pauli basis are is often referred to as \emph{Pauli transfer matrices} \cite{Chow2012}, and error maps take an especially nice form in this basis:
 \begin{equation}\label{eq:process_matrix}
 \mathcal{E} =
 	\left(\begin{array}{c|cccc}
@@ -138,12 +139,12 @@ In what follows it will be useful to define the \emph{error generator}, $\mathca
 \begin{align}
 	\label{eq:generator}
 	\mathcal{E} 
-		&= \exp\left(\mathcal{L}\right) \\
-		&\approx \mathcal{I}_d + \mathcal{L}.
+		&= \exp\left(\mathcal{L}\right) \approx \mathcal{I}_d + \mathcal{L}.
 \end{align}
+If an implemented gate is relatively close to the target, then the error generator will be small under any of the usual matrix norms. 
 
 
-\subsection{Defining Mixed Quantum Gates}
+\subsection{Mixed Quantum Gates}
 \noindent Now suppose that we have access to an ensemble of different implementations of the target gate $\{\mathsf{\tilde G}_i\}$.
 % , each associated with a different process matrix, $\mathcal{\tilde G}_i = \mathcal{E}_i\circ \mathcal{G}$. 
 Each time the gate is to be applied to the system, we randomly select an implementation from this ensemble such that the probability of drawing $\mathsf{E}_i$ is $w_i$ (and we ensure that $\sum_i w_i=1$). This procedure is operationally indistinguishable from a situation in which we always apply the effective operation, 
@@ -581,12 +582,12 @@ The effective error channel for a mixed quantum gate is $\mathsf{E}_{\rm{eff}} =
 	\epsilon_\diamond \left(\mathsf{E}_{\rm eff}\right)
 		&= \frac{1}{2} \sup_\rho \vert \vert (\mathsf{I}_d\otimes \mathsf{I}_d)(\rho) 
 										  - (\mathsf{E}_{\rm eff} \otimes \mathsf{I}_d)(\rho) \vert\vert_1\\
-		&= \frac{1}{2} \sup_\rho \vert \vert (\mathsf{I}_d\otimes \mathsf{I}_d)(\rho) 
-										  - (\sum_i w_i\,\mathsf{E}_i \otimes \mathsf{I}_d)(\rho) \vert\vert_1 \\
+		% &= \frac{1}{2} \sup_\rho \vert \vert (\mathsf{I}_d\otimes \mathsf{I}_d)(\rho) 
+										  % - (\sum_i w_i\,\mathsf{E}_i \otimes \mathsf{I}_d)(\rho) \vert\vert_1 \\
 		&= \frac{1}{2} \sup_\rho \vert \vert \sum_i w_i\,((\mathsf{I}_d
 										  - \mathsf{E}_i) \otimes \mathsf{I}_d)(\rho) \vert\vert_1
 \end{align}
-The space of density matrices is compact, so the supremum is achievable. Call a state that achieves the supremum $\rho^*$. Then 
+For qubits, the space of density matrices is compact, so the supremum is achievable. Call a state that achieves the supremum $\rho^*$. Then 
 \begin{align}
 	\epsilon_\diamond \left(\mathsf{E}_{\rm eff}\right)
 		&= \frac{1}{2} \vert \vert \sum_i w_i\,((\mathsf{I}_d
