@@ -15,7 +15,7 @@
 \usepackage{graphicx}
 \usepackage{calc}
 \graphicspath{{./figures/}}
-\hypersetup{colorlinks=true, pdfauthor=Anthony M. Polloreno, pdftitle=Advantages of mixed quantum gates for information processing, citecolor=blue}
+\hypersetup{colorlinks=true, pdfauthor=Anthony M. Polloreno, pdftitle=Advantages of mixed quantum gates for information processing, citecolor=blue, linkcolor=blue}
 \newcommand{\tr}{{\rm Tr\thinspace}}
 \newcommand{\bra}[1]{\ensuremath{\left\langle{#1}\right\vert}}
 \newcommand{\ket}[1]{\ensuremath{\left\vert{#1}\right\rangle}}
@@ -105,7 +105,7 @@ In this article we discuss various applications of these mixed unitary controls,
 \label{sec:representing_quantum_gates}
 
 \subsection{Representing errors in quantum gates}
-\noindent Suppose that one wishes to apply a unitary gate, $\mathsf{G}$, on some quantum device. Implementing this operation on a real system generally involves the application of a sequence of classical control fields to some set of qubits.  But fluctuations in the environment or imperfections in these controls can cause the state of the qubits to change in a way that is different from what was intended. If the device is fairly stable with time and context\cite{1810.05651}, then we can accurately model the actual gate dynamics action using a completely positive, trace-preserving (CPTP) map, $\mathsf{\tilde G}$. This map can always be written as $\mathsf{\tilde G} = \mathsf{E}\circ\mathsf{G}$, where $\mathsf{E} = \mathsf{\tilde G}\circ\mathsf{G}^{-1}$ is the \emph{error map}, which is itself CPTP because $\mathsf{G}$ is unitary.
+\noindent Suppose that one wishes to apply a unitary gate, $\mathsf{G}$, on some quantum device. Implementing this operation on a real system generally involves the application of a sequence of classical control fields to some set of qubits.  But fluctuations in the environment or imperfections in these controls can cause the state of the qubits to change in a way that is different from what was intended. If the device is fairly stable with time and context\cite{1810.05651}, then we can accurately model the actual gate dynamics action using a completely positive, trace-preserving (CPTP) map, $\mathsf{\tilde G}$, on density matrices. This map can always be written as $\mathsf{\tilde G} = \mathsf{E}\circ\mathsf{G}$, where $\mathsf{E} = \mathsf{\tilde G}\circ\mathsf{G}^{-1}$ is the \emph{error map}, which is itself CPTP because $\mathsf{G}$ is unitary.
 
 % \begin{equation}
 % 	\tr\left(\mathsf{G}(\rho) \cdot\Sigma_i\right)/2^n = 
@@ -113,7 +113,7 @@ In this article we discuss various applications of these mixed unitary controls,
 % 	% (\mathcal{G})_{ij} = 
 % \end{equation}
 % if $\rho=\Sigma_j$, then the only term that survives is 
- CPTP maps possesses a number of useful representations, including Kraus operators[], Choi matrices[], and Jamiolkowsi states[]. But for the purposes of this article, the \emph{process matrix} representation will be particularly convenient [], and we shall denote the process matrix associated with a given CPTP map $\mathsf{G}$ with the corresponding calligraphic character, $\mathcal{G}$. A key feature of process matrices is that they act through the usual matrix multiplication on the vectorized quantum state:
+ CPTP maps possesses a number of useful representations, including Kraus operators[], Choi matrices[], and Jamiolkowsi states[]. But for the purposes of this article, the \emph{process matrix} representation will be particularly convenient [], and we shall denote the process matrix associated with a given CPTP map $\mathsf{G}$ by the corresponding calligraphic character, $\mathcal{G}$. A key feature of process matrices is that they act through the usual matrix multiplication on the vectorized quantum state:
 \begin{align}
 	\vectorize{\mathsf{\tilde G}(\rho)}
 		&= \mathcal{\tilde G}\cdot\vectorize{\rho} \\
@@ -138,7 +138,16 @@ Process matrices written in Pauli basis are is often referred to as \emph{Pauli 
 	\end{array} 	
 	\right)
 \end{equation}
-The top row of all trace-preserving (TP) maps is fixed to $\{1,0,0,0,\cdots\}$ and the remainder of the first column, $\vec{m}$, describes any deviations from unitality, as could arise from amplitude damping []. If the error map is unitary, then the error is coherent, and the unital submatrix $R$ is perfectly antisymmetric, corresponding to a rotation of the generalized Bloch vector. Importantly, if $R$ is diagonal, then the error is Pauli stochastic, with each diagonal entry corresponding to the probability that its associated Pauli error occurs in each application of the gate. \footnote{If $R$ is symmetric but not diagonal, then the channel is stochastic, but the random errors consist of \emph{correlated} Pauli operators (such as $X+Y$). For a single qubit, this rounds out the possibilities, but the situation can be slightly more complicated for more qubits.} 
+The top row of all trace-preserving (TP) maps is fixed to $\{1,0,0,0,\cdots\}$ and the remainder of the first column, $\vec{m}$, describes any deviations from unitality, as could arise from amplitude damping []. If the error map is unitary, then the error is coherent, and the unital submatrix $R$ is perfectly antisymmetric, corresponding to a rotation of the generalized Bloch vector. Importantly, if $R$ is diagonal, then the error is Pauli stochastic, with each diagonal entry corresponding to the probability that its associated Pauli error occurs in each application of the gate.\footnote{If $R$ is symmetric but not diagonal, then the channel is stochastic, but the random errors consist of \emph{correlated} Pauli operators (such as $X+Y$). For a single qubit, this rounds out the possibilities, but the situation can be slightly more complicated for more qubits.} 
+
+In what follows it will be useful to define the \emph{error generator}, $\mathcal{L}$, associated with a faulty gate: 
+\begin{align}
+	\label{eq:generator}
+	\mathcal{E} 
+		&= \exp\left(\mathcal{L}\right) \\
+		&\approx \mathcal{I}_d + \mathcal{L}.
+\end{align}
+
 
 \subsection{Defining Mixed Quantum Gates}
 \noindent Now suppose that we have access to an ensemble of different implementations of the target gate $\{\mathsf{\tilde G}_i\}$.
@@ -151,74 +160,77 @@ which we call a \emph{mixed quantum gate} or MQG. Error metrics can then be comp
 \begin{equation}
 	\mathsf{E}_{\rm eff} = \sum_i w_i \mathsf{E}_i.
 \end{equation}
-Two important error metrics are the average gate infidelity, $\epsilon_\mathcal{F}$, and the diamond distance, $\epsilon_\diamond$ \cite{}. These may be represented in terms of the error maps as
+Two important error metrics are the average gate infidelity (AGI), $\epsilon_\mathcal{F}$, and the diamond distance to the target, $\epsilon_\diamond$ \cite{}, defined as:
 \begin{align}
+	\label{eq:def_agi}
+	&\epsilon_\mathcal{F}(\mathsf{E}) = \frac{d^2 - \tr{\mathcal{E}}}{d^2 + d}\\
+	\label{eq:def_diamond}
 	&\epsilon_\diamond \left(\mathsf{E}\right)
 		= \frac{1}{2} \sup_\rho \vert \vert (\mathsf{I}_d\otimes \mathsf{I}_d)(\rho) 
-										  - (\error \otimes \mathsf{I}_d)(\rho) \vert\vert_1,\\
-	&\epsilon_\mathcal{F}(\mathsf{E}) = \frac{\tr{\mathcal{E}} + d}{d^2 + d},
+										  - (\mathsf{E} \otimes \mathsf{I}_d)(\rho) \vert\vert_1,
 \end{align}
-where $d=2^n$ and $\mathsf{I}_d$ is the $d$-dimensional identity operator.  If the error channel is purely stochastic, then $\epsilon_\diamond(\error) = \epsilon_\mathcal{F}(\error)$, but if the error channel has a unitary component, then the diamond distance will generically be larger than the average gate infidelity [Wallman - Error rates in quantum circuits]. The diamond distance is subaddative [Watroos TQI book] under gate composition, so is particularly useful for constructing bounds on quantum circuit performance: the diamond distance of a circuit is less than or equal to the sum of the diamond distances for the component gates. 
+where $d=2^n$ and $\mathsf{I}_d$ is the $d$-dimensional identity operator.  In Eq.~\eqref{eq:def_agi}, we have written the AGI for an error map, $\mathsf{E}$ in terms of its associated process matrix, $\mathcal{E}$. If the error channel is purely stochastic, then $\epsilon_\diamond(\error) = \epsilon_\mathcal{F}(\error)$, but if the error channel has a unitary component, then the diamond distance will generically be larger than the average gate infidelity [Wallman - Error rates in quantum circuits]. The diamond distance is subaddative [Watroos TQI book] under gate composition, so is particularly useful for constructing bounds on quantum circuit performance: the diamond distance of a circuit is less than or equal to the sum of the diamond distances for the component gates. 
 
 Because $\epsilon_{\mathcal{F}}$ is linear in the error map, we have:
 \begin{equation}
 	\epsilon_{\mathcal{F}}\!\left(\mathsf{E}_{\rm eff}\right) = \sum_i w_i \,\epsilon_{\mathcal{F}}(\mathsf{E}_i).
 \end{equation}
-So there can be little hope of reducing the AGI by combining various implementations. However, the diamond distance is a nonlinear function of error map. The Ky Fan singular value inequality [K. Fan, Maximum properties and inequalities for the eigenvalues of completely continuous operators, Proc. Nat. Acad. Sci. U.S.A. 37 (1951), 760–766] implies that:
+So there can be little hope of reducing the AGI by combining various implementations. However, the diamond distance is a nonlinear function of error map. As we show in the appendix (\ref{sub:diamond_distance_inequality}):
 \begin{equation}
+	\label{eq:diamond_ineq}
 	\epsilon_\diamond\!\left(\mathsf{E}_{\rm eff}\right) \le \sum_i w_i \, \epsilon_\diamond(\mathsf{E}_i).
 \end{equation}
+So by mixing various implementations, each with a different error channel, the resulting channel can have a diamond distance error less than any of the component implementations. 
 
+% One may ultimately be interested in constructing bounds on quantum circuit performance, but which metric will provide the best proxy for that will depend strongly on the circuit in question. the diamond distance is approximately linear in the over-rotation angle of a quantum operation, while the average gate infidelity (AGI), given by 1-$\mathcal{F}$, is generally quadratic in the over-rotation angle of a quantum operation. 
 
-One may ultimately be interested in constructing bounds on quantum circuit performance, but which metric will provide the best proxy for that will depend strongly on the circuit in question. the diamond distance is approximately linear in the over-rotation angle of a quantum operation, while the average gate infidelity (AGI), given by 1-$\mathcal{F}$, is generally quadratic in the over-rotation angle of a quantum operation. 
+% These two metrics also vary significantly in performance on mixed processes.  
 
-These two metrics also vary significantly in performance on mixed processes.  
-
-From this definition, we can use linearity to compute the AGI of an MQC. We see that the AGI of any MQC will be the convex sum of the constituent fidelities, with the same weighting. The diamond norm, however, is non-linear function of the channel, and can in general be smaller for an MQC than any of the processes being mixed. 
+% From this definition, we can use linearity to compute the AGI of an MQC. We see that the AGI of any MQC will be the convex sum of the constituent fidelities, with the same weighting. The diamond norm, however, is non-linear function of the channel, and can in general be smaller for an MQC than any of the processes being mixed. 
 
 % A \textit{mixed quantum gate} (MQC) consists of a set of unitary channels, $\actual_j$, and associated weights, $\sum_j \omega_j = 1$.  The process matrix for a mixed unitary channel is then the weighted sum of the component channels, $\actual_{\rm M} = \sum_j \omega_j \actual_j$, and the associated error channel is simply the weighted sum of the associated error channels, $\error_{\rm M} = \sum_j \omega_j \error_j$. 
 
-When performing a quantum gate, there are often many possible ways of it might be implemented. Campbell and Hastings, for instance, consider gates compiled using the Solovey-Kitaev algorithm, for which many approximate gate compilations are possible.\cite{Campbell2017, 1612.01011} Following this, Campbell considered the important problem of minimizing the diamond norm of the resulting error channel. Given a collection of component channels with error at most $\epsilon$, he showed that Hamiltonians form a convex set containing the origin, then the diamond norm can be quadratically supressed. The diamond norm is a particularly appealing target because the it provides useful error bounds on quantum circuits. However, it is not the only optimization target that can be chosen. 
+% When performing a quantum gate, there are often many possible ways of it might be implemented. Campbell and Hastings, for instance, consider gates compiled using the Solovey-Kitaev algorithm, for which many approximate gate compilations are possible.\cite{Campbell2017, 1612.01011} Following this, Campbell considered the important problem of minimizing the diamond norm of the resulting error channel. Given a collection of component channels with error at most $\epsilon$, he showed that Hamiltonians form a convex set containing the origin, then the diamond norm can be quadratically supressed. The diamond norm is a particularly appealing target because the it provides useful error bounds on quantum circuits. However, it is not the only optimization target that can be chosen. 
 
 \subsection{A simple example}
 \label{sec:simple_example}
-As a simple example, consider a scenario in which we have a single-qubit and four possible implementations of a $\pi$-pulse about the $\sigma_x$ axis. The error channels for these four implementations are themselves unitary rotations about the $\sigma_x$ axis with rotation angles of $\{-2\epsilon, -\epsilon, \epsilon, 2\epsilon\}$. Such a situation could appear, for instance, if there were amplitude errors on the fields used to affect the gates, and if the control could be implemented by a rotation about the positive or negative $\sigma_x$ axis.
+\noindent As a simple example, consider a single-qubit and four different implementations of a $\mathsf{PHASE}$ gate: $\{3\pi,\pi,-\pi,3\pi\}$ rotations about the $\sigma_z$-axis. If the control amplitude is too high, then the error maps associated with these four implementations are themselves unitary rotations about the $\sigma_z$-axis with rotation angles $\{3\eta, \eta, -\eta, -3\eta\}$, repectively (and $\eta \ll \pi$). 
 
 
 
 In such a scenario, if the ultimate goal is to produce a channel whose effect can be Monte Carlo simulated, then a useful approach would be to construct a channel whose errors are Pauli stochastic. Such a channel could be constructed, for instance, by drawing from this collection uniformly at random. More generally, given a collection of control, such a channel could be produced by minimizing the off-diagonal elements of $R$ in Equation \ref{eq:process_matrix}. We implemented such a routine on a superconducting qubit.
 
-The error operator corresponding to a rotation error by angle $\epsilon$ is then:
+The error operator corresponding to a rotation error by angle $\eta$ is then:
 \begin{equation}
-\error(\epsilon) =
+\error(\eta) =
 	\left(\begin{array}{ccccc}
 		1 & 0 & 0 & 0 \\ 
-		0 & \cos\epsilon & \sin\epsilon  & 0  \\
-		0 & -\sin\epsilon & \cos\epsilon & 0  \\
+		0 & \cos\eta & \sin\eta  & 0  \\
+		0 & -\sin\eta & \cos\eta & 0  \\
 		0 & 0 & 0 & 1
 	\end{array} 	
 	\right)
 \end{equation}
 
-The associated diamond distance of this channel is $\abs{\mathcal{I} - \error(\epsilon)}_\diamond \simeq \epsilon$, while the fidelity of the channel is $\mathcal{F}(\error(\epsilon)) = \epsilon^2$. If we were construct two channels, one with error $\error(\epsilon)$ and one with error $\error(-\epsilon)$, then we could construct a new channel with error $\error_{\rm eff} = \frac{1}{2}\left(\error(\epsilon) + \error(\epsilon)\right)$. The effective channel then has a matrix representation:
+The associated diamond distance of this channel is $\abs{\mathcal{I} - \error(\eta)}_\diamond \simeq \eta$, while the fidelity of the channel is $\mathcal{F}(\error(\eta)) = \eta^2$. If we were construct two channels, one with error $\error(\eta)$ and one with error $\error(-\eta)$, then we could construct a new channel with error $\error_{\rm eff} = \frac{1}{2}\left(\error(\eta) + \error(\eta)\right)$. The effective channel then has a matrix representation:
 \begin{equation}
-	\error(\epsilon) =
+	\error(\eta) =
 	\left(\begin{array}{ccccc}
 		1 & 0 & 0 & 0 \\ 
-		0 & \cos\epsilon & 0  & 0  \\
-		0 & 0 & \cos\epsilon & 0  \\
+		0 & \cos\eta & 0  & 0  \\
+		0 & 0 & \cos\eta & 0  \\
 		0 & 0 & 0 & 1
 	\end{array} 	
 	\right) \simeq \mathcal{I} - 
 	\left(\begin{array}{ccccc}
 		0 & 0 & 0 & 0 \\ 
-		0 & \epsilon^2/2 & 0  & 0  \\
-		0 & 0 & \epsilon^2/2 & 0  \\
+		0 & \eta^2/2 & 0  & 0  \\
+		0 & 0 & \eta^2/2 & 0  \\
 		0 & 0 & 0 & 0
 	\end{array} 	
 	\right)
 \end{equation}
-And with same average process fidelity, $\epsilon^2$, but now a suppressed diamond norm $\epsilon^2$. Now write this in terms of the error generators $\error(\epsilon) = \exp(\epsilon G)$ where
+And with same average process fidelity, $\eta^2$, but now a suppressed diamond norm $\eta^2$. Now write this in terms of the error generators $\error(\eta) = \exp(\eta G)$ where
 \begin{equation}
 	G =
 	\left(\begin{array}{ccccc}
@@ -233,30 +245,30 @@ And with same average process fidelity, $\epsilon^2$, but now a suppressed diamo
 The effective generator vanishes at first order.
 
 \begin{equation}
-	\error(\epsilon) = \mathcal{I} + \epsilon G + \frac{1}{2}\epsilon^2 G^2 + \mathcal{O}(\epsilon^3)
+	\error(\eta) = \mathcal{I} + \eta G + \frac{1}{2}\eta^2 G^2 + \mathcal{O}(\eta^3)
 \end{equation}
 \begin{align}
 	\error_{\text{eff}} 
 		% &= \sum_i \omega_i \error_i \\
-		% &= \sum_i \omega_i \left(\mathcal{I} + \epsilon_i G_i + \frac{1}{2}\epsilon_i^2 G_i^2 + \cdots \right) \\
-		&= \mathcal{I} + \sum_i \omega_i \epsilon_i G_i+ \sum_i \omega_i \frac{1}{2}\epsilon^2_i G_i^2 + + \mathcal{O}(\epsilon^3)
+		% &= \sum_i \omega_i \left(\mathcal{I} + \eta_i G_i + \frac{1}{2}\eta_i^2 G_i^2 + \cdots \right) \\
+		&= \mathcal{I} + \sum_i \omega_i \eta_i G_i+ \sum_i \omega_i \frac{1}{2}\eta^2_i G_i^2 + + \mathcal{O}(\eta^3)
 \end{align}
 \begin{equation}
-	\error_{\text{eff}} = \mathcal{I} + \sum_i \omega_i \frac{1}{2}\epsilon^2_i G_i^2 + \mathcal{O}(\epsilon^3)
+	\error_{\text{eff}} = \mathcal{I} + \sum_i \omega_i \frac{1}{2}\eta^2_i G_i^2 + \mathcal{O}(\eta^3)
 \end{equation}
 
 \begin{center}
 \begin{tabular}{cccc}
 	Gate & $H_{\rm{eff}}$ & AGI & $\vert\vert\cdot\vert\vert_\diamond$ \\
 \hline
-	$U_{+2\epsilon}$ & $2\epsilon \sigma_x$ & $4\epsilon^2$ & $2\epsilon$\\
-	$U_{+\epsilon}$ & $\epsilon \sigma_x$ & $\epsilon^2$ & $\epsilon$ \\
-	$U_{-\epsilon}$ & $-\epsilon \sigma_x$ & $\epsilon^2$ & $\epsilon$ \\
-	$U_{-2\epsilon}$ & $-2\epsilon \sigma_x$ & $4\epsilon^2$ & $2\epsilon$ 
+	$U_{+2\eta}$ & $2\eta \sigma_z$ & $4\eta^2$ & $2\eta$\\
+	$U_{+\eta}$ & $\eta \sigma_z$ & $\eta^2$ & $\eta$ \\
+	$U_{-\eta}$ & $-\eta \sigma_z$ & $\eta^2$ & $\eta$ \\
+	$U_{-2\eta}$ & $-2\eta \sigma_z$ & $4\eta^2$ & $2\eta$ 
 \end{tabular}
 \end{center}
 
-Alternatively, we might consider eliminating off-diagonal entries of $\error(\epsilon)$ \note{fix this}:
+Alternatively, we might consider eliminating off-diagonal entries of $\error(\eta)$ \note{fix this}:
 \begin{equation}
 	\left(\begin{array}{@{}ccccc@{}}
 		0 & 0 & 0 & 0 \\ 
@@ -269,11 +281,8 @@ Alternatively, we might consider eliminating off-diagonal entries of $\error(\ep
 	\end{array} 	
 	\right)
 \end{equation}
- resulting in a matrix that is guaranteed to be Pauli stochastic, and thus somewhat easily simulable problem. In the case of a single qubit, it is clear that our generator is expressible as $\hat{n}\cdot\vec{\Sigma}$, where $\vec{\Sigma}$ is again the vector of Pauli operators. The condition that the off-diagonal terms vanish is then again the same condition that the origin lies in the convex hull of the vectors $\vec{n}_i$ for each $G_i$.
- \note{more here about alternative method. Also discuss Fig 2.}. 
-
-
-\note{END}
+resulting in a matrix that is guaranteed to be Pauli stochastic, and thus somewhat easily simulable problem. In the case of a single qubit, it is clear that our generator is expressible as $\hat{n}\cdot\vec{\Sigma}$, where $\vec{\Sigma}$ is again the vector of Pauli operators. The condition that the off-diagonal terms vanish is then again the same condition that the origin lies in the convex hull of the vectors $\vec{n}_i$ for each $G_i$.
+\note{more here about alternative method. Also discuss Fig 2.}. 
 
 
 % In general, if we have a collection of single qubit controls $\{U_i\}$ generated by $\{H_i\}$, the channel that results from drawing from the controls probabilistically has elements given by:
@@ -557,61 +566,101 @@ Sandia National Laboratories is a multimission laboratory managed and operated b
 
 
 \newpage
-\onecolumngrid
+% \onecolumngrid
 % ==============================================================================
 % Section: Appendix
 % ==============================================================================
 \section{Appendix}
 \label{sec:appendix}
-\subsection{Robust Mixing Lemma}
-We begin by generalizing Lemma 2 from \cite{Campbell2017}. If all of our error Hamiltonians $\{H_j\}$ have bounded error, that is:
-\begin{equation}
-||H_j||\leq c
-\end{equation}
-Then we may consider the derivative of any mixture of unitaries as:
-%\begin{equation}
-%\deriv\sum_j \omega_je^{iH_j} = \deriv(\id + (\sum_ji%\omega_jH_j) + \sum \omega_j\sum_{n=2}^{\infty}%\frac{(iH_j)^n}{n!}))
-%\end{equation}
-\begin{equation}
-\deriv\sum_j \omega_je^{iH_j} = \sum_j\omega_ji\deriv (H_j)e^{iH_j}
-\end{equation}
-By assumption, the derivatives of the first order term sum to zero, and so we see by A3 in \cite{Campbell2017} that
-\begin{equation}
-||\deriv\sum_j\omega_je^{iH_j}|| \leq \sum_j\omega_j||i\deriv (H_j)(iH_j + \sum_{n=2}^{\infty}\frac{(iH_j)^n}{n!})|| \leq \sum_j\omega_j(c^2 + \frac{c^2}{2}) \leq c^2 + \frac{c^3}{2}
-\end{equation}
-Where we have used the fact that $||AB|| \leq ||A||||B||$ with $||\cdot||$ being the $\infty$-norm.
-Additionally, 
-\begin{align}
-||\deriv e^{iH_j}|| &= ||\deriv(iH_j)e^{iH_j}|| \\
-&\leq ||\deriv(iH_j)|| + ||\deriv(iH_j)H_j|| +  ||\deriv(iH_j)\sum^{\infty}_{n=2}\frac{1}{(n)!}(iH_j)^n|| \\
-&\leq ||\deriv(iH_j)|| + ||\deriv(iH_j)||\cdot||H_j|| +  ||\deriv(iH_j)||\cdot||\sum^{\infty}_{n=2}\frac{1}{(n)!}(iH_j)^n||\\
-&\leq c + c^2 + \frac{c^3}{2}
-\end{align}
-And so we see that Lemma 2 generalizes. We will use the above to upper bound the 1-norm (and hence diamond norm) in the following.
 
-Next we generalize the Mixing Lemma from \cite{Campbell2017}. We must assume that the 1-norm is uniformly differentiable. In that case, we see that:
-
-\begin{align}
-&= \deriv\sup|\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I}|_1 \\
-&= \sup\deriv|\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I}|_1 \\
-&\leq \sup|\deriv(\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I})|_1 \\
-\end{align}
-And so we see it is sufficient to upperbound:
+% ==============================================================================
+% Section: Diamond Distance Inequality
+% ==============================================================================
+\subsection{Diamond distance inequality}
+\label{sub:diamond_distance_inequality}
+Here we prove the claim of \eqref{eq:diamond_ineq} that:
 \begin{equation}
-|\deriv(\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I})|_1
+	\epsilon_\diamond\!\left(\mathsf{E}_{\rm eff}\right) \le \sum_i w_i \, \epsilon_\diamond(\mathsf{E}_i).
 \end{equation}
-From Equation 18 in \cite{Campbell2017}:
+The effective error channel for a mixed quantum gate is $\mathsf{E}_{\rm{eff}} = \sum_i w_i\,\mathsf{E}_i$, where $\mathsf{E}_i$ are the error channels for the component gates. The diamond distance to the identity of the effective error channel is:
 \begin{align}
-&(\mathcal{V}\circ\mathcal{E} - \id)(X) = \sum_j \omega_j(\tilde{\delta}_jX + X\tilde{\delta}_j^{\dagger} + \tilde{\delta}_jX\delta_j^{\dagger})\\
-&\deriv(\mathcal{V}\circ\mathcal{E} - \id)(X) = \sum_j \omega_j(\deriv\tilde{\delta}_jX + X\deriv\tilde{\delta}_j^{\dagger} + \deriv\tilde{\delta}_jX\delta_j^{\dagger} + \tilde{\delta}_jX\deriv\delta_j^{\dagger})\\
+	\epsilon_\diamond \left(\mathsf{E}_{\rm eff}\right)
+		&= \frac{1}{2} \sup_\rho \vert \vert (\mathsf{I}_d\otimes \mathsf{I}_d)(\rho) 
+										  - (\mathsf{E}_{\rm eff} \otimes \mathsf{I}_d)(\rho) \vert\vert_1\\
+		&= \frac{1}{2} \sup_\rho \vert \vert (\mathsf{I}_d\otimes \mathsf{I}_d)(\rho) 
+										  - (\sum_i w_i\,\mathsf{E}_i \otimes \mathsf{I}_d)(\rho) \vert\vert_1 \\
+		&= \frac{1}{2} \sup_\rho \vert \vert \sum_i w_i\,((\mathsf{I}_d
+										  - \mathsf{E}_i) \otimes \mathsf{I}_d)(\rho) \vert\vert_1
 \end{align}
-Thus, by H\"older's inequality we find:
+The space of density matrices is compact, so the supremum is achievable. Call a state that achieves the supremum $\rho^*$. Then 
 \begin{align}
-&||\deriv(\mathcal{V}\circ\mathcal{E} - \id)(X)||_1\leq||\sum_j \omega_j\deriv\tilde{\delta}_j|| + ||\sum_j\omega_j\deriv\tilde{\delta}_j^{\dagger}|| + \sum_j\omega_j|| \deriv\tilde{\delta}_j||\cdot||\delta_j^{\dagger}|| + \sum_j\omega_j||\tilde{\delta}_j||\cdot||\deriv\delta_j^{\dagger}||
+	\epsilon_\diamond \left(\mathsf{E}_{\rm eff}\right)
+		&= \frac{1}{2} \vert \vert \sum_i w_i\,((\mathsf{I}_d
+										  - \mathsf{E}_i) \otimes \mathsf{I}_d)(\rho^*) \vert\vert_1 \\
+		&= \frac{1}{2} \vert \vert \sum_i w_i\, \rho^*_i \vert\vert_1,
 \end{align}
-By assumption, all of these terms are neglible, and therefore we find:
+where we have defined $\rho^*_i = ((\mathsf{I}_d - \mathsf{E}_i) \otimes \mathsf{I}_d)(\rho^*)$. The nuclear norm above is equal to the sum of the singular values of $\sum_i w_i \rho_i$. Using the Ky Fan singular value inequality [K. Fan, Maximum properties and inequalities for the eigenvalues of completely continuous operators, Proc. Nat. Acad. Sci. U.S.A. 37 (1951), 760–766] , we have 
 \begin{align}
-||\deriv(\mathcal{V}\circ\mathcal{E} - \id)(X)||_1\leq 2a^2 + 2b^2
+	\epsilon_\diamond \left(\mathsf{E}_{\rm eff}\right)
+		&\le \frac{1}{2} \sum_i w_i \vert \vert \rho^*_i \vert\vert_1 \\
+		&\le \sum_i w_i\, \epsilon_\diamond(\mathsf{E}_i)
 \end{align}
-And so we see that the mixing lemma extends to first order. In a similar way, it can be extended to arbitary order, and thus if we can find constructions that satisfy the generalized Lemma 2, we can use the Robust Mixing Lemma to conclude that there exists a weighting with linearly supressed diamond norm.
+The second inequality above follows because $\rho^*$ defines an explicit lower bound for the diamond distance for each of the component error maps. 
+
+% % subsection diamond_distance_inequality
+
+% \subsection{Robust Mixing Lemma}
+% \label{sub:rml}
+% We begin by generalizing Lemma 2 from \cite{Campbell2017}. If all of our error Hamiltonians $\{H_j\}$ have bounded error, that is:
+% \begin{equation}
+% ||H_j||\leq c
+% \end{equation}
+% Then we may consider the derivative of any mixture of unitaries as:
+% %\begin{equation}
+% %\deriv\sum_j \omega_je^{iH_j} = \deriv(\id + (\sum_ji%\omega_jH_j) + \sum \omega_j\sum_{n=2}^{\infty}%\frac{(iH_j)^n}{n!}))
+% %\end{equation}
+% \begin{equation}
+% \deriv\sum_j \omega_je^{iH_j} = \sum_j\omega_ji\deriv (H_j)e^{iH_j}
+% \end{equation}
+% By assumption, the derivatives of the first order term sum to zero, and so we see by A3 in \cite{Campbell2017} that
+% \begin{equation}
+% ||\deriv\sum_j\omega_je^{iH_j}|| \leq \sum_j\omega_j||i\deriv (H_j)(iH_j + \sum_{n=2}^{\infty}\frac{(iH_j)^n}{n!})|| \leq \sum_j\omega_j(c^2 + \frac{c^2}{2}) \leq c^2 + \frac{c^3}{2}
+% \end{equation}
+% Where we have used the fact that $||AB|| \leq ||A||||B||$ with $||\cdot||$ being the $\infty$-norm.
+% Additionally, 
+% \begin{align}
+% ||\deriv e^{iH_j}|| &= ||\deriv(iH_j)e^{iH_j}|| \\
+% &\leq ||\deriv(iH_j)|| + ||\deriv(iH_j)H_j|| +  ||\deriv(iH_j)\sum^{\infty}_{n=2}\frac{1}{(n)!}(iH_j)^n|| \\
+% &\leq ||\deriv(iH_j)|| + ||\deriv(iH_j)||\cdot||H_j|| +  ||\deriv(iH_j)||\cdot||\sum^{\infty}_{n=2}\frac{1}{(n)!}(iH_j)^n||\\
+% &\leq c + c^2 + \frac{c^3}{2}
+% \end{align}
+% And so we see that Lemma 2 generalizes. We will use the above to upper bound the 1-norm (and hence diamond norm) in the following.
+
+% Next we generalize the Mixing Lemma from \cite{Campbell2017}. We must assume that the 1-norm is uniformly differentiable. In that case, we see that:
+
+% \begin{align}
+% &= \deriv\sup|\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I}|_1 \\
+% &= \sup\deriv|\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I}|_1 \\
+% &\leq \sup|\deriv(\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I})|_1 \\
+% \end{align}
+% And so we see it is sufficient to upperbound:
+% \begin{equation}
+% |\deriv(\mathcal{I}\otimes\mathcal{I}-\error(\vec{\delta})\otimes\mathcal{I})|_1
+% \end{equation}
+% From Equation 18 in \cite{Campbell2017}:
+% \begin{align}
+% &(\mathcal{V}\circ\mathcal{E} - \id)(X) = \sum_j \omega_j(\tilde{\delta}_jX + X\tilde{\delta}_j^{\dagger} + \tilde{\delta}_jX\delta_j^{\dagger})\\
+% &\deriv(\mathcal{V}\circ\mathcal{E} - \id)(X) = \sum_j \omega_j(\deriv\tilde{\delta}_jX + X\deriv\tilde{\delta}_j^{\dagger} + \deriv\tilde{\delta}_jX\delta_j^{\dagger} + \tilde{\delta}_jX\deriv\delta_j^{\dagger})\\
+% \end{align}
+% Thus, by H\"older's inequality we find:
+% \begin{align}
+% &||\deriv(\mathcal{V}\circ\mathcal{E} - \id)(X)||_1\leq||\sum_j \omega_j\deriv\tilde{\delta}_j|| + ||\sum_j\omega_j\deriv\tilde{\delta}_j^{\dagger}|| + \sum_j\omega_j|| \deriv\tilde{\delta}_j||\cdot||\delta_j^{\dagger}|| + \sum_j\omega_j||\tilde{\delta}_j||\cdot||\deriv\delta_j^{\dagger}||
+% \end{align}
+% By assumption, all of these terms are neglible, and therefore we find:
+% \begin{align}
+% ||\deriv(\mathcal{V}\circ\mathcal{E} - \id)(X)||_1\leq 2a^2 + 2b^2
+% \end{align}
+% And so we see that the mixing lemma extends to first order. In a similar way, it can be extended to arbitary order, and thus if we can find constructions that satisfy the generalized Lemma 2, we can use the Robust Mixing Lemma to conclude that there exists a weighting with linearly supressed diamond norm.
+
+
 \end{document}
