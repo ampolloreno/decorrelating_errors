@@ -73,8 +73,7 @@ Coherent errors in quantum operations are ubiquitous. Whether arising from spuri
 \note{discuss variance narrowing and cite Biercuk}
 The past decade has seen a dramatic increase in the performance and scale of quantum information processors (QIPs). Gate fidelities are now routinely in the 99\% to 99.99\% range \cite{Barends2014, Ballance2016, 1901.08035}, and dozens of individually-addressable qubits are becoming available on integrated devices. While these advances are promising steps forward on the path towards a computationally useful QIP, the quantum supremacy \cite{1203.5813} milestone has yet to be definitively reached. A critical limiting factor, of course, is errors in the quantum gate operations.
 
-The ultimate impact of a gate error on a quantum circuit depends strongly on both the magnitude and the nature of the error. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations that induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time may add up constructively or destructively, depending on the circuit. They are are  computationally expensive to model and it can be difficult to place tight analytic bounds on circuit performance [cite]. Contrast this against random, or \emph{stochastic}, errors, which often result from high-frequency noise in the controls or the environment. Systems with stochastic errors can usually be modeled by defining a rate of various discrete errors in the system, such as a bit flips or phase flips. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate [Ken Brown, Steve Flammia].
-
+The ultimate impact of a gate error on a quantum circuit depends strongly on both the magnitude and the nature of the error. Systematic, or \emph{coherent}, errors can arise from poorly calibrated controls or imperfect gate compilations that induce repeatable, undesired unitary errors on the state of a QIP. Errors of this type are correlated in time may add up constructively or destructively, depending on the circuit. They are are  computationally expensive to model and it can be difficult to place tight analytic bounds on circuit performance [cite]. Contrast this against random, or \emph{stochastic}, errors, which often result from high-frequency noise in the controls or the environment. Systems with stochastic errors can usually be modeled by defining a rate of various discrete errors in the system, such as a bit flips or phase flips. These errors are significantly easier to simulate on a classical computer, and their impact on quantum circuits is much easier to estimate \cite{Beale2018}.
 
 
 \note{don't define diamond norm here}
@@ -105,21 +104,16 @@ In this article we discuss various applications of these mixed unitary controls,
 \label{sec:representing_quantum_gates}
 
 \subsection{Representing errors in quantum gates}
-\noindent Suppose that one wishes to apply a unitary gate, $\mathsf{G}$, on some quantum device. Implementing this operation on a real system generally involves the application of a sequence of classical control fields to some set of qubits.  But fluctuations in the environment or imperfections in these controls can cause the state of the qubits to change in a way that is different from what was intended. If the device is fairly stable with time and context\cite{1810.05651}, then we can accurately model the actual gate dynamics action using a completely positive, trace-preserving (CPTP) map, $\mathsf{\tilde G}$, on density matrices. This map can always be written as $\mathsf{\tilde G} = \mathsf{E}\circ\mathsf{G}$, where $\mathsf{E} = \mathsf{\tilde G}\circ\mathsf{G}^{-1}$ is the \emph{error map}, which is itself CPTP because $\mathsf{G}$ is unitary.
+\noindent Suppose that one wishes to apply a unitary gate, $\mathsf{G}$, on some quantum device. Implementing this operation on a real system generally involves the application of a sequence of classical control fields to some set of qubits.  But fluctuations in the environment or imperfections in these controls can cause the state of the qubits to change in a way that is different from what was intended. If the device is fairly stable with time and context\cite{1810.05651}, then we can accurately model the actual gate dynamics action using a completely positive, trace-preserving (CPTP) map, $\mathsf{\tilde G}$. This map can always be written as $\mathsf{\tilde G} = \mathsf{E}\circ\mathsf{G}$, where $\mathsf{E} = \mathsf{\tilde G}\circ\mathsf{G}^{-1}$ is the \emph{error map}, which is itself CPTP because $\mathsf{G}$ is unitary.
 
-% \begin{equation}
-% 	\tr\left(\mathsf{G}(\rho) \cdot\Sigma_i\right)/2^n = 
-% 	 \sum_{j} \mathcal{G}_{ij} \tr\left(\rho \cdot\Sigma_j\right)/2^n
-% 	% (\mathcal{G})_{ij} = 
-% \end{equation}
-% if $\rho=\Sigma_j$, then the only term that survives is 
- CPTP maps possesses a number of useful representations, including Kraus operators[], Choi matrices[], and Jamiolkowsi states[]. But for the purposes of this article, the \emph{process matrix} representation will be particularly convenient [], and we shall denote the process matrix associated with a given CPTP map $\mathsf{G}$ by the corresponding calligraphic character, $\mathcal{G}$. A key feature of process matrices is that they act through the usual matrix multiplication on the vectorized quantum state:
+\subsection{Representing CPTP maps}
+\noindent CPTP maps possesses a number of useful representations, including Kraus operators\cite{1983}, Choi matrices\cite{Choi1975}, and Jamiolkowsi states\cite{yczkowski2004}. But for the purposes of this article, the \emph{process matrix} representation will be particularly convenient\cite{OBrien2004}, and we shall denote the process matrix associated with a given CPTP map $\mathsf{G}$ with the corresponding calligraphic character, $\mathcal{G}$. A key feature of process matrices is that they act through the usual matrix multiplication on the vectorized quantum state:
 \begin{align}
 	\vectorize{\mathsf{\tilde G}(\rho)}
 		&= \mathcal{\tilde G}\cdot\vectorize{\rho} \\
 		&= \mathcal{E}\cdot\mathcal{G}\cdot\vectorize{\rho}
 \end{align}
-We shall work in the basis Pauli matrices, defining $\Sigma = \left\{I, \sigma_x, \sigma_y, \sigma_z\right\}^{\otimes n}$ as the collection of all $4^n$ $n$-qubit Pauli operators (including the identity).  In this basis,
+We shall work in the basis Pauli matrices, defining $\Sigma = \left\{I, \sigma_x, \sigma_y, \sigma_z\right\}^{\otimes n}$ as the collection of all $4^n$ $n$-qubit Pauli operators.  In this basis,
 \begin{equation}
   \vectorize{\rho}_i = \tr\!\left(\rho \cdot\Sigma_i\right)/2^n,
 \end{equation}
@@ -127,7 +121,7 @@ and
 \begin{equation}
 	(\mathcal{\tilde G})_{ij} = \tr\!\left(\mathsf{\tilde G}\left(\Sigma_j\right) \cdot\Sigma_i\right)/2^n.
 \end{equation}
-Process matrices written in Pauli basis are is often referred to as \emph{Pauli transfer matrices} []. Error maps take an especially nice form in this representation:
+Process matrices written in Pauli basis are is often referred to as a \emph{Pauli transfer matrix} \cite{Chow2012}. Error maps take an especially nice form in this representation:
 \begin{equation}\label{eq:process_matrix}
 \mathcal{E} =
 	\left(\begin{array}{c|cccc}
@@ -152,7 +146,7 @@ In what follows it will be useful to define the \emph{error generator}, $\mathca
 \subsection{Defining Mixed Quantum Gates}
 \noindent Now suppose that we have access to an ensemble of different implementations of the target gate $\{\mathsf{\tilde G}_i\}$.
 % , each associated with a different process matrix, $\mathcal{\tilde G}_i = \mathcal{E}_i\circ \mathcal{G}$. 
-Each time the gate is to be applied to the system, we randomly select an implementation from this ensemble such that the probability of drawing $\mathsf{\tilde G}_i$ is $w_i$ (and we ensure that $\sum_i w_i=1$). This procedure is operationally indistinguishable from a situation in which we always apply the effective operation, 
+Each time the gate is to be applied to the system, we randomly select an implementation from this ensemble such that the probability of drawing $\mathsf{E}_i$ is $w_i$ (and we ensure that $\sum_i w_i=1$). This procedure is operationally indistinguishable from a situation in which we always apply the effective operation, 
 \begin{align}
 	\mathsf{\tilde G}_{\rm eff} &= \sum_i w_i \mathsf{\tilde G}_i,
 \end{align}
@@ -429,7 +423,7 @@ Using this, we can then solve the following convex optimization problem, general
     &\textbf{subject to: } \forall n<\ell, \sum \omega_jD_j^n=\vec{0}\\
   \end{split}
 \end{equation}
-with $D_n^j$ defined in Equation \ref{eq:taylor}. The time to solve these convex optimization problems is independent of the number of rows, which in our case is the number of drifting parameters. However, the size of the matrix that must be computed before solving grows as $Nd^{\ell}$, and the runtime of solving the optimization problem grows as $N^4$, with $d$ being the number of drifting parameters, and $N$ being the number of controls.\needcite
+with $D_n^j$ defined in Equation \ref{eq:taylor}. The size of the matrix that must be computed before solving grows as $Nd^{\ell}$, and the time required to solve the optimization problem will depend on the particular optimizer and algorithm used.
 
 % subsection adding_robustness (end)
 
