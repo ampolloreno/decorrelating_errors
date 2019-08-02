@@ -509,9 +509,7 @@ In many machine learning contexts, lasso regularization \cite{tibshirani1996regr
 &\ \ \textbf{subject to: } \omega_n > \frac{\lambda}{t}\\
 &\ \ \phantom{\textbf{subject to: }} \forall n<\ell, ||\sum \omega_iD_i^n||=0
 \end{split}
-\end{equation} with $\lambda\geq0$. As with $\eta$ in the last subsection, the optimal value of $\lambda$ is problem specific, depending on $\bold{D}^\ell$ and how sparse the solution needs to be. 
-
-For small $\lambda$, the sparsity penalty is negligible, and for large $\lambda$ we see that if $\omega$ is not sparse then $t$ must be very large, which increases the cost of that particular solution. In the following sections we discuss both experimental and numerical implementations of MQGs, leveraging these optimization techniques. 
+\end{equation} with $\lambda\geq0$. As with $\eta$ in the last subsection, the optimal value of $\lambda$ is problem specific, depending on $\bold{D}^\ell$ and how sparse the solution needs to be. In the following sections we discuss both experimental and numerical implementations of MQGs, leveraging these optimization techniques. 
 
 \section{Results} % (fold)
 \label{sec:results}
