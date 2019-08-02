@@ -191,7 +191,7 @@ That is, the AGI of the MQG is simply the weighted average of the component AGIs
 \end{equation}
 So by mixing various implementations, each with a different error channel, the resulting channel can have a diamond distance error less than any of the component implementations. 
 
-Campbell \cite{Campbell2017} and Hastings \cite{1612.01011} independently considered this problem using gates constructed with the Solovey-Kitaev algorithm, for which many approximate gate compilations are possible. Campbell showed that, if the error generators of some ensemble of gate compilations form a convex set containing the origin, then one can construct a MQG with quadratically suppressed diamond distance to the target. Explicitly, the weights are chosen such that the error generator is canceled to first order. Using (\ref{eq:effective_error} )and (\ref{eq:generator}), the effective error map for a MQG in terms of the component error generators is:
+Campbell \cite{Campbell2017} and Hastings \cite{1612.01011} independently considered this problem using gates constructed with the Solovey-Kitaev algorithm, for which many approximate gate compilations are possible. Campbell showed that, if the error generators of some ensemble of gate compilations form a convex set containing the origin, then one can construct a MQG with quadratically suppressed diamond distance to the target. Explicitly, the weights are chosen such that the error generator is canceled to first order. Using (\ref{eq:effective_error}) and (\ref{eq:generator}), the effective error map for a MQG in terms of the component error generators is:
 \begin{align}
 	\label{eq:generators_and_effective_error}
 	\mathcal{E}_{\rm eff} \simeq \left(\mathcal{I}_d + \sum_i w_i \mathcal{L}_i + \frac{1}{2} \sum_i w_i \mathcal{L}_i^2\right)
@@ -199,9 +199,11 @@ Campbell \cite{Campbell2017} and Hastings \cite{1612.01011} independently consid
 If, as Campbell required, the origin is in the convex hull of the generators (see Fig.~\ref{fig:vectorspace}), then there exists a choice for the weights, $w_i^*$, such that $\sum_i w^*=1$ and:
 \begin{align}
 	\label{eq:cancel}
-	&\sum_i w_i^* \mathcal{L} = 0
+	&||\sum_i w_i^* \mathcal{L}_i||= 0
 	% \mathrm{with}\;&\sum_i w_i = 1
 \end{align}
+where $||\cdot||$ is meant to mean the Frobenius norm.
+
 If the error rates, as measured by the diamond distance, of the component gates are bounded by $\alpha$, then Campbell shows that this first-order cancellation of the error generators can ensure that the error rate of the MQG is bounded by $\alpha^2$. Campbell considered error channels that were strictly unitary, so the error generators in \ref{eq:cancel} were Hamiltonians. Hamiltonian generators can have positive or negative coefficients, so it is possible that the origin may lie in their convex hull. If, however, the error map contains stochastic components, then the condition of \ref{eq:cancel} might be impossible to satisfy. Such errors always have positive probabilities, so the origin can \emph{never} lie in their convex hull. This can be rectified by restricting the sum in \ref{eq:cancel} to only the Hamiltonian component of the generators. In the rest of this paper, we will be considering gates that have only unitary errors, so we will neglect this complication going forward. 
 
 \begin{figure}
@@ -361,16 +363,16 @@ The remainder of this section will focus on the second step of constructing the 
 \subsubsection{First-order generators} % (fold)
 \label{sub:first_order_generators}
 
-If our primary goal is for our MQG to have better worst-case performance, then a useful optimization target is minimizing the diamond norm. The diamond norm is a non-linear function that in general requires a convex optimizer to compute\cite{watrous2018theory}. However, if our errors are small enough we can consider the linearized problem, and minimize the diamond norm to first-order in the error generator. As discussed in \cite{Campbell2017}, a sufficient condition to minimize the diamond norm of an MQG with error generators $\{G_j\}$ to first order is:
+If our primary goal is for our MQG to have better worst-case performance, then a useful optimization target is minimizing the diamond norm. The diamond norm is a non-linear function that in general requires a convex optimizer to compute\cite{watrous2018theory}. However, if our errors are small enough, we can consider the linearized problem, and minimize the diamond norm to first-order in the error generator. As discussed in \cite{Campbell2017}, a sufficient condition to minimize the diamond norm of an MQG with error generators $\{\mathcal{L}_i\}$ to first order is:
 \begin{equation}\label{eq:campbell-condition}
-\sum \omega_j G_j = 0
+||\sum \omega_i \mathcal{L}_i ||= 0
 \end{equation}
-In \cite{Campbell2017} Campbell presents an algorithm that, given an oracle to approximate arbitary unitary operations, generates controls and weightings to find an MQG with this property. Alternatively one might consider the following problem: \textit{Given a fixed collection of controls, how can I produce a weighting with minimal diamond norm?} Such a situation might arise if there is a natural family of controls that implement a desired gate, or if, as we consider later (Section \ref{sec:numerical_results}), we are given a collection of precomputed gate implementations. Given such an MQC we can consider the $n^2\times m$ matrix whose columns are the vectorized error generators:
+In \cite{Campbell2017} Campbell presents an algorithm that, given an oracle to approximate arbitrary unitary operations, generates controls and weightings to find an MQG with this property. Alternatively, one might consider the following problem: \textit{Given a fixed collection of controls, how can I produce a weighting with minimal diamond norm?} Such a situation might arise if there is a natural family of controls that implement a desired gate, or if, as we consider later (Section \ref{sec:numerical_results}), we are given a collection of precomputed gate implementations. Given such an MQC we can consider the $n^2\times m$ matrix whose columns are the vectorized error generators:
 \begin{equation}\label{eq:vectorized_generators}
-	\bold{G} = \left(\begin{array}{cccc}
-		G_{1_{1,1}} & G_{2_{1,1}} & \ldots   \\ 
+	\bold{L} = \left(\begin{array}{cccc}
+		\mathcal{L}_{1_{1,1}} & \mathcal{L}_{2_{1,1}} & \ldots   \\ 
 		\vdots\ & \ddots &    \\
-		G_{1_{n,n}} &  &  G_{m_{n,n}} \\ 
+		\mathcal{L}_{1_{n,n}} &  &  \mathcal{L}_{m_{n,n}} \\ 
 	\end{array} 	
 	\right)
 \end{equation}
@@ -378,11 +380,12 @@ To satisfy (\ref{eq:campbell-condition}), we can write the sum as a matrix produ
 
 \begin{equation}\label{eq:minimization}
   \begin{split}
-    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||\bold{G}\omega||_2\\
+    &\underset{\omega_i\geq0, |\omega|_1=1}{\textbf{minimize}: } ||\bold{L}\omega||_1\\
   \end{split}
 \end{equation}
+where $||\cdot||_1$ is the $\ell_1$ norm.
 
-As denoted, this optimization needs to be constrained so that $\omega \geq 0$ and $|\omega|_1 = 1$. Nevertheless, this forms a convex optimization problem, and such linearly constrained minimization problems with quadratic cost functions have been proven to be efficiently solvable by methods like the Elipsoid Method \cite{wright1999numerical, khachiyan}. More importantly, there are many existing convex solver software packages that solve these problems efficiently in practice.
+As denoted, this optimization needs to be constrained so that $\omega$ is a proper probability distribution. Nevertheless, this forms a convex optimization problem, and such linearly constrained minimization problems with quadratic cost functions have been proven to be efficiently solvable by methods like the Elipsoid Method \cite{wright1999numerical, khachiyan}. More importantly, there are many existing convex solver software packages that solve these problems efficiently in practice.
 
 %In both cases it is clear that we should select the gates with smaller error, i.e. $\{U_{\epsilon}, U_{-\epsilon}\}$, rather than those with larger error, to minimize the multiplicative coefficient on the error. Despite this, literature commonly assumes that all controls are less than some threshold value, below which differences in performance don't matter. \cite{Campbell2017} In realistic scenarios, some controls will have better performance than others, and it is important to select from those controls when able to. We will discuss numerical approaches to solving this Section \ref{sec:norm}.
 
@@ -397,7 +400,7 @@ As denoted, this optimization needs to be constrained so that $\omega \geq 0$ an
 
 \subsubsection{Off-diagonals} % (fold)
 \label{sub:off_diagonals}
-There are other properties of a channel that one might consider optimizing. For instance, if an MQG has an error channel that is well-approximated by a Pauli-Stochastic channel, then it may be amenable to classical simulation. We can modify our optimization problem accordingly. By vectorizing the $R$ submatrices in (\ref{eq:process_matrix}), and considering the matrix of off-diagonal terms, we can :
+There are other properties of a channel that one might consider optimizing. For instance, if an MQG has an error channel that is well-approximated by a Pauli-Stochastic channel, then it may be amenable to classical simulation. We can modify our optimization problem accordingly. By vectorizing the $R$ submatrices in (\ref{eq:process_matrix}), and considering the matrix of off-diagonal terms, we can again consider the minimization problem in (\ref{eq:minimization}), where we replace $\bold{L}$ with $\bold{R}$:
 
 \begin{equation}\label{eq:vectorized_off_diagonal}
 	\bold{R} = \left(\begin{array}{cccc}
@@ -407,15 +410,8 @@ There are other properties of a channel that one might consider optimizing. For 
 	\end{array} 	
 	\right)
 \end{equation}
-and then again consider the minimization problem in (\ref{eq:minimization}), where we replace $\bold{G}$ with $\bold{R}$:
 
-\begin{equation}\label{eq:minimization_diagonal}
-  \begin{split}
-    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||\bold{R}\omega||_2\\
-  \end{split}
-\end{equation}
-
-The resulting MQG will be, to first order, the closest Pauli Channel that can be produced by mixing over the available gate implementations. Previous authors have considered finding the closest Pauli or Clifford Channel to a given process \cite{Magesan2013}, but this does not have the restriction that the resulting channel be decomposable into a given family of controls. 
+In this case, if (\ref{eq:minimization}) is satisfied, the resulting error channel will be \textit{exactly} a Pauli Channel. Previous authors have considered finding the closest Pauli or Clifford Channel to a given process \cite{Magesan2013}, but this does not have the restriction that the resulting channel be decomposable into a given family of controls. 
 
 % subsection off_diagonals (end)
 
@@ -428,29 +424,29 @@ The resulting MQG will be, to first order, the closest Pauli Channel that can be
 While mixed quantum channels offer significant improvements to gate performance, they fail to take into account the reality that most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MQG will degrade. Thus, we would like to design MQGs that are robust to this drift. To enforce robustness, we can consider the generators in (\ref{eq:campbell-condition}) to be functions of a control vector $\vec{\delta}$, and instead of requiring that the error generators average to zero, we can impose a similar condition on the higher-order derivatives with respect to parameters that may drift. Specifically, we are interested in the $n^{th}$ order derivatives:
 \begin{equation}
 \label{eq:derivative}
-D^n_j = \frac{1}{n!}\frac{\partial^{n}}{\partial\delta_{i_1}\ldots\partial\delta_{i_n}}\mathcal{L}_j(\vec{\delta})|_{\vec{\delta}=\vec{0}}
+D^n_i = \frac{1}{n!}\frac{\partial^{n}}{\partial\delta_{j_1}\ldots\partial\delta_{j_n}}\mathcal{L}_i(\vec{\delta})|_{\vec{\delta}=\vec{0}}
 \end{equation}
-If the dimension of $\vec{\delta}$ is $d$, the indices $i_0, \ldots, i_n$ take on values in $1, \ldots, d$ and this matrix has $d^n$ entries. 
-We say that a mixed quantum gate is robust to order $\ell$ (an $\ell$MQG) if for all $1 \leq k \leq \ell$:
+If the dimension of $\vec{\delta}$ is $d$, the indices $j_0, \ldots, j_n$ take on values in $1, \ldots, d$ and this matrix has $d^n$ entries. 
+We say that an MQG is robust to order $\ell$ (an $\ell$MQG) if for all $1 \leq k \leq \ell$:
 \begin{equation}\label{eq:MQG}
 \begin{gathered}
-\sum_j\omega_j(\sum_{n=0}^k D^n_j)^n = \vec{0}\\
+||\sum_i\omega_i(\sum_{n=0}^k D^n_i)^n|| = 0\\
 \end{gathered}
 \end{equation}
 In particular, we see that a 0MQG satisfies (\ref{eq:campbell-condition}). More generally, these conditions imply that an $\ell$MQG is insensitive to $\ell^{th}$ order in drift in $\vec{\delta}$. To see this, we can rewrite the implementations of the target gate as:
 \begin{equation}\label{eq:taylor}
 \begin{gathered}
-\tilde{\mathcal{G}_j}(d\vec{\delta}) = \exp(-i(\mathcal{L}(\vec{0}) + \frac{\partial}{\partial\delta_i}\mathcal{L}_j(d\delta_i)\\ +  \frac{1}{2}\frac{\partial^2}{\partial\delta_i\partial\delta_k} \mathcal{L}(d\delta_i d\delta_k) + \ldots))\mathcal{G}
+\tilde{\mathcal{G}_i}(d\vec{\delta}) = \exp(-i(\mathcal{L}_i(\vec{0}) + \frac{\partial}{\partial\delta_j}\mathcal{L}_i(\vec{0})d\delta_j\\ +  \frac{1}{2}\frac{\partial^2}{\partial\delta_j\partial\delta_k} \mathcal{L}_i(\vec{0})d\delta_j d\delta_k + \ldots))\mathcal{G}
 \end{gathered}
 \end{equation}
-By Taylor expanding (\ref{eq:taylor}) in $d\vec{\delta}$, one can see that the the first $\ell$ derivatives of an $\ell$MQG will be zero. Furthermore if we can find controls such that $|D_j^n|\leq\epsilon$, we can approximate (\ref{eq:MQG}) as:
+By Taylor expanding (\ref{eq:taylor}) in $d\vec{\delta}$, one can see that the the first $\ell$ derivatives of an $\ell$MQG will be zero. Furthermore if we can find controls such that $||D_i^n||\leq\epsilon$, we can approximate (\ref{eq:MQG}) as:
 \begin{equation}\label{eq:MQG-relaxed}
 \begin{gathered}
-\sum\omega_jD^n_j + \mathcal{O}(\epsilon^2) = 0\\
+||\sum\omega_iD^n_i||+ \mathcal{O}(\epsilon^2) = 0\\
 \end{gathered}
 \end{equation}
-This condition guarantees that errors will be suppressed to second order for all derivatives up to order $\ell$. %A proof is included in the appendix that generalizes the Hastings-Campbell Mixing Lemma in \cite{Campbell2017}. Namely, Campbell showed that if $0\in $ Conv$[\{G_i(\vec{\delta})\}]$, where Conv is the convex hull of its arguments, then an $\vec{\omega}$ exists that quadratically decreases the diamond norm. We prove that $0\in $ Conv$[\{D_j^n(\vec{\delta})\}]$ implies there is an $\vec{\omega}$ exists that quadratically decreases the $\ell^{th}$-order sensitivity of the diamond norm of an $\ell$MQG.
-As discussed in \cite{Campbell2017}, the geometric picture for 0MQGs is to consider the error generators as vectors, and to ensure zero is contained in their convex hull. Figure \ref{fig:vectorspace} generalizes this picture to 1MQGs and gives intuition for the conditions required to produce them. To produce $\ell$MQGs, we first define the vectorized derivative matrix ${\bold{D}^{\ell}}$ in a similar way to (\ref{eq:vectorized_generators}):
+This condition guarantees that errors will be suppressed to second order in $\epsilon$ for all derivatives up to order $\ell$. %A proof is included in the appendix that generalizes the Hastings-Campbell Mixing Lemma in \cite{Campbell2017}. Namely, Campbell showed that if $0\in $ Conv$[\{G_i(\vec{\delta})\}]$, where Conv is the convex hull of its arguments, then an $\vec{\omega}$ exists that quadratically decreases the diamond norm. We prove that $0\in $ Conv$[\{D_j^n(\vec{\delta})\}]$ implies there is an $\vec{\omega}$ exists that quadratically decreases the $\ell^{th}$-order sensitivity of the diamond norm of an $\ell$MQG.
+As discussed in \cite{Campbell2017}, the geometric picture for 0MQGs is to consider the error generators as vectors, and to ensure zero is contained in their convex hull. Figure \ref{fig:vectorspace} generalizes this picture to 1MQGs and gives intuition for the conditions required to produce them. To generate $\ell$MQGs, we first define the vectorized derivative matrix ${\bold{D}^{\ell}}$ in a similar way to (\ref{eq:vectorized_generators}):
 \begin{equation}
 {\bold{D}^{\ell}} =  \left(\begin{array}{cccc}
 		D^\ell_{1_{1,1}} & D^\ell_{2_{1,1}} & \ldots   \\ 
@@ -464,11 +460,11 @@ Using this, we can then solve the following convex optimization problem, general
 
 \begin{equation}\label{eq:robust_minimization}
   \begin{split}
-    &\underset{\omega_j\geq0, |\omega|_1=1}{\textbf{minimize}: } ||{\bold{D}^{\ell}}\omega||\\
-    &\textbf{subject to: } \forall n<\ell, \sum \omega_jD_j^n=\vec{0}\\
+    &\underset{\omega_i\geq0, |\omega|_1=1}{\textbf{minimize}: } ||{\bold{D}^{\ell}}\omega||_1\\
+    &\textbf{subject to: } \forall n<\ell, ||\sum \omega_iD_i^n||=0\\
   \end{split}
 \end{equation}
-with $D_n^j$ defined in (\ref{eq:derivative}). 
+with $D_n^i$ defined in (\ref{eq:derivative}). 
 
 % subsection adding_robustness (end)
 
@@ -478,7 +474,7 @@ with $D_n^j$ defined in (\ref{eq:derivative}).
 
 \subsubsection{Hamiltonian Norm Regularization}
 \label{sec:norm}
-Up until this point the convex optimization problems discussed can be solved analytically, however casting them as convex optimization problems will allow us to add penalty terms to the cost function to promote different properties of the MQG. In particular, while (\ref{eq:robust_minimization}) is sufficient for suppressing the diamond norm to first order relative to the \textit{worst} controls in the collection, it does not preferentially select the controls with the least error. As an example, any MQG that mixes equally over equal and opposite errors will satisfy (\ref{eq:robust_minimization}), but depending on the magnitude of the error of the resulting channel will depend on the magnitude of the original coherent error.\note{Just give an explicit example.} To encourage the inclusion of controls with smaller error, we may impose a penalty proportional to the norm of the included Hamiltonians. In our case, we choose to penalize for the $\ell_2$ ($||\cdot||_2$) norm:
+The convex optimization problems discussed up until this point can be solved analytically, however casting them as convex optimization problems will allow us to add penalty terms to the cost function to promote different properties of the MQG. In particular, while (\ref{eq:robust_minimization}) is sufficient for suppressing the diamond norm to first order relative to the \textit{worst} controls in the collection, it does not preferentially select the controls with the least error. As an example, any MQG that mixes equally over equal and opposite errors will satisfy (\ref{eq:robust_minimization}), but depending on the magnitude of the error of the resulting channel will depend on the magnitude of the original coherent error.\note{Just give an explicit example.} To encourage the inclusion of controls with smaller error, we may impose a penalty proportional to the norm of the included Hamiltonians. In our case, we choose to penalize for the $\ell_2$ ($||\cdot||_2$) norm:
 
 \newcommand{\bunderbrace}[2]{%
   \begin{array}[t]{@{}c@{}}
@@ -489,8 +485,8 @@ Up until this point the convex optimization problems discussed can be solved ana
 
 \begin{equation}\label{eq:minimization_l2}
 \begin{split}
-& \ \bunderbrace{\textbf{minimize}: }{\omega_j\geq0, |\omega|_1=1} ||{\bold{D}^{\ell}}\omega||+ \eta\sum\omega_j||D^0_j||_2\\
-&\ \ \textbf{subject to: } \forall n<\ell, \sum \omega_jD_j^n=0\\
+& \ \bunderbrace{\textbf{minimize}: }{\omega_i\geq0, |\omega|_1=1} ||{\bold{D}^{\ell}}\omega||_1+ \eta\sum\omega_i||D^0_i||_2\\
+&\ \ \textbf{subject to: } \forall n<\ell, ||\sum \omega_iD_i^n||=0\\
 \end{split}
 \end{equation}
 with $\eta \geq 0$. By increasing $\eta$, we can encourage the optimizer to include better controls while minimizing the diamond norm. The value of $\eta$ that is best for any particular problem instance will depend on the values in $\bold{D}^\ell$.
@@ -509,9 +505,9 @@ In many machine learning contexts, lasso regularization \cite{tibshirani1996regr
 \begin{equation}\label{eq:minimization_regularization}
 \begin{split}
 &\underset{n\in[N]}{\textbf{minimize}}\\
-&\ \ \bunderbrace{\textbf{minimize}: }{\omega_j\geq0, |\omega|_1=1,\\ t\geq0} ||{\bold{D}^{\ell}}\omega|| + t\\
+&\ \ \bunderbrace{\textbf{minimize}: }{\omega_i\geq0, |\omega|_1=1,\\ t\geq0} ||{\bold{D}^{\ell}}\omega||_1 + t\\
 &\ \ \textbf{subject to: } \omega_n > \frac{\lambda}{t}\\
-&\ \ \phantom{\textbf{subject to: }} \forall n<\ell, \sum \omega_jD_j^n=0
+&\ \ \phantom{\textbf{subject to: }} \forall n<\ell, ||\sum \omega_iD_i^n||=0
 \end{split}
 \end{equation} with $\lambda\geq0$. As with $\eta$ in the last subsection, the optimal value of $\lambda$ is problem specific, depending on $\bold{D}^\ell$ and how sparse the solution needs to be. 
 
@@ -624,26 +620,26 @@ This material was funded in part by the U.S. Department of Energy, Office of Sci
 \label{sub:diamond_distance_inequality}
 Here we prove the claim of \eqref{eq:diamond_ineq} that:
 \begin{equation}
-	\epsilon_\diamond\!\left(\mathsf{E}_{\rm eff}\right) \le \sum_i w_i \, \epsilon_\diamond(\mathsf{E}_i).
+	\epsilon_\diamond\!\left(\mathsf{E}_{\rm eff}\right) \le \sum w_i \, \epsilon_\diamond(\mathsf{E}_i).
 \end{equation}
-The effective error channel for a mixed quantum gate is $\mathsf{E}_{\rm{eff}} = \sum_i w_i\,\mathsf{E}_i$, where $\mathsf{E}_i$ are the error channels for the component gates. The diamond distance to the identity of the effective error channel is:
+The effective error channel for a mixed quantum gate is $\mathsf{E}_{\rm{eff}} = \sum w_i\,\mathsf{E}_i$, where $\mathsf{E}_i$ are the error channels for the component gates. The diamond distance to the identity of the effective error channel is:
 \begin{align}
 	\epsilon_\diamond \left(\mathsf{E}_{\rm eff}\right)
 		&= \frac{1}{2} \sup_\rho \vert \vert (\mathsf{I}_d\otimes \mathsf{I}_d)(\rho) 
 										  - (\mathsf{E}_{\rm eff} \otimes \mathsf{I}_d)(\rho) \vert\vert_1\\
 		% &= \frac{1}{2} \sup_\rho \vert \vert (\mathsf{I}_d\otimes \mathsf{I}_d)(\rho) 
 										  % - (\sum_i w_i\,\mathsf{E}_i \otimes \mathsf{I}_d)(\rho) \vert\vert_1 \\
-		&= \frac{1}{2} \sup_\rho \vert \vert \sum_i w_i\,((\mathsf{I}_d
+		&= \frac{1}{2} \sup_\rho \vert \vert \sum w_i\,((\mathsf{I}_d
 										  - \mathsf{E}_i) \otimes \mathsf{I}_d)(\rho) \vert\vert_1
 \end{align}
 For qubits, the space of density matrices is compact, so the supremum is achievable. Call a state that achieves the supremum $\rho^*$. Then 
 \begin{align}
 	\epsilon_\diamond \left(\mathsf{E}_{\rm eff}\right)
-		&= \frac{1}{2} \vert \vert \sum_i w_i\,((\mathsf{I}_d
+		&= \frac{1}{2} \vert \vert \sum w_i\,((\mathsf{I}_d
 										  - \mathsf{E}_i) \otimes \mathsf{I}_d)(\rho^*) \vert\vert_1 \\
-		&= \frac{1}{2} \vert \vert \sum_i w_i\, \rho^*_i \vert\vert_1,
+		&= \frac{1}{2} \vert \vert \sum w_i\, \rho^*_i \vert\vert_1,
 \end{align}
-where we have defined $\rho^*_i = ((\mathsf{I}_d - \mathsf{E}_i) \otimes \mathsf{I}_d)(\rho^*)$. The nuclear norm above is equal to the sum of the singular values of $\sum_i w_i \rho_i$. Using the Ky Fan singular value inequality \cite{fan1951maximum} , we have 
+where we have defined $\rho^*_i = ((\mathsf{I}_d - \mathsf{E}_i) \otimes \mathsf{I}_d)(\rho^*)$. The nuclear norm above is equal to the sum of the singular values of $\sum w_i \rho_i$. Using the Ky Fan singular value inequality \cite{fan1951maximum} , we have 
 \begin{align}
 	\epsilon_\diamond \left(\mathsf{E}_{\rm eff}\right)
 		&\le \frac{1}{2} \sum_i w_i \vert \vert \rho^*_i \vert\vert_1 \\
