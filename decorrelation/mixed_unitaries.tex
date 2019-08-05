@@ -199,10 +199,9 @@ Campbell \cite{Campbell2017} and Hastings \cite{1612.01011} independently consid
 If, as Campbell required, the origin is in the convex hull of the generators (see Fig.~\ref{fig:vectorspace}), then there exists a choice for the weights, $w_i^*$, such that $\sum_i w^*=1$ and:
 \begin{align}
 	\label{eq:cancel}
-	&||\sum_i w_i^* \mathcal{L}_i||= 0
+	&\sum_i w_i^* \mathcal{L}_i= 0
 	% \mathrm{with}\;&\sum_i w_i = 1
 \end{align}
-where $||\cdot||$ is the Frobenius norm. \kcy{why the norm, why not just $\sum_i w_i L_i = 0$}.
 
 If the error rates, as measured by the diamond distance, of the component gates are bounded by $\alpha$, then Campbell shows that this first-order cancellation of the error generators can ensure that the error rate of the MQG is bounded by $\alpha^2$. Campbell considered error channels that were strictly unitary, so the error generators in Eq.~\eqref{eq:cancel} were Hamiltonians. Hamiltonian generators can have positive or negative coefficients, so it is possible that the origin may lie in their convex hull. If, however, the error map contains stochastic components, then the condition of Eq.~\eqref{eq:cancel} might be impossible to satisfy. Such errors always have positive probabilities, so the origin can \emph{never} lie in their convex hull. This can be rectified by restricting the sum in Eq.~\eqref{eq:cancel} to only the Hamiltonian component of the generators. In the rest of this paper, we will be considering gates that have only unitary errors, so we will neglect this complication going forward. 
 
@@ -374,7 +373,7 @@ Dnorm min:
 
 One reason to construct an MQG is to improve the worst-case performance of a quantum gate. The worst-case performance is bounded by the diamond distance to the target, which would constitute a natural optimization target.  The diamond distance, however, is a non-linear function that in general requires a convex optimization to compute\cite{watrous2018theory}. This can dramatically slow down iterative optimizers, and so minimizing the diamond distance is a computationally expensive optimization target. However, if the errors are small enough, we can consider a linearized problem, minimizing the diamond distance to first-order in the effective error generator. As discussed in \cite{Campbell2017}, a sufficient condition to minimize the diamond distance of an MQG with error generators $\{\mathcal{L}_i\}$ to first order is:
 \begin{equation}\label{eq:campbell-condition}
-||\sum \omega_i \mathcal{L}_i ||= 0
+\sum \omega_i \mathcal{L}_i = 0
 \end{equation}
 \kcy{again with the norm}
 In \cite{Campbell2017} Campbell presents an algorithm that, given an oracle that produces approximate unitary operations, will generate controls and weightings to find an MQG with this property. Alternatively, one might consider the following problem: \textit{Given a fixed collection of controls, how can I produce a weighting with minimal diamond norm?} Such a situation might arise if there is a natural family of controls that implement a desired gate, or if, as we consider later (Section \ref{sec:numerical_results}), we are given a collection of precomputed gate implementations. Given such an MQC we can consider the $n^2\times m$ matrix whose columns are the vectorized error generators:
@@ -441,7 +440,7 @@ If the dimension of $\vec{\delta}$ is $d$, the indices $j_0, \ldots, j_n$ take o
 We say that an MQG is robust to order $\ell$ (an $\ell$MQG) if for all $1 \leq k \leq \ell$:
 \begin{equation}\label{eq:MQG}
 \begin{gathered}
-||\sum_i\omega_i(\sum_{n=0}^k D^n_i)^n|| = 0\\
+\sum_i\omega_i(\sum_{n=0}^k D^n_i)^n = 0\\
 \end{gathered}
 \end{equation}
 In particular, we see that a 0MQG satisfies (\ref{eq:campbell-condition}). More generally, these conditions imply that an $\ell$MQG is insensitive to $\ell^{th}$ order in drift in $\vec{\delta}$. To see this, we can rewrite the implementations of the target gate as:
@@ -450,13 +449,13 @@ In particular, we see that a 0MQG satisfies (\ref{eq:campbell-condition}). More 
 \tilde{\mathcal{G}_i}(d\vec{\delta}) = \exp(-i(\mathcal{L}_i(\vec{0}) + \frac{\partial}{\partial\delta_j}\mathcal{L}_i(\vec{0})d\delta_j\\ +  \frac{1}{2}\frac{\partial^2}{\partial\delta_j\partial\delta_k} \mathcal{L}_i(\vec{0})d\delta_j d\delta_k + \ldots))\mathcal{G}
 \end{gathered}
 \end{equation}
-By Taylor expanding (\ref{eq:taylor}) in $d\vec{\delta}$, one can see that the the first $\ell$ derivatives of an $\ell$MQG will be zero. Furthermore if we can find controls such that $||D_i^n||\leq\epsilon$, we can approximate (\ref{eq:MQG}) as:
+By Taylor expanding (\ref{eq:taylor}) in $d\vec{\delta}$, one can see that the the first $\ell$ derivatives of an $\ell$MQG will be zero. Furthermore if we can find controls such that $||D_i^n||\leq\alpha$, (\ref{eq:MQG}) is approximately satisfied in the sense that:
 \begin{equation}\label{eq:MQG-relaxed}
 \begin{gathered}
-||\sum\omega_iD^n_i||+ \mathcal{O}(\epsilon^2) = 0\\
+||\sum\omega_iD^n_i||+ \mathcal{O}(\alpha^2) = 0\\
 \end{gathered}
 \end{equation}
-This condition guarantees that errors will be suppressed to second order in $\epsilon$ for all derivatives up to order $\ell$. %A proof is included in the appendix that generalizes the Hastings-Campbell Mixing Lemma in \cite{Campbell2017}. Namely, Campbell showed that if $0\in $ Conv$[\{G_i(\vec{\delta})\}]$, where Conv is the convex hull of its arguments, then an $\vec{\omega}$ exists that quadratically decreases the diamond norm. We prove that $0\in $ Conv$[\{D_j^n(\vec{\delta})\}]$ implies there is an $\vec{\omega}$ exists that quadratically decreases the $\ell^{th}$-order sensitivity of the diamond norm of an $\ell$MQG.
+where $||\cdot||$ is the Frobenius norm. This condition guarantees, as before, that errors will be suppressed to second order in $\alpha$, but now for all derivatives up to order $\ell$. %A proof is included in the appendix that generalizes the Hastings-Campbell Mixing Lemma in \cite{Campbell2017}. Namely, Campbell showed that if $0\in $ Conv$[\{G_i(\vec{\delta})\}]$, where Conv is the convex hull of its arguments, then an $\vec{\omega}$ exists that quadratically decreases the diamond norm. We prove that $0\in $ Conv$[\{D_j^n(\vec{\delta})\}]$ implies there is an $\vec{\omega}$ exists that quadratically decreases the $\ell^{th}$-order sensitivity of the diamond norm of an $\ell$MQG.
 As discussed in \cite{Campbell2017}, the geometric picture for 0MQGs is to consider the error generators as vectors, and to ensure zero is contained in their convex hull. Figure \ref{fig:vectorspace} generalizes this picture to 1MQGs and gives intuition for the conditions required to produce them. To generate $\ell$MQGs, we first define the vectorized derivative matrix ${\bold{D}^{\ell}}$ in a similar way to (\ref{eq:vectorized_generators}):
 \begin{equation}
 {\bold{D}^{\ell}} =  \left(\begin{array}{cccc}
