@@ -6,6 +6,7 @@ os.environ['NUMEXPR_NUM_THREADS'] = '1'
 os.environ['VECLIB_MAXIMUM_THREADS'] = '1'
 
 from pauli_channel_approximation import PCA
+from time import time
 
 from mpi4py import MPI
 comm = MPI.COMM_WORLD
@@ -113,11 +114,16 @@ if rank == 0:
         ep0 = dill.load(f)
     with open('./figures/epsilon.dat', 'rb') as f:
         ep1 = dill.load(f)
+else:
+    data0 = None
+    data1 = None
+    ep0 = None
+    ep1 = None
 
 
 def split(n, a):
     k, m = divmod(len(a), n)
-    return _np.array(list(a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n)))
+    return np.array(list(a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n)))
 
 
 data0 = comm.bcast(data0, root=0)
@@ -125,26 +131,34 @@ data1 = comm.bcast(data1, root=0)
 ep0 = comm.bcast(ep0, root=0)
 ep1 = comm.bcast(ep1, root=0)
 
-my_points = split(size, np.arange(data0.num_controls))
 
+
+my_points = split(size, np.arange(data0.num_controls))[rank]
 my_values = []
 
-for point in my_points:
+t0 = time()
+num_points = len(my_points)
+for p_ind, point in enumerate(my_points):
+    t1 = time()
     ed = []
     for val in ep0['vals']:
-        # u = get_unitary(data1, ind,val,val,0,0)
-        # pu = change_basis(np.kron(u.conj(), u), 'col', 'pp')
-        # ed += [pygsti.tools.optools.diamonddist(piSWAP, pu, 'pp')/2]
-        ed += [0]
+        u = get_unitary(data1, point, val,val,0,0)
+        pu = change_basis(np.kron(u.conj(), u), 'col', 'pp')
+        ed += [pygsti.tools.optools.diamonddist(piSWAP, pu, 'pp')/2]
+        # ed += [0]
     my_values += [ed]
+    delta_t = np.round(time() - t1)
+    delta_T = np.round(time() - t0)
+    print(f"Node {rank} finished index {point} in {delta_t} seconds. Remaining: {delta_T*num_points/(p_ind+1)}")
 
 all_values = comm.gather(my_values, root = 0)
 
 
 if rank == 0:
+    print(np.array(all_values).shape)
     all_values = [inner for outer in all_values for inner in outer]    
     data = {ind: all_values[ind] for ind in range(data0.num_controls)}
-    data['epsilons'] = ep0['epsilons']
+    data['epsilons'] = ep0['vals']
     with open('2q_dnorms.dat', 'wb') as f:
         dill.dump(data, f)
 
