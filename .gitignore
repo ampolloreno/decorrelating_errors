@@ -10,3 +10,4 @@ __pycache__
 *.fls
 /decorrelation/mixed_unitaries.log
 /decorrelation/mixed_unitaries.out
+/.venv/*
