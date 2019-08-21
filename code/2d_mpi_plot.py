@@ -25,14 +25,14 @@ if rank == 0:
     matplotlib.use('Agg')
     from matplotlib import pyplot as plt
 
-def print(*args, **kwargs):
-    if rank == 0:
+def print(*args, root = 0, **kwargs):
+    if rank == root:
         return __builtin__.print(*args, **kwargs)
 
 # Import the data
 import dill
 filenames = {0: '0_pickled_controls106.pkl', 1: '1_pickled_controls106.pkl'}
-with open(filenames[1], 'rb') as f:
+with open(filenames[0], 'rb') as f:
     data = dill.load(f)
 
 # Divide list into n approximately equally sized chunks
@@ -63,32 +63,100 @@ def get_unitary(c_ind, epsilon1, epsilon2, delta1, delta2):
 my_inds = split(size, np.arange(len(data.controlset)))[rank]
 # my_inds = np.array(split(size, np.arange(size)))[rank]
 
+
 # Get the process matrix for a given setting of the error parameters
-def get_process(ep1, ep2, delta1, delta2):
+def get_process(ep1, ep2, delta1, delta2, return_average = True, return_diamond_distance=False):
     my_us = [get_unitary(ind, ep1, ep2, delta1, delta2) for ind in my_inds]
     my_probs = [data.probs[ind] for ind in my_inds]
-    my_processes = [prob * pygsti.tools.optools.unitary_to_pauligate(u) for u, prob in zip(my_us, my_probs)]
+    
+    target_process = pygsti.tools.optools.unitary_to_pauligate(data.target_operator)
+
+    if return_average:
+        my_processes = [prob * pygsti.tools.optools.unitary_to_pauligate(u) for u, prob in zip(my_us, my_probs)]
+    else:
+        my_processes = [pygsti.tools.optools.unitary_to_pauligate(u) for u in my_us]
+        if return_diamond_distance:
+            my_processes = [pygsti.tools.optools.diamonddist(target_process, process, 'pp')/2. for process in my_processes]
+
     all_processes = comm.gather(my_processes, root = 0)
     if rank == 0:
-        return sum([y for x in all_processes for y in x],0)
+        if return_average:
+            return sum([y for x in all_processes for y in x],0)
+        else:
+            return np.array([y for x in all_processes for y in x])
     else: 
         return None
 
+def flatten(the_list):
+    return [inner for outer in the_list for inner in outer]
+
 if __name__ == '__main__':
     
-    diamond_distances = []
-    vals = np.linspace(-.01,.01,31)
-    target_process = pygsti.tools.optools.unitary_to_pauligate(data.target_operator)
+    # diamond_distances = []
+    # vals = np.linspace(-.02,.02,1001)
+    # target_process = pygsti.tools.optools.unitary_to_pauligate(data.target_operator)
+    # t0 = time()
+    # for v_ind, val in enumerate(vals):
+    #     t1 = time()    
+    #     process = get_process(val,val,0,0)
+    #     if rank == 0:  
+    #         error = pygsti.tools.optools.diamonddist(target_process, process, 'pp')/2
+    #         t_total = np.round(time()-t0,3)
+    #         t_remaining_estimate = np.round(t_total/(v_ind+1) * (len(vals) - (v_ind+1)),3)
+    #         print(f"{v_ind+1}/{len(vals)} took {np.round(time() - t1,3)} seconds. Total: {t_total}  Remaining: {t_remaining_estimate}")
+    #         print(f"     The diamond distance is {np.round(error, 5)} at epsilon = {np.round(val, 4)}.")
+    #         diamond_distances += [error]
+    #
+    # if rank == 0:        
+    #     save_data = {'vals': vals, 'diamond_distances': diamond_distances}
+    #     with open('./figures/0_epsilon.dat', 'wb') as f:
+    #         dill.dump(save_data, f)
+    #     plt.plot(vals, diamond_distances)
+    #     plt.xlabel('Epsilon')
+    #     plt.ylabel('Diamond Distance')
+    #     plt.savefig('./figures/0_epsilon_correlated_dense.pdf')
 
-    for val in vals:
-        t1 = time()    
-        process = get_process(0,0,val,val)
-        if rank == 0:  
-            error = pygsti.tools.optools.diamonddist(target_process, process, 'pp')/2
-            print(time() - t1, val, error)
-            diamond_distances += [error]
-
+    t1 = time()
+    ddists = get_process(0.01,0.01, 0,0, False, True)
+    print(ddists)
     if rank == 0:
-        plt.plot(vals, diamond_distances)
-        plt.xlabel('Delta')
-        plt.savefig('./figures/delta_correlated.pdf')
+        print(ddists)
+        ddists = flatten(ddists)
+        best_index = np.argmin(ddists)
+        print(best_index, ddists[best_index])
+        print(np.round(time()-t1,1))
+
+    # target_process = pygsti.tools.optools.unitary_to_pauligate(data.target_operator)
+    # vals = np.linspace(-0.02, 0.02, 79)
+    # my_vals = split(size, vals)[rank]
+    # for index in [399, 39, 234, 252, 824]:
+    #     my_ddists = []
+    #     for val in my_vals:
+    #         process = pygsti.tools.optools.unitary_to_pauligate(get_unitary(index,val,val,0,0))
+    #         ddist = pygsti.tools.optools.diamonddist(process, target_process, 'pp')/2.
+    #         my_ddists += [ddist]
+    #     ddists = comm.gather(my_ddists, root = 0)
+
+    #     if rank == 0:
+    #         ddists = flatten(ddists)
+    #         print(ddists)
+    #         plt.plot(vals, ddists, label = str(index))
+    # if rank == 0:
+    #     plt.legend()
+    #     plt.savefig('./figures/several.pdf')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
