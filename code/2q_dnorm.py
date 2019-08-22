@@ -144,12 +144,12 @@ for p_ind, point in enumerate(my_points):
     for val in ep0['vals']:
         u = get_unitary(data1, point, val,val,0,0)
         pu = change_basis(np.kron(u.conj(), u), 'col', 'pp')
-        ed += [pygsti.tools.optools.diamonddist(piSWAP, pu, 'pp')/2]
+        ed += [pygsti.tools.optools.diamonddist(piSWAP, pu, 'pp')/2.]
         # ed += [0]
     my_values += [ed]
     delta_t = np.round(time() - t1)
     delta_T = np.round(time() - t0)
-    print(f"Node {rank} finished index {point} in {delta_t} seconds. Remaining: {delta_T*num_points/(p_ind+1)}")
+    print(f"Node {rank} finished {p_ind+1} of {num_points} in {delta_T} seconds. Remaining: {delta_T*(num_points-p_ind-1)/(p_ind+1)}. Min dnorm: {np.min(ed)}.")
 
 all_values = comm.gather(my_values, root = 0)
 
