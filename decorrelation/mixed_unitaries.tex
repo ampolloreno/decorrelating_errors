@@ -477,6 +477,13 @@ Using this, we can then solve the following convex optimization problem, general
 \end{equation}
 with $D_n^i$ defined in (\ref{eq:derivative}). 
 
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{vectorspace2.pdf}
+  \caption{A target unitary gate can be implemented a number of ways, each with a different effective Hamiltonian error. a) The error Hamiltonians shown with their derivative with respect to a control parameter. As this parameter drifts, a MQG may drift, leading to a first-order error. b) The derivatives also lie in a vector space. If the origin lies in their convex hull $\mathsf{Conv}(\{H_k \otimes H_{k,1} \oplus H_{k,2} \oplus \cdots\}_k)$ then it may be possible to construct a robust 1-MQG.}
+  \label{fig:vectorspace}
+\end{figure}
+
 % subsection adding_robustness (end)
 
 % ==============================================================================
@@ -564,7 +571,7 @@ In our implementation, we considered the performance function presented in \cite
 
 Using controls generated in this way, the MQGs produced for $RX(\frac{\pi}{2})$ and $RY(\frac{\pi}{2})$ are qualitatively similar, with the results for $RY(\frac{\pi}{2})$ shown in Figure \ref{fig:YMQG}. \kcy{not a sentence -->} By imposing the $\ell_2$ penalty from Section \ref{sec:norm}, so that the algorithm preferentially selects controls with smaller errors. Adding this constraint made the 0MQG perform better at the origin by nearly an order of magnitude, and moved the 1MQG from being out-performed by the 0MQG for all detunings, to out performing by nearly an order of magnitude when there is $.1\%$ drift in the controls. Imposing this constraint allows us to trade off flatness at the origin for performance at the origin. This shows that through adding constraints to our optimization routine, we can make the MQG practically useful. 
 
-\begin{figure}
+\begin{figure}[h]
   \centering
   \includegraphics[width=\columnwidth]{SQRTY_no_member.png}
   \caption{\kcy{Axis label is screwed up} Numerical results comparing a 0MQG to a 1MQG for a single tunable qubit, for $RY(\frac{\pi}{2})$. The results are qualitatively similar to those for $RX(\frac{\pi}{2})$. In this case the 0MQG outperforms both the 1MQG by two orders of magnitude, and the constituent controls by three orders of magnitude at the origin. However, varying over $\delta$ we see that the 1MQG outperforms the 0MQG by up to an order of magnitude when there is $.1\%$ drift in the qubit control amplitudes.}
@@ -585,7 +592,7 @@ In this example, we find more modest improvements to performance, as shown in Fi
 
 \begin{figure}
   \centering
-  \includegraphics[width=\columnwidth]{2QRBC_no_member.png}
+  \includegraphics[width=\columnwidth]{2q_robustness.png}
   \caption{\kcy{needs to be on previous page} Numerical results comparing a 0MQG to a 1MQG for a pair of tunable qubits, with a resonant exchange interaction. Shown with lower alpha values are example constituent controls. The 0MQG and 1MQG can be seen to outperform these controls by half of an order of magnitude at the origin. For all detuning values the 1MQG performs as well or better than the 0MQG. When there is $.2\%$ drift in the qubit frequency, the 1MQG outperforms members of the control families by almost an order of magnitude in diamond norm. Similarly, for $.2\%$ drift in the qubit control amplitude, we see that the 1MQG outperforms the the constituent controls by over half an order of magnitude.}
   \label{fig:2MQG}
 \end{figure}
