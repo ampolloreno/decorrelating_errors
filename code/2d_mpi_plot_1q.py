@@ -102,12 +102,12 @@ def flatten(the_list):
 if __name__ == '__main__':
 
     diamond_distances = []
-    vals = np.linspace(-.02,.02,1001)
+    vals = np.linspace(-.002,.002,1001)
     target_process = pygsti.tools.optools.unitary_to_pauligate(data.target_operator)
     t0 = time()
     for v_ind, val in enumerate(vals):
         t1 = time()
-        process = get_process(val, 0)
+        process = get_process(0, val)
         if rank == 0:
             error = pygsti.tools.optools.diamonddist(target_process, process, 'pp')/2
             t_total = np.round(time()-t0,3)
@@ -118,15 +118,15 @@ if __name__ == '__main__':
 
     if rank == 0:
         save_data = {'vals': vals, 'diamond_distances': diamond_distances}
-        with open('./figures/1_epsilon_1q.dat', 'wb') as f:
+        with open('./figures/1_delta_1q.dat', 'wb') as f:
             dill.dump(save_data, f)
         plt.plot(vals, diamond_distances)
-        plt.xlabel('Epsilon')
+        plt.xlabel('Delta')
         plt.ylabel('Diamond Distance')
         plt.savefig('./figures/1_epsilon_correlated_dense_1q.pdf')
 
     t1 = time()
-    ddists = get_process(.01, 0, False, True)
+    ddists = get_process(0,.01, False, True)
     print(ddists)
     if rank == 0:
         print(ddists)
@@ -136,12 +136,12 @@ if __name__ == '__main__':
         print(np.round(time() - t1, 1))
 
     target_process = pygsti.tools.optools.unitary_to_pauligate(data.target_operator)
-    vals = np.linspace(-0.02, 0.02, 79)
+    vals = np.linspace(-0.002, 0.002, 79)
     my_vals = split(size, vals)[rank]
     for index in [399, 39, 234, 252, 824]:
         my_ddists = []
         for val in my_vals:
-            process = pygsti.tools.optools.unitary_to_pauligate(get_unitary(index,val,val,0,0))
+            process = pygsti.tools.optools.unitary_to_pauligate(get_unitary(index,0, val))
             ddist = pygsti.tools.optools.diamonddist(process, target_process, 'pp')/2.
             my_ddists += [ddist]
         ddists = comm.gather(my_ddists, root = 0)

@@ -102,9 +102,9 @@ if rank == 0:
     with open('1_pickled_controls5.pkl', 'rb') as f:
         data1 = dill.load(f)
 
-    with open('./figures/0_epsilon_1q.dat', 'rb') as f:
+    with open('./figures/0_delta_1q.dat', 'rb') as f:
         ep0 = dill.load(f)
-    with open('./figures/1_epsilon_1q.dat', 'rb') as f:
+    with open('./figures/1_delta_1q.dat', 'rb') as f:
         ep1 = dill.load(f)
 else:
     data0 = None
@@ -124,8 +124,7 @@ ep0 = comm.bcast(ep0, root=0)
 ep1 = comm.bcast(ep1, root=0)
 
 
-
-my_points = split(size, np.arange(data0.num_controls))[rank]
+my_points = split(size, np.arange(len(data0.controlset)))[rank]
 my_values = []
 
 t0 = time()
@@ -134,7 +133,7 @@ for p_ind, point in enumerate(my_points):
     t1 = time()
     ed = []
     for val in ep0['vals']:
-        u = get_unitary(data1, point, val, 0)
+        u = get_unitary(data1, point, 0, val)
         pu = change_basis(np.kron(u.conj(), u), 'col', 'pp')
         ed += [pygsti.tools.optools.diamonddist(psqrt_x, pu, 'pp')/2.]
         # ed += [0]
@@ -149,9 +148,9 @@ all_values = comm.gather(my_values, root = 0)
 if rank == 0:
     print(np.array(all_values).shape)
     all_values = [inner for outer in all_values for inner in outer]
-    data = {ind: all_values[ind] for ind in range(data0.num_controls)}
+    data = {ind: all_values[ind] for ind in range(len(data0.controlset))}
     data['epsilons'] = ep0['vals']
-    with open('1q_dnorms.dat', 'wb') as f:
+    with open('1q_dnorms_delta.dat', 'wb') as f:
         dill.dump(data, f)
 
 
