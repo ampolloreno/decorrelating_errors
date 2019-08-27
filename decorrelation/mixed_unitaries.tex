@@ -362,25 +362,22 @@ The remainder of this section will focus on the second step of constructing the 
 \subsubsection{First-order generators} % (fold)
 \label{sub:first_order_generators}
 
-Dnorm min:
+One reason to construct an MQG is to improve the worst-case performance of a quantum gate. The worst-case performance is bounded by the diamond distance to the target, which would constitute a natural optimization target:
 \begin{equation}\label{eq:ddmin}
   \begin{split}
     &\underset{\omega_i\geq0, |\omega|_1=1}{\textbf{minimize}: } \hspace{.5cm} \epsilon_\diamond\left(\sum_i\mathsf{E}_i \omega_i\right)
   \end{split}
 \end{equation}
-
-
-
-One reason to construct an MQG is to improve the worst-case performance of a quantum gate. The worst-case performance is bounded by the diamond distance to the target, which would constitute a natural optimization target.  The diamond distance, however, is a non-linear function that in general requires a convex optimization to compute\cite{watrous2018theory}. This can dramatically slow down iterative optimizers, and so minimizing the diamond distance is a computationally expensive optimization target. However, if the errors are small enough, we can consider a linearized problem, minimizing the diamond distance to first-order in the effective error generator. As discussed in \cite{Campbell2017}, a sufficient condition to minimize the diamond distance of an MQG with error generators $\{\mathcal{L}_i\}$ to first order is:
+The diamond distance, however, is a non-linear function that in general requires a convex optimization to compute\cite{watrous2018theory}. This can dramatically slow down iterative optimizers, and so minimizing the diamond distance is a computationally expensive optimization target. However, if the errors are small enough, we can consider a linearized problem, minimizing the diamond distance to first-order in the effective error generator. As discussed in \cite{Campbell2017}, a sufficient condition to minimize the diamond distance of an MQG with error generators $\{\mathcal{L}_i\}$ to first order is:
 \begin{equation}\label{eq:campbell-condition}
 \sum \omega_i \mathcal{L}_i = 0
 \end{equation}
-In \cite{Campbell2017} Campbell presents an algorithm that, given an oracle that produces approximate unitary operations, will generate controls and weightings to find an MQG with this property. Alternatively, one might consider the following problem: \textit{Given a fixed collection of controls, how can I produce a weighting with minimal diamond norm?} Such a situation might arise if there is a natural family of controls that implement a desired gate, or if, as we consider later (Section \ref{sec:numerical_results}), we are given a collection of precomputed gate implementations. Given such an MQC we can consider the $n^2\times m$ matrix whose columns are the vectorized error generators:
+In \cite{Campbell2017} Campbell presents an algorithm that, given an oracle that produces approximate unitary operations, will generate controls and weightings to find an MQG with this property. Alternatively, one might consider the following problem: \textit{Given a fixed collection of controls, how can I produce a weighting with minimal diamond norm?} Such a situation might arise if there is a natural family of controls that implement a desired gate, or if, as we consider later (Section \ref{sec:numerical_results}), we are given a collection of precomputed gate implementations. Given such an MQC with $m$ members, we can consider the $d^4\times m$ matrix whose columns are the vectorized error generators:
 \begin{equation}\label{eq:vectorized_generators}
 	\bold{L} = \left(\begin{array}{cccc}
 		\mathcal{L}_{1_{1,1}} & \mathcal{L}_{2_{1,1}} & \ldots   \\ 
 		\vdots\ & \ddots &    \\
-		\mathcal{L}_{1_{n,n}} &  &  \mathcal{L}_{m_{n,n}} \\ 
+		\mathcal{L}_{1_{d^2,d^2}} &  &  \mathcal{L}_{m_{d^2,d^2}} \\ 
 	\end{array} 	
 	\right)
 \end{equation}
@@ -464,7 +461,7 @@ As discussed in \cite{Campbell2017}, the geometric picture for 0MQGs is to consi
 {\bold{D}^{\ell}} =  \left(\begin{array}{cccc}
 		D^\ell_{1_{1,1}} & D^\ell_{2_{1,1}} & \ldots   \\ 
 		\vdots\ & \ddots &    \\
-		D^\ell_{1_{n,n}} &  &  D^\ell_{m_{n,n}} \\ 
+		D^\ell_{1_{d^2,d^2}} &  &  D^\ell_{m_{d^2,d^2}} \\ 
 	\end{array} 	
 	\right)
 \end{equation}
@@ -524,9 +521,9 @@ In many machine learning contexts, lasso regularization \cite{tibshirani1996regr
 
 \begin{equation}\label{eq:minimization_regularization}
 \begin{split}
-&\underset{n\in[N]}{\textbf{minimize}}\\
+&\underset{m\in[N]}{\textbf{minimize}}\\
 &\ \ \bunderbrace{\textbf{minimize}: }{\omega_i\geq0, |\omega|_1=1,\\ t\geq0} ||{\bold{D}^{\ell}}\omega||_1 + t\\
-&\ \ \textbf{subject to: } \omega_n > \frac{\lambda}{t}\\
+&\ \ \textbf{subject to: } \omega_m > \frac{\lambda}{t}\\
 &\ \ \phantom{\textbf{subject to: }} \forall n<\ell, ||\sum \omega_iD_i^n||=0
 \end{split}
 \end{equation} with $\lambda\geq0$. As with $\eta$ in the last subsection, the optimal value of $\lambda$ is problem specific, depending on $\bold{D}^\ell$ and how sparse the solution needs to be. In the following sections we discuss both experimental and numerical implementations of MQGs, leveraging these optimization techniques. 
