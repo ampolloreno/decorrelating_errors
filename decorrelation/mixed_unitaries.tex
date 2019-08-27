@@ -420,7 +420,7 @@ There are other properties of a channel that one might consider optimizing. For 
 	\right)
 \end{equation}
 
-In this case, if (\ref{eq:minimization}) is satisfied, the resulting error channel will be \textit{exactly} a Pauli Channel. Previous authors have considered finding the closest Pauli or Clifford Channel to a given process \cite{Magesan2013}, but this does not have the restriction that the resulting channel be decomposable into a given family of controls. \kcy{Citations to simulation of Pauli noise channels. Discussion of people looking for Pauli channels that approximate their noise. }
+In this case, if (\ref{eq:minimization}) is satisfied, the resulting error channel will be \textit{exactly} a Pauli Channel. If this is achievable, then the circuit can be more efficiently simulated by Monte Carlo methods. Better yet, if the circuit consists of only Clifford gates, stabilizer methods can be used in conjunction with the Monte Carlo methods to give sub-exponential simulation times.\cite{quant-ph/9807006} Other authors have considered the problem of finding the closest Pauli or Clifford Channel to a given process \cite{Magesan2013, Puzzuoli2014} but, unlike our routine, this does not produce a channel that is decomposable into a given family of controls.
 
 % subsection off_diagonals (end)
 
@@ -430,31 +430,29 @@ In this case, if (\ref{eq:minimization}) is satisfied, the resulting error chann
 \subsection{Additional Constraints}
 \subsubsection{Adding robustness} % (fold)
 \label{sub:adding_robustness}
-While mixed quantum channels offer significant improvements to gate performance, they fail to take into account the reality that most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MQG will degrade. Thus, we would like to design MQGs that are robust to this drift. To enforce robustness, we can consider the generators in (\ref{eq:campbell-condition}) to be functions of a control vector $\vec{\delta}$, and instead of requiring that the error generators average to zero, we can impose a similar condition on the higher-order derivatives with respect to parameters that may drift. Specifically, we are interested in the $n^{th}$ order derivatives:
-\kcy{This shoudl probably use the comma derivative notation that we use in the figures. Should the figures change from H to something else?}
+While mixed quantum channels offer significant improvements to gate performance, they fail to take into account the reality that most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MQG will degrade. Thus, we would like to design MQGs that are robust to this drift. To enforce robustness, we can consider the generators in (\ref{eq:campbell-condition}) to be functions of a control vector $\vec{\delta}$, and if the fluctuations are small enough, it is convenient to write the gate as a Taylor expansion in this small parameter:
+\begin{equation}\label{eq:taylor}
+\begin{gathered}
+\tilde{\mathcal{G}_i}(d\vec{\delta}) = \exp(-i(\mathcal{L}_i(\vec{0}) + \frac{\partial}{\partial\delta_j}\mathcal{L}_i(\vec{0})d\delta_j\\ +  \frac{1}{2}\frac{\partial^2}{\partial\delta_j\partial\delta_k} \mathcal{L}_i(\vec{0})d\delta_j d\delta_k + \ldots))\mathcal{G}
+\end{gathered}
+\end{equation}
+
+Now, instead of requiring that only the error generators average to zero, we can additionally impose a similar condition on the higher-order derivatives with respect to parameters that may drift. Specifically, we are interested in the $n^{th}$ order derivatives:
+\kcy{Should the figures change from H to something else?}
+\amp{Right. It seems to me they should be written as something like $D^1_{i,k}$. Then in the equation below I can use the comma notation, but for the $i^{th}$ derivative it's going to be some gross multi-index... I think your point is that the comma is standard notation (although I've never used it before.)}
 \begin{equation}
 \label{eq:derivative}
-D^n_i = \frac{1}{n!}\frac{\partial^{n}}{\partial\delta_{j_1}\ldots\partial\delta_{j_n}}\mathcal{L}_i(\vec{\delta})|_{\vec{\delta}=\vec{0}}
+D^n_{i, (j_1, \ldots, j_n)} = \frac{1}{n!}\frac{\partial^{n}}{\partial\delta_{j_1}\ldots\partial\delta_{j_n}}\mathcal{L}_i(\vec{\delta})|_{\vec{\delta}=\vec{0}}
 \end{equation}
-\begin{equation}
-\label{eq:derivative}
-D^n_i = \frac{1}{n!}\frac{\partial^{n}}{\partial\delta_{j_1}\ldots\partial\delta_{j_n}}\mathcal{L}_i(\vec{\delta})|_{\vec{\delta}=\vec{0}}
-\end{equation}
-If the dimension of $\vec{\delta}$ is $d$, the indices $j_0, \ldots, j_n$ take on values in $1, \ldots, d$ and this matrix has $d^n$ entries. 
+If the dimension of $\vec{\delta}$ is $d$, the indices $j_1, \ldots, j_n$ take on values in $1, \ldots, d$ and this matrix has $d^n$ entries. 
 We say that an MQG is robust to order $\ell$ (an $\ell$MQG) if for all $1 \leq k \leq \ell$:
 \begin{equation}\label{eq:MQG}
 \begin{gathered}
 \sum_i\omega_i(\sum_{n=0}^k D^n_i)^n = 0\\
 \end{gathered}
 \end{equation}
-In particular, we see that a 0MQG satisfies (\ref{eq:campbell-condition}). More generally, these conditions imply that an $\ell$MQG is insensitive to $\ell^{th}$ order in drift in $\vec{\delta}$. To see this, we can rewrite the implementations of the target gate as:
-\kcy{move this earlier}
-\begin{equation}\label{eq:taylor}
-\begin{gathered}
-\tilde{\mathcal{G}_i}(d\vec{\delta}) = \exp(-i(\mathcal{L}_i(\vec{0}) + \frac{\partial}{\partial\delta_j}\mathcal{L}_i(\vec{0})d\delta_j\\ +  \frac{1}{2}\frac{\partial^2}{\partial\delta_j\partial\delta_k} \mathcal{L}_i(\vec{0})d\delta_j d\delta_k + \ldots))\mathcal{G}
-\end{gathered}
-\end{equation}
-By Taylor expanding (\ref{eq:taylor}) in $d\vec{\delta}$, one can see that the the first $\ell$ derivatives of an $\ell$MQG will be zero. Furthermore if we can find controls such that $||D_i^n||\leq\alpha$, (\ref{eq:MQG}) is approximately satisfied in the sense that:
+In particular, we see that a 0MQG satisfies (\ref{eq:campbell-condition}). More generally, these conditions imply that an $\ell$MQG is insensitive to $\ell^{th}$ order in drift in $\vec{\delta}$. 
+By Taylor expanding (\ref{eq:taylor}) in $d\vec{\delta}$, one can see that the the first $\ell$ derivatives of an $\ell$MQG will be zero. Furthermore if we can find controls such that $||D_i^n||\leq\alpha$, (\ref{eq:MQG}) is a pproximately satisfied in the sense that:
 \begin{equation}\label{eq:MQG-relaxed}
 \begin{gathered}
 ||\sum\omega_iD^n_i||+ \mathcal{O}(\alpha^2) = 0\\
@@ -484,7 +482,7 @@ with $D_n^i$ defined in (\ref{eq:derivative}).
 \begin{figure}
   \centering
   \includegraphics[width=\columnwidth]{vectorspace2.pdf}
-  \caption{A target unitary gate can be implemented a number of ways, each with a different effective Hamiltonian error. a) The error Hamiltonians shown with their derivative with respect to a control parameter. As this parameter drifts, a MQG may drift, leading to a first-order error. b) The derivatives also lie in a vector space. If the origin lies in their convex hull $\mathsf{Conv}(\{H_k \otimes H_{k,1} \oplus H_{k,2} \oplus \cdots\}_k)$ then it may be possible to construct a robust 1-MQG. \kcy{This should appear in the main text somewhere. When we add the derivatives we make our space larger, but we still want the origin to be in the higher-dimensional convex hull.}}
+  \caption{A target unitary gate can be implemented a number of ways, each with a different effective Hamiltonian error. a) The error Hamiltonians shown with their derivative with respect to a control parameter. As this parameter drifts, a MQG may drift, leading to a first-order error. b) The derivatives also lie in a vector space. If the origin lies in their convex hull $\mathsf{Conv}(\{H_k \otimes H_{k,1} \oplus H_{k,2} \oplus \cdots\}_k)$\amp{I'm not sure what you mean by the $_k$ subscript, nor why the tensor product is there. Also I think your indices are backwards?} then it may be possible to construct a robust 1-MQG. \kcy{This should appear in the main text somewhere. When we add the derivatives we make our space larger, but we still want the origin to be in the higher-dimensional convex hull.}}
   \label{fig:vectorspace}
 \end{figure}
 
@@ -496,7 +494,7 @@ with $D_n^i$ defined in (\ref{eq:derivative}).
 
 \subsubsection{Hamiltonian Norm Regularization}
 \label{sec:norm}
-The convex optimization problems discussed up until this point can be solved analytically, \kcy{nope!} however casting them as convex optimization problems will allow us to add penalty terms to the cost function to promote different properties of the MQG. In particular, while (\ref{eq:robust_minimization}) is sufficient for suppressing the diamond norm to first order relative to the \textit{worst} controls in the collection, it does not preferentially select the controls with the least error. As an example, any MQG that mixes equally over equal and opposite errors will satisfy (\ref{eq:robust_minimization}), but the magnitude of the error of the resulting channel will depend on the magnitude of the original coherent errors. To encourage the inclusion of controls with smaller error, we may impose a penalty proportional to the norm of the included Hamiltonians. In our case, we choose to penalize for the $\ell_2$ ($||\cdot||_2$) norm:
+While quadratic programs with equality constraints have analytic solutions, the program we are considering has both constraints on the norm of the weight vector, and inequality constraints. Additionally, casting this problem as a convex optimization problem allows us to add penalty terms to the cost function to promote different properties of the MQG. In particular, while (\ref{eq:robust_minimization}) is sufficient for suppressing the diamond norm to first order relative to the \textit{worst} controls in the collection, it does not preferentially select the controls with the least error. As an example, any MQG that mixes equally over equal and opposite errors will satisfy (\ref{eq:robust_minimization}), but the magnitude of the error of the resulting channel will depend on the magnitude of the original coherent errors. To encourage the inclusion of controls with smaller error, we may impose a penalty proportional to the norm of the included Hamiltonians. In our case, we choose to penalize for the $\ell_2$ ($||\cdot||_2$) norm:
 
 \newcommand{\bunderbrace}[2]{%
   \begin{array}[t]{@{}c@{}}
@@ -519,10 +517,10 @@ with $\eta \geq 0$. By increasing $\eta$, we can encourage the optimizer to incl
 % ==============================================================================
 
 \subsubsection{Sparsity Constraints}
-
+\label{sec:sparsity}
 As a practical consideration, we would also like to regularize our objective function to promote sparse weightings. Control electronics often have a limited amount of waveform memory, and thus it is important that MQGs only require a small number of controls. As an example, consider Figure \ref{fig:vectorspace}. In b), it is clear that $H_4$ is unnecessary to contain the origin in the convex hull of the error generators. Thus we would prefer that a $0$MQG exclude $H_4$. However, if we additionally want our controls to form a 1MQG, we see from d) that we need $H_4$ in our control set, in which case we would like our algorithm to exclude $H_1$, since its derivative is contained in the convex hull of the other controls' derivatives. 
 
-In many machine learning contexts, lasso regularization \cite{tibshirani1996regression} can be used to enforce sparsity in solutions, however this is insufficient for our purposes, as we already constrain $\omega$ to be a valid probability distribution. \kcy{more here} The problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends (\ref{eq:robust_minimization}):
+In many machine learning contexts, lasso regularization \cite{tibshirani1996regression} can be used to enforce sparsity in solutions, however this is insufficient for our purposes, as we already constrain $\omega$ to be a valid probability distribution. Lasso regularization works by penalizing solutions with large $\ell_1$ norm, however if $\omega$ represents probabilities, it will always have an $\ell_1$ norm of one. Conveniently, the problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends (\ref{eq:robust_minimization}):
 
 \begin{equation}\label{eq:minimization_regularization}
 \begin{split}
@@ -542,8 +540,9 @@ In many machine learning contexts, lasso regularization \cite{tibshirani1996regr
 
 \subsection{Experimental} % (fold)
 \label{sub:experimental}
-\kcy{more introduction} 
-Here we present experimental results from implementing this routine on a fixed-frequency, superconducting transmon qubit. In particular, we use qubit 8 on the Rigetti 19Q-Acorn chip, whose characterization can be found in \cite{1712.05771}. To implement an MQG on this qubit, four intentionally miscalibrated Gaussian pulses were produced by scaling the amplitude of a calibrated, 10-sample, 50ns $RX(\frac{\pi}{2})$ pulse by $106.4\%$,  $103.9\%$, $93.7\%$ and $91.2\%$.
+In modern quantum computing platforms, diagnosing and correcting coherent errors remains a challenge. Methodologies like RPE and DRAG are sufficient for routinely achieving high single qubit fidelities in superconducting qubit architectures, however as coherence times increase, the community will continue to be interested in removing coherent errors to achieve higher fidelities. As a proof of principle, we implemented an MQG with a superconducting transmon qubit on the Rigetti 19Q-Acorn chip, whose performance we describe below. While this device consisted of 20 qubits with fixed couplings, here we will give results for a single qubit MQG on qubit 8. For more details about this particular device, characterization can be found in \cite{1712.05771}.
+
+To implement an MQG on this qubit, we first calibrated a 10-sample, 50ns Gaussian pulse by coherently amplifying and correcting over- and under-rotation errors through repeated application. After the gate was sufficiently calibrated, four intentionally miscalibrated Gaussian pulses were produced by scaling the amplitude of the calibrated $RX(\frac{\pi}{2})$ pulse by $106.4\%$,  $103.9\%$, $93.7\%$ and $91.2\%$.
 
 As discussed in Section \ref{sub:off_diagonals}, we chose to minimize the off diagonal elements of the process matrix. To benchmark the quality of the MQG, we then performed six randomized benchmarking experiments\cite{Magesan2011}: one for each over-- and under--calibrated pulse, one for the calibrated pulse, and one for the mixed process. We used $1000$ shots per experiment and $10$ sequences per sequence length, for sequence lengths of $2, 4, 8, 16, 32$ and $64$. In each case, our Clifford operations were decomposed into RX($\frac{\pi}{2})$ and RY($\frac{\pi}{2})$. In our implementation, these gates are implemented using the same pulse envelope definitions and control electronics, phase shifted by $\frac{\pi}{2}$ radians, and are therefore subject to identical miscalibration errors. The results are shown in Figure \ref{fig:rb} for sequence lengths $L=64$. Fitting to the randomized benchmarking decay curves, we find one-qubit gate fidelities of $99.3\%$ for the calibrated pulse, $98.9\%$ for Pulse1, $99.1\%$ for Pulse2, $98.9\%$ for Pulse3, $98.5\%$ for Pulse4, and $99.2\%$ for the MQG, demonstrating that it performs almost as well as the calibrated pulse, and better than the constituent pulses. 
 \begin{figure}[t]
@@ -553,8 +552,7 @@ As discussed in Section \ref{sub:off_diagonals}, we chose to minimize the off di
   \label{fig:rb}
 \end{figure}
 
-\kcy{Kill all non-markovians}
-More importantly, minimizing the off-diagonal elements of the process matrix, we expect to produce a process with suppressed coherent error. To see that this is the case, we can observe the drastic reduction in the variance at each point for the MQG relative to the miscalibrated pulses. A discussed in \cite{Ball2016}, for non-Markovian error models, noise will manifest as gamma distributed points for each sequence length. On the other hand, Markovian noise, such as depolarizing noise, will result in Gaussian distributed fidelity estimates for each randomized benchmarking sequence length. We see that the coherently miscalibrated controls in our RB experiment have long tails, consistent with gamma distributed random variables, while the calibrated and randomized implementations both have much shorter tails, consistent with Gaussian distributed random variables. Thus our experiment demonstrates that the MQG has a significantly less-coherent error channel.
+More importantly, minimizing the off-diagonal elements of the process matrix, we expect to produce a process with suppressed coherent error. To see that this is the case, we can observe the drastic reduction in the variance at each point for the MQG relative to the miscalibrated pulses. A discussed in \cite{Ball2016}, for coherent error models, noise will manifest as gamma distributed points for each sequence length. On the other hand, incoherent noise, such as depolarizing noise, will result in Gaussian distributed fidelity estimates for each randomized benchmarking sequence length. We see that the coherently miscalibrated controls in our RB experiment have long tails, consistent with gamma distributed random variables, while the calibrated and randomized implementations both have much shorter tails, consistent with Gaussian distributed random variables. Thus our experiment demonstrates that the MQG has a significantly less-coherent error channel.
 % subsection experimental (end)
 
 
@@ -563,22 +561,20 @@ More importantly, minimizing the off-diagonal elements of the process matrix, we
 % ==============================================================================
 \subsection{Numerical Implementation}
 \label{sec:numerical_results}
-\kcy{more introduction - what is going on. We are constructing solutions that are themseleves naturally robust, then combining them to make a MQG that is... something better? }
-In the following numerical results, we use the methods in Section \ref{sec:mixed_unitary_processes} to build MQGs. We consider the following model for a single tunable qubit: 
+In the following numerical results, we use the methods in Section \ref{sec:mixed_unitary_processes} to build MQGs, and then analyze their performance for a range of Hamiltonian parameters. More specifically, we will construct a family of controls with some degree of inherent robustness to drift, and leverage the numerical techniques introduced to assign each control a probability. When drawn from with these probabilities, the controls will form an MQG with enhanced robustness to drift on the control parameters. We consider the following dimensionless model for a single tunable qubit: 
 \begin{equation}\label{eq:1Qham}
   H(\delta, \epsilon, t) = \epsilon\sigma_z + (1 + \delta)(c_x(t)\sigma_x + c_y(t)\sigma_y)
 \end{equation}
-\kcy{dimensionless}
-where $\epsilon$ is a random variable used to model fluctuations in the qubit frequency, and $\delta$ is a random variable used to model fluctuations in the control field. We use the GRAPE algorithm\cite{Khaneja2005} with N=25 steps and total evolution time of $\pi$ to generate 100 candidate controls. 
+where $\epsilon$ corresponds to fluctuations in qubit frequency and $\delta$ corresponds to fluctuations in the control field.
 
-In our implementation, we considered the performance function presented in \cite{Khaneja2005}, and averaged over different values of $\delta$ and $\epsilon$ using Gaussian quadrature when computing the gradient, so that we find controls that perform well in a neighborhood. The standard deviations considered for all random variables in our numerical experiments were fixed to $\sigma=.001$. Finally, we assume that the errors on $\sigma_x$ and $\sigma_y$ are perfectly correlated, as in our experimental implementation.
+To generate the initial controls, we use the GRAPE algorithm\cite{Khaneja2005} with N=25 steps and total evolution time of $\pi$ to generate 100 candidate controls. However, by imposing the sparisty constraint discussed in Section \ref{sec:sparsity}, we found MQGs consisting of just 10 controls. In our implementation of the GRAPE algorithm, we use the performance function presented in \cite{Khaneja2005}, and average over different values of $\delta$ and $\epsilon$ using Gaussian quadrature when computing the gradient, so that we find controls that are naturally robust. The standard deviations considered for all parameters in our numerical experiments were fixed to $\sigma=.001$. Finally, we assume that the errors on $\sigma_x$ and $\sigma_y$ are perfectly correlated, as in our experimental implementation.
 
-Using controls generated in this way, the MQGs produced for $RX(\frac{\pi}{2})$ and $RY(\frac{\pi}{2})$ are qualitatively similar, with the results for $RY(\frac{\pi}{2})$ shown in Figure \ref{fig:YMQG}. \kcy{not a sentence -->} By imposing the $\ell_2$ penalty from Section \ref{sec:norm}, so that the algorithm preferentially selects controls with smaller errors. Adding this constraint made the 0MQG perform better at the origin by nearly an order of magnitude, and moved the 1MQG from being out-performed by the 0MQG for all detunings, to out performing by nearly an order of magnitude when there is $.1\%$ drift in the controls. Imposing this constraint allows us to trade off flatness at the origin for performance at the origin. This shows that through adding constraints to our optimization routine, we can make the MQG practically useful. 
+Using controls generated in this way, the MQGs produced for $RX(\frac{\pi}{2})$ and $RY(\frac{\pi}{2})$ are qualitatively similar, with the results for $RX(\frac{\pi}{2})$ shown in Figure \ref{fig:YMQG}. By imposing the penalty from Section \ref{sec:norm}, we sought to ensure that the algorithm preferentially selected controls with smaller errors. Adding this constraint increased the performance of the 0MQG by nearly an order of magnitude at the origin, and produced a 1MQG whose performance is an order of magnitude better than the 0MQG away from the origin. Imposing this constraint allows us to trade off flatness for performance. This shows that through adding constraints to our optimization routine, we can make the MQG practically useful. 
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\columnwidth]{SQRTY_no_member.png}
-  \caption{\kcy{Axis label is screwed up. Should we replot these as in the 2Q example?} Numerical results comparing a 0MQG to a 1MQG for a single tunable qubit, for $RY(\frac{\pi}{2})$. The results are qualitatively similar to those for $RX(\frac{\pi}{2})$. In this case the 0MQG outperforms both the 1MQG by two orders of magnitude, and the constituent controls by three orders of magnitude at the origin. However, varying over $\delta$ we see that the 1MQG outperforms the 0MQG by up to an order of magnitude when there is $.1\%$ drift in the qubit control amplitudes. }
+  \includegraphics[width=\columnwidth]{figures/1q_robustness_delta.pdf}
+  \caption{\amp{needs to be on previous page?}Numerical results comparing a 0MQG to a 1MQG for a single tunable qubit, for $RX(\frac{\pi}{2})$. The results are qualitatively similar to those for $RY(\frac{\pi}{2})$. In this case the 0MQG outperforms both the 1MQG by two orders of magnitude, and the constituent controls by three orders of magnitude at the origin. However, varying over $\delta$ we see that the 1MQG outperforms the 0MQG by up to an order of magnitude.}
   \label{fig:YMQG}
 \end{figure}
 
@@ -590,7 +586,7 @@ H(\vec{\delta}, \vec{\epsilon}, t) = &\sum_{j=1}^2(\epsilon_j\sigma_z^j + (1 + \
 \end{split}
 \end{equation}
 
-In this example it was infeasible to use GRAPE to return non-trivial solutions. Instead we manually selected piecewise constant echoing sequences with 500 steps and total evolution time of $\frac{5\pi}{2}$. In particular, we considered $RX(\pi)$, $RX(-\pi)$, $RY(\pi)$ and $RY(-\pi)$ bang-bang sequences \cite{bangbang}, consisting of all combinations of simultaneous $\pi$ pulses activated at multiples of $8$ steps from the beginning of the controls, and the same multiple of $8$ steps prior to the end of the controls. To give the control family a variety of RF errors, we also added uniformly distributed amplitude errors to each $\pi$ pulse, between $-.25$\% and $.25$\%.
+\amp{This section is still tough to read, but I'm not sure of a better way to handle it. The constituent controls are clearly contrived, so I think it best to be explicit about how they were constructed.}In this example it was infeasible to use GRAPE to return non-trivial solutions. Instead we manually selected piecewise constant echoing sequences with 500 steps and total evolution time of $\frac{5\pi}{2}$. In particular, we considered $RX(\pi)$, $RX(-\pi)$, $RY(\pi)$ and $RY(-\pi)$ bang-bang sequences \cite{bangbang}, consisting of all combinations of simultaneous $\pi$ pulses activated at multiples of $8$ steps from the beginning of the controls, and the same multiple of $8$ steps prior to the end of the controls. To give the control family a variety of RF errors, we also added uniformly distributed amplitude errors to each $\pi$ pulse, between $-.25$\% and $.25$\%.
 
 In this example, we find more modest improvements to performance, as shown in Figure \ref{fig:2MQG}. There are now four free parameters to optimize over, and the uncontrolled entangling interaction means that there is little room for variation in the controls. Nonetheless, using an MQG improves performance by half an order of magnitude at the origin relative to the constituent controls, and up to an order of magnitude away from the origin. For all values of the drifting parameters we see that the 1MQG performs as well or better than 0MQG.
 
