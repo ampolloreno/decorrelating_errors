@@ -112,10 +112,7 @@ In this article, we extend the work of Campbell and Hastings to numerically opti
 % The gate-to-gate correlations that occur in the presence of coherent noise 
 
 % \note{don't define diamond norm here}
-% The diamond distance can be used to bound the total variation distance (TVD) of a quantum circuit, but it is in general sensitive at first order to repeated application of a gate with coherent errors. For long circuits, this can add up extremely quickly, and while these errors can often be identified and reconstructed using various tomographic techniques, their impact on a given quantum  difficult to predict. Additionally, despite the relative ease of modeling stochastic errors, coherent errors are often much more likely to appear in QIPs. 
-
-
-
+% The diamond distance can be used to bound the total variation distance (TVD) of a quantum circuit, but it is in general sensitive at first order to repeated application of a gate with coherent errors. For long circuits, this can add up extremely quickly, and Additionalf`while these errors can often be identified and reconstructed using various tomographic techniques, their impact on a given quantum  difficult to predict. Additionally, despite the relative ease of modeling stochastic errors, coherent errors are often much more likely to appear in QIPs. 
 
 %Drifting control parameters or environmental variables can easily have long correlation times that result in errors which are strongly coherent over the length of a quantum circuit. 
 
@@ -525,29 +522,37 @@ Often, the cost of generating distinct gate implementations is quite small, so l
 \subsubsection{Robustness to drift and model uncertainty} % (fold)
 \label{sub:adding_robustness}
 \noindent 
-While mixed quantum gates offer significant performance improvements, their construction assumes a good knowledge of the errors experienced by the constituent gates. But often the gates are not perfectly well characterized. This could be due to simple uncertainty about the parameters of the model used to generate the control solutions, or the system could experience some degree of drift \kcy{cite Tim's drift manuscript}. In either case, the performance of the MQG will be negatively impacted. We can model the effect of this uncertainty by writing the gate 
-
-
-
-If the uncertainty in our estimate of the gate errors is small, then we can write a gate's error generator as a Taylor expansion in the model uncertainty
+While mixed quantum gates offer significant performance improvements, their construction assumes a good knowledge of the errors experienced by the constituent gates. But often the gates are not perfectly well characterized. This could be due to simple uncertainty about the parameters of the model used to generate the control solutions, or the system could experience some degree of drift \kcy{cite Tim's drift manuscript}. In either case, the performance of the MQG will be negatively impacted. We can describe the effect of this uncertainty by first writing the gate explicitly as a function of the vector of model parameters, $\vec\lambda$, and their nominal values, $\vec\lambda_0$. These model parameters could include magnetic field strengths, laser or microwave intensities, coupling strengths, etc. If the parameters are close to their nominal values, then we can write a gate's error generator as a Taylor expansion in the model uncertainty, $\vec\delta = \vec\lambda-\vec\lambda_0$:
 \begin{equation}
-	\genmat_i(\vec \delta) = \genmat_i(0) + \sum_k \delta_k \,\genmat_{i,k}(\vec 0) + \order{\delta^2}
+	\genmat_i(\vec \delta) = \genmat_i(0) + \sum_k \delta_k \,\genmat_{i,k}(\vec 0) + \order{\delta^2}.
 \end{equation} 
 In the above expression we have used the comma derivative, 
 \begin{equation}
 	\genmat_{i,k}(\vec \delta_0) = \frac{\partial}{\partial \delta_k} \genmat_i(\vec\delta) \vert_{\vec \delta=\delta_0}.
 \end{equation}
 
-most control electronics experience drift over time scales relevant to QIP performance. Because of this drift, the quality of the MQG will degrade. Thus, we would like to design MQGs that are robust to this drift. To enforce robustness, we can consider the generators in (\ref{eq:campbell-condition}) to be functions of a control vector $\vec{\delta}$, and if the fluctuations are small enough, it is convenient to write the gate as a Taylor expansion in this small parameter:
-\begin{equation}\label{eq:taylor}
-\begin{gathered}
-\tilde{\tarmat_i}(d\vec{\delta}) = \exp(-i(\genmat_i(\vec{0}) + \frac{\partial}{\partial\delta_j}\genmat_i(\vec{0})d\delta_j\\ +  \frac{1}{2}\frac{\partial^2}{\partial\delta_j\partial\delta_k} \genmat_i(\vec{0})d\delta_j d\delta_k + \ldots))\tarmat
-\end{gathered}
+Now, rather than finding weight vectors such that only the effective generator vanishes, we can additionally impose a secondary constraint on the derivatives.  Following Eq.~\eqref{eq:minimization}, 
+\begin{equation}\label{eq:minimization}
+  \begin{split}
+    &\underset{\weight_i\geq0, |\weight|_1=1}{\textbf{minimize}: } ||\mathbf{L}\cdot\vec\weight||_2 + \sum_k||\mathbf{L}_{,k}\cdot\vec\weight||_2\\
+  \end{split}
 \end{equation}
+Where $\mathbf{L}_{,k}=\left( \mathsf{col}(\genmat_{1,k}) \; \mathsf{col}(\genmat_{2,k}) \; \cdots \;  \right)$ is the $d^2\times m$-dimensional matrix of column-stacked derivatives of the error generators with respect to the deviation $\delta_k$.
 
-Now, instead of requiring that only the error generators average to zero, we can additionally impose a similar condition on the higher-order derivatives with respect to parameters that may drift. Specifically, we are interested in the $n^{th}$ order derivatives:
-\kcy{Should the figures change from H to something else?}
-\amp{Right. It seems to me they should be written as something like $D^1_{i,k}$. Then in the equation below I can use the comma notation, but for the $i^{th}$ derivative it's going to be some gross multi-index... I think your point is that the comma is standard notation (although I've never used it before.)}
+We can additionally generalize the geometric criterion for ensuring that the minimum value of this objective is 0. As before, we would like the origin to lie in the convex hull of the generators, but this time we have to augment the generators with their derivatives. That is, 
+we require that
+\begin{equation}
+\mathbf{0} \in \mathsf{conv}\left( \left\{
+\genmat_i \oplus \genmat_{i,1} \oplus \genmat_{i,2} \cdots
+\right\}	 \right).
+\end{equation}
+This is illustrated in Fig.~\ref{fig:vectorspace2}. 
+
+We call a gate constructed in this way a \emph{robust} generator-exact MQG. Similar constructs can be used to construct robust Pauli-exact MQGs by taking derivatives of the off-diagonal elements of the error maps with respect to the model deviations. 
+
+
+\kcy{ignore from here to end of section***********}
+
 \begin{equation}
 \label{eq:derivative}
 D^n_{i, (j_1, \ldots, j_n)} = \frac{1}{n!}\frac{\partial^{n}}{\partial\delta_{j_1}\ldots\partial\delta_{j_n}}\genmat_i(\vec{\delta})|_{\vec{\delta}=\vec{0}}
