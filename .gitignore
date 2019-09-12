@@ -11,3 +11,4 @@ __pycache__
 /decorrelation/mixed_unitaries.log
 /decorrelation/mixed_unitaries.out
 /.venv/*
+.idea
