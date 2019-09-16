@@ -126,7 +126,7 @@ The $\mathsf{vec}$ operation is typically performed using a basis of matrix unit
 \end{equation}
 and
 \begin{equation}
-	(\actmat)_{ij} = \tr\!\left(P_i \;\actual\!\left(P_j\right) \right).
+	(\actmat)_{ij} = \frac{1}{d}\tr\!\left(P_i \;\actual\!\left(P_j\right) \right).
 \end{equation}
 Process matrices written in this Pauli basis are often referred to as \emph{Pauli transfer matrices} \cite{Chow2012}.  Error maps represented in this basis take the particularly nice form,
 \begin{equation}\label{eq:process_matrix}
@@ -325,7 +325,7 @@ Often, the cost of generating distinct gate implementations is quite small, so l
 \subsubsection{Robustness to drift and model uncertainty} % (fold)
 \label{sub:adding_robustness}
 \noindent 
-While mixed quantum gates offer significant performance improvements, their construction assumes a good knowledge of the errors experienced by the constituent gates. But often the gates are not perfectly well characterized. This could be due to simple uncertainty about the parameters of the model used to generate the control solutions, or the system could experience some degree of drift \kcy{cite Tim's drift manuscript}. In either case, the performance of the MQG will be negatively impacted. We can describe the effect of this uncertainty by first writing the gate explicitly as a function of a vector of model parameters, $\vec\lambda$, and their nominal values, $\vec\lambda_0$. These model parameters could include magnetic field strengths, laser or microwave intensities, coupling strengths, etc. If the parameters are close to their nominal values, then we can write a gate's error generator as a Taylor expansion in the deviation vector, $\vec\delta = \vec\lambda-\vec\lambda_0$:
+Mixed quantum gates can offer significant performance improvements over bare unitary gates, but their construction requires a good knowledge of the errors experienced by the constituent gates. Often, however, the gates are not perfectly well characterized. This could be due to simple uncertainty about the parameters of the model used to generate the control solutions, or the system could experience some degree of drift \kcy{cite Tim's drift manuscript}. In either case, the performance of the MQG will be negatively impacted. We can describe the effect of this uncertainty by first writing the gate explicitly as a function of a vector of model parameters, $\vec\lambda$, and their nominal values, $\vec\lambda_0$. These model parameters could include magnetic field strengths, laser or microwave intensities, coupling strengths, etc. If the parameters are close to their nominal values, then we can write a gate's error generator as a Taylor expansion in the deviation vector, $\vec\delta = \vec\lambda-\vec\lambda_0$:
 \begin{equation}
 	\label{eq:sensitivity_expansion}
 	\genmat_i(\vec \delta) = \genmat_i(\0) + \sum_k \delta_k \,\genmat_{i,k}(\0) + \order{\delta^2}.
@@ -338,8 +338,8 @@ In the above expression we have used the comma derivative,
 Combining Eq.~\eqref{eq:sensitivity_expansion} with Eq.~\eqref{eq:generator} and taking both Taylor expansions to first order, we have:
 \begin{align}
 \notag
-	\errmat_{\rm eff} =&
-		 \identmat_d + \sum_i \weight_i \left(\genmat_i(0) + \sum_k \delta_k \,\genmat_{i,k}(\0) \right) \\
+	\errmat_{\rm eff} =
+		 \identmat_d &+ \sum_i \weight_i \left(\genmat_i(\0) + \sum_k \delta_k \,\genmat_{i,k}(\0) \right) \\
 		 &+ \order{\genmat_i^2 + \genmat_i \delta + \delta^2}.
 \end{align}
 We would like to choose the weights $\vec\weight$ so that the effective error generator vanishes to first order. We can cast this problem as a convex optimization problem, much as we did in Sec.~\ref{sec:introduction} for synthesizing generator-exact MQGs. Following Eq.~\eqref{eq:minimization}, we have,
@@ -421,6 +421,7 @@ Both optimizations are convex and efficiently solvable.
 
 \subsubsection{Sparsity Constraints}
 \label{sec:sparsity}
+\noindent
 As a practical consideration, we would also like to regularize our objective function to promote sparse weightings. Control electronics often have a limited amount of waveform memory, and thus it is important to be able to construct MQGs as few constituent gates as possible. In many machine learning contexts, lasso regularization \cite{tibshirani1996regression} can be used to enforce sparsity in solutions. Rather than penalizing the $\ell_0$ norm of the solution, which is not convex, lasso regularization penalizes the $\ell_1$, which is the convex relaxation of the $\ell_0$ norm. However this is insufficient for our purposes, as we require $\weight$ to be a valid probability distribution, which constrains the $\ell_1$ norm to be equal to $1$. Conveniently, the problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends (\ref{eq:robust_minimization}):
 
 \kcy{Make the rest of this section consistent with the current notation.}
@@ -444,7 +445,7 @@ As a practical consideration, we would also like to regularize our objective fun
 % Section: Experimental Results
 % ==============================================================================
 
-\subsection{Experimental implementation} % (fold)
+\subsection{Experimental implementation } % (fold)
 \label{sub:experimental}
 \noindent We implemented our methods using the 19Q-Acorn superconducting transmon processor at Rigetti Computing. Comprehensive device characterization for this processor can be found in \cite{1712.05771}. While this device consisted of 20 qubits with fixed couplings, we used only qubit \#8 for our demonstration. Controls were derived from a single, 10-sample, 50ns Gaussian $X_{\pi/2}$pulse calibrated by iteratively amplifying and correcting over- and under-rotation errors via repeated application. Four intentionally miscalibrated Gaussian pulses, labeled $\mathsf{Pulse1}$ through $\mathsf{Pulse4}$, were derived from this waveform by scaling the amplitude of the calibrated $X_{\pi/2}$ pulse by $106.4\%$,  $103.9\%$, $93.7\%$ and $91.2\%$. The gates therefore experience unitary over/under rotations, which are coherent errors. These gates are then used as in Sec.~\ref{sub:off_diagonals} to construct a Pauli-exact MQG, which samples from the miscalibrated waveforms with probabilities, \kcy{What are they?}, respectively. 
 
