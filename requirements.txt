@@ -1,0 +1,7 @@
+matplotlib==2.1.0
+numpy==1.17.0
+tqdm==4.19.4
+scipy==1.1.0
+dill==0.2.7.1
+mpi4py==3.0.0
+cvxpy==0.4.9

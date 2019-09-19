@@ -3,23 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a34741b1-9004-49a2-a43c-0620a4d71458" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/0_pickled_controls4.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/code/0_pickled_controls4.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/0_pickled_controls5.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/code/0_pickled_controls5.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/1_pickled_controls4.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/code/1_pickled_controls4.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/1_pickled_controls5.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/code/1_pickled_controls5.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/SQRT(X).ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/code/SQRT(X).ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/SQRT(Y).ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/code/SQRT(Y).ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/convex.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/convex.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/pauli_channel_approximation.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/pauli_channel_approximation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/sparsitysqrtx.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/sparsitysqrtxmorecontrols.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/decorrelation/decorrelation.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/decorrelation/decorrelation.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/decorrelation/mixed_unitaries.aux" beforeDir="false" afterPath="$PROJECT_DIR$/decorrelation/mixed_unitaries.aux" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/decorrelation/mixed_unitaries.log" beforeDir="false" afterPath="$PROJECT_DIR$/decorrelation/mixed_unitaries.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/decorrelation/mixed_unitaries.out" beforeDir="false" afterPath="$PROJECT_DIR$/decorrelation/mixed_unitaries.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/decorrelation/mixed_unitaries.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/decorrelation/mixed_unitaries.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/decorrelation/mixed_unitaries.synctex.gz" beforeDir="false" afterPath="$PROJECT_DIR$/decorrelation/mixed_unitaries.synctex.gz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/decorrelation/mixed_unitaries.tex" beforeDir="false" afterPath="$PROJECT_DIR$/decorrelation/mixed_unitaries.tex" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,37 +11,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="1868004869">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="2" />
-          <entry key="project.open.time.1" value="1" />
-          <entry key="project.open.time.20" value="1" />
-          <entry key="project.open.time.6" value="1" />
-          <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="4" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="py" value="335" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="Python" value="335" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/convex.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
-              <caret line="130" column="69" selection-start-line="130" selection-start-column="69" selection-end-line="130" selection-end-column="69" />
+            <state relative-caret-position="210">
+              <caret line="104" column="114" selection-start-line="104" selection-start-column="114" selection-end-line="104" selection-end-column="114" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
               </folding>
@@ -68,8 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/pauli_channel_approximation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="223" column="68" selection-start-line="223" selection-start-column="68" selection-end-line="223" selection-end-column="68" />
+            <state relative-caret-position="221">
+              <caret line="144" column="30" selection-start-line="144" selection-start-column="30" selection-end-line="144" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -77,7 +37,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/GRAPE.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="263">
+            <state relative-caret-position="4560">
               <caret line="310" column="25" selection-start-line="310" selection-start-column="25" selection-end-line="310" selection-end-column="25" />
             </state>
           </provider>
@@ -89,9 +49,17 @@
     <findStrings>
       <find>assign_weigh</find>
       <find>t =</find>
-      <find>optimal_weights</find>
       <find>print</find>
+      <find>weights</find>
+      <find>optimal_weights</find>
+      <find>spar</find>
+      <find>assign_weights</find>
       <find>norm</find>
+      <find>ham_norm =</find>
+      <find>fidelit</find>
+      <find>adjoint</find>
+      <find>l2_param</find>
+      <find>unitary</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -115,11 +83,11 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="435" />
-    <option name="y" value="328" />
-    <option name="width" value="917" />
-    <option name="height" value="789" />
+  <component name="ProjectFrameBounds" extendedState="4">
+    <option name="x" value="67" />
+    <option name="y" value="17" />
+    <option name="width" value="926" />
+    <option name="height" value="1062" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -128,6 +96,7 @@
     <panes />
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
@@ -157,7 +126,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
+    <frame x="67" y="17" width="926" height="1062" extended-state="4" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.69567657" />
@@ -188,18 +157,9 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/pauli_channel_approximation.py" />
-    <entry file="file://$PROJECT_DIR$/../randomized_controls/GRAPE.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="485">
-          <caret line="210" column="8" lean-forward="true" selection-start-line="210" selection-start-column="8" selection-end-line="210" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../randomized_controls/GRAPE.py" />
     <entry file="file://$PROJECT_DIR$/data/raw_data/GRAPE.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="757">
@@ -207,27 +167,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pauli_channel_approximation.bkp">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pauli_channel_approximation.bkp" />
     <entry file="file://$PROJECT_DIR$/code/GRAPE.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
+        <state relative-caret-position="4560">
           <caret line="310" column="25" selection-start-line="310" selection-start-column="25" selection-end-line="310" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/code/pauli_channel_approximation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="223" column="68" selection-start-line="223" selection-start-column="68" selection-end-line="223" selection-end-column="68" />
+        <state relative-caret-position="221">
+          <caret line="144" column="30" selection-start-line="144" selection-start-column="30" selection-end-line="144" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/code/convex.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="130" column="69" selection-start-line="130" selection-start-column="69" selection-end-line="130" selection-end-column="69" />
+        <state relative-caret-position="210">
+          <caret line="104" column="114" selection-start-line="104" selection-start-column="114" selection-end-line="104" selection-end-column="114" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
