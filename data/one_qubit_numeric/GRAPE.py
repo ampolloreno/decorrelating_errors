@@ -1,0 +1,362 @@
+import itertools
+import numpy as np
+import scipy
+import scipy.optimize as optimize
+from numpy.polynomial.hermite import hermgauss
+from functools import reduce
+from mpi4py import MPI
+
+COMM = MPI.COMM_WORLD
+
+
+def split(container, count):
+    """
+    Simple function splitting a container into equal length chunks.
+    Order is not preserved but this is potentially an advantage depending on
+    the use case.
+    """
+    return [list(container)[_i::count] for _i in range(count)]
+
+
+def adjoint(operator):
+    """
+    Computes the adjoint of a given matrix.
+
+    :param numpy.array operator: Array to compute the adjoint of.
+    :return: The adjoint of operator.
+    :rtype: numpy.array
+    """
+    return np.conj(operator).T
+
+
+def control_unitaries(ambient_hamiltonian, control_hamiltonians, controls, dt):
+    """
+    Given an controllable and a non-controllable hamiltonian, with controls and the time step size,
+    computes the unitaries that give the time evolution. e.g.
+
+    control_unitaries(I, [X], [[0],[1],[0],[1]], np.pi)
+    [I, X, I, X]
+
+    :param numpy.array ambient_hamiltonian: A square 2D array, corresponding to the uncontrollable
+     part of the system hamiltonian.
+    :param list control_hamiltonians: A list of square 2D numpy.arrays, corresponding to the
+     controllable terms in the hamiltonian. This should be as long as the second dimension of
+     controls.
+    :param numpy.array controls: A 2D numpy.array, whose rows represent time steps, and whose
+     jth column corresponds to the control amplitude for the jth element of control_hamiltonians.
+    :param float dt: The time to evolve each row of controls for.
+    :return: The list of unitaries corresponding to the discretized evolution of the system.
+    :rtype: list
+    """
+    if len(controls.shape) == 1:
+        controls = controls.reshape(-1, len(control_hamiltonians))
+    unitaries = []
+    for row in controls:
+        step_hamiltonian = [control * control_hamiltonians[i] for i, control in enumerate(row)]
+        #print(step_hamiltonian)
+        evolution = scipy.linalg.expm(
+            -1.j * dt * (sum(ambient_hamiltonian) + np.sum(step_hamiltonian, axis=0)))
+        unitaries.append(evolution)
+    return unitaries
+
+
+def grape_perf(ambient_hamiltonian, control_hamiltonians, controls, dt, target_operator):
+    """
+    Evaluate the performance function :math: `\phi_4` as described in Khaneja et al.'s paper.
+
+    :param numpy.array ambient_hamiltonian: A square 2D array, corresponding to the uncontrollable
+     part of the system hamiltonian.
+    :param list control_hamiltonians: A list of square 2D numpy.arrays, corresponding to the
+     controllable terms in the hamiltonian. This should be as long as the second dimension of
+     controls.
+    :param numpy.array controls: A 1D numpy.array, a flattened version of a 2D.array,
+     whose rows represent time steps, and whose jth column corresponds to the control amplitude
+     for the jth element of control_hamiltonians.
+    :param float dt: The time to evolve each row of controls for.
+    :param numpy.array target_operator: The operator we are trying to approximate, given as a
+     numpy.array.
+    :return: The real valued evaluation of the performance function.
+    :rtype: float
+    """
+    controls = controls.reshape((-1, len(control_hamiltonians)))
+    unitaries = control_unitaries(ambient_hamiltonian, control_hamiltonians, controls, dt)
+    final_unitary = reduce(np.dot, list(reversed(unitaries)), np.eye(unitaries[0].shape[0]))
+    overlap = np.trace(adjoint(target_operator).dot(final_unitary))
+    perf = -overlap * np.conj(overlap)
+    return np.real(perf)
+
+
+def grape_gradient(ambient_hamiltonian, control_hamiltonians, controls, dt, target_operator):
+    """
+    Evaluate the gradient of the performance function :math: `\phi_4` as described in
+     Khaneja et al.'s paper.
+
+    :param numpy.array ambient_hamiltonian: A square 2D array, corresponding to the uncontrollable
+     part of the system hamiltonian.
+    :param list control_hamiltonians: A list of square 2D numpy.arrays, corresponding to the
+     controllable terms in the hamiltonian. This should be as long as the second dimension of
+     controls.
+    :param numpy.array controls: A 1D numpy.array, a flattened version of a 2D.array,
+     whose rows represent time steps, and whose jth column corresponds to the control amplitude
+     for the jth element of control_hamiltonians.
+    :param float dt: The time to evolve each row of controls for.
+    :param numpy.array target_operator: The operator we are trying to approximate, given as a
+     numpy.array.
+    :return: The real valued evaluation of the gradient of the performance function with respect to
+     controls. This is flattened to work with scipy.minimize.
+    :rtype: numpy.arrays
+    """
+    controls = controls.reshape((-1, len(control_hamiltonians)))
+    #print(controls[:, -1])
+    unitaries = control_unitaries(ambient_hamiltonian, control_hamiltonians, controls, dt)
+    forward = [unitaries[0]]
+    backward = [target_operator]
+    for unitary in unitaries[1:]:
+        forward.append(forward[-1].dot(unitary))
+    for unitary in list(reversed(unitaries))[:-1]:
+        backward.append(adjoint(unitary).dot(backward[-1]))
+    backward = list(reversed(backward))
+    grad = np.zeros(controls.shape)
+    for i, row in enumerate(grad):
+        for j, col in enumerate(row):
+            overlap = np.trace(adjoint(forward[i]).dot(backward[i]))
+            diff = np.trace(adjoint(backward[i]).dot(control_hamiltonians[j].dot(forward[i])))
+            grad[i][j] = 2.0 * np.real(overlap * diff * 1.j * dt)
+    return grad.flatten()
+
+
+def comp_avg_perf(pair):
+    combination, controls, func, ambient_hamiltonian, control_hamiltonians, detunings, dt, target_operator = pair
+    new_controls = [[control * (1 + combination[i + len(ambient_hamiltonian)][0]) for i, control in
+                     enumerate(row)]
+                    for row in controls]
+    new_controls = np.array(new_controls).flatten()
+    nonzero_detunings = np.array(detunings)[np.where(np.array(detunings) != 0)[0]]
+    avg = [ambient * combination[i][0] for i, ambient in enumerate(ambient_hamiltonian[:-1])] + [(1 + combination[len(ambient_hamiltonian)-1][0]) * ambient_hamiltonian[-1]]
+    average_perf = reduce(lambda a, b: a * b, [comb[1] for comb in combination]) * \
+                   func(avg, control_hamiltonians, new_controls, dt,
+                        target_operator) / (np.sqrt(np.pi) ** len(nonzero_detunings))
+    return average_perf
+
+
+def average_over_noise(func, ambient_hamiltonian, control_hamiltonians,
+                       controls, detunings, dt, target_operator, deg=2):
+    """
+    Average the given func over noise using gaussian quadrature.
+
+    :param function func: Function that needs to be averaged.
+    :param numpy.array ambient_hamiltonian: The uncontrolled Hamiltonian.
+    :param list control_hamiltonians: The controllable Hamiltonians.
+    :param numpy.array controls: 2D array of controls, of dimension (num_steps, num_controls)
+    :param list detunings: Standard deviations of the gaussian distributions over the control knobs.
+     The first element should be the detuning on the ambient_hamiltonian
+    :param float dt: The time per time step.
+    :param numpy.array target_operator: The operator trying to be approximated.
+    :param int deg: The degree of polynomial that quadrature will work on.
+    :return: The average of func over detunings, scaled by some factor. (TODO Need to make sure the quadrature
+     coefficients are being handled correctly)
+    :rtype: rtype of func
+    """
+    controls = controls.reshape(-1, len(control_hamiltonians))
+    #
+    # if COMM.rank == 0:
+    corr = []
+    if type(detunings[0]) != tuple:
+        pass
+    else:
+        new_detunings = []
+        for i, detune in enumerate(detunings):
+            new_detunings.append(detune[0])
+            for _ in range(detune[1]):
+                corr.append(i)  # use the ith detuning more than once
+        detunings = new_detunings
+    points, weights = hermgauss(deg)
+    nonzero_detunings = np.where(np.array(detunings) != 0)[0]
+    zero_detunings = np.where(np.array(detunings) == 0)[0]
+
+    pairs = [list(zip(np.sqrt(detuning) * points, weights)) for i, detuning in
+             enumerate(np.array(detunings)[nonzero_detunings])]
+    for index in zero_detunings:
+        pairs.insert(index, [(0, 1)])
+    combinations = itertools.product(*pairs)
+    # Expand them if there are correlations
+    if corr:
+        new_combinations = []
+        for combo in combinations:
+            new_combo = []
+            last_number = -1
+            for index in corr:
+                if index == last_number:
+                    new_number = False
+                else:
+                    new_number = True
+                last_number = index
+                pair = combo[index]
+                if not new_number:
+                    pair = (pair[0], 1)
+                new_combo.append(pair)
+            new_combinations.append(new_combo)
+        combinations = new_combinations
+    jobs = combinations
+    # Split into however many cores are available.
+    #jobs = split(jobs, COMM.size)
+    # else:
+    #     jobs = None
+
+    # Scatter jobs across cores.
+    #jobs = COMM.scatter(jobs, root=0)
+    # Now each rank just does its jobs and collects everything in a results list.
+    # Make sure to not use super big objects in there as they will be pickled to be
+    # exchanged over MPI.
+    results = []
+    for job in jobs:
+        #print("{} has {} jobs, doing job {}".format(COMM.rank, len(jobs), job))
+        results.append(comp_avg_perf((
+                                     job, controls, func, ambient_hamiltonian, control_hamiltonians,
+                                     detunings, dt, target_operator)))
+    # Gather results on rank 0.
+    #results = MPI.COMM_WORLD.allgather(results)
+    #print(f"Number of results on {COMM.rank} is now {len(results)}")
+    # if COMM.rank == 0:
+    #     # Flatten list of lists.
+    #results = [_i for temp in results for _i in temp]
+    # if np.sum(results, axis=0).shape == ():
+    #     print(np.sum(results, axis=0))
+    return np.sum(results, axis=0)
+
+
+def GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps, time,
+          threshold=1 - 1E-3, detunings=None, iteration=0):
+    """
+    Perform the GRAPE algorithm to approximate target_gate in num_steps with time given by time,
+    using ambient_hamiltonian as the uncontrolled hamiltonian and control_hamiltonians as the
+    controllable hamiltonians.
+
+    :param numpy.array ambient_hamiltonian: A square 2D array, corresponding to the uncontrollable
+    part of the system hamiltonian.
+    :param list control_hamiltonians: A list of square 2D numpy.arrays, corresponding to the
+    controllable terms in the hamiltonian. This should be as long as the second dimension of
+    controls.
+    :param numpy.array target_operator: The operator we are trying to approximate, given as a
+    numpy.array.
+    :param int num_steps: The number of time steps to give GRAPE to try to approximate
+     target_operator. This does NOT refer to the number of steps in the optimization routine.
+    :param float time: The total time over which the system is to be evolving. time/num_steps
+     is thus the time alloted for each step in the controlled, discretized evolution.
+    :param float threshold: The minimum performance of the controls that this function will return.
+    :param list detunings: A list of floats corresponding to the standard deviation of the
+     uncertainty in the controls. None by default. If specified, there should be one value for each
+     element in control_hamiltonians.
+    :return: A numpy.array of controls that approximate target_operator with at least threshold
+     performance.
+    :rtype: numpy.array
+    """
+    dt = time / num_steps
+
+    perf = lambda controls: average_over_noise(grape_perf, ambient_hamiltonian,
+                                               control_hamiltonians, controls, detunings, dt,
+                                               target_operator)
+    grad = lambda controls: average_over_noise(grape_gradient, ambient_hamiltonian,
+                                               control_hamiltonians, controls, detunings, dt,
+                                               target_operator)
+
+    dimension = np.shape(ambient_hamiltonian[0])[0]
+    disp = False
+    ftol = (1 - threshold)
+    options = {"ftol": ftol,
+               "disp": disp}
+    constraint = (-10, 10)
+    # num_steps = pca.controlset[0].shape[0]
+    # other_new_control[:int(num_steps/3), -1] = 3/2 * np.pi/4 * 1/(pca.controlset[0].shape[0]*pca.dt)
+    # other_new_control[int(num_steps/3 + 1),0] = 1/pca.dt * np.pi/2
+    # other_new_control[int(num_steps/3 + 1),2] = 1/pca.dt * np.pi/2
+    # other_new_control[-int(num_steps/3+1),0] = 1/pca.dt * np.pi/2
+    # other_new_control[-int(num_steps/3+1),2] = 1/pca.dt * np.pi/2
+    # other_new_control[-int(num_steps/3):, -1] = 3/2 * np.pi/4 * 1/(pca.controlset[0].shape[0]*pca.dt)
+
+    def f():
+        import random
+        num_options = 5
+        index = iteration % num_options - 1
+        # Flip both qubits to let iSWAP continue to happen, but to reverse the Z noise.
+        if index == -1:
+            controls = (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .01
+        else:
+            controls = np.zeros((num_steps, int(len(control_hamiltonians))))
+            xory = random.choice([0, 1])
+
+            controls[index, xory] = (1 / dt * np.pi / 2) * random.choice([-1, 1])
+            controls[-(index+1), xory] = 1 / dt * np.pi / 2  * random.choice([-1, 1])
+            controls[index, 2+xory] = 1 / dt * np.pi / 2  * random.choice([-1, 1])
+            controls[-(index+1), 2+xory] = 1 / dt * np.pi / 2  * random.choice([-1, 1])
+            controls = controls.reshape((1, int(len(control_hamiltonians)) * num_steps))
+            controls += (2.0 * np.random.rand(1, int(len(control_hamiltonians) * num_steps)) - 1.0) * .01
+        return controls
+    controls = f()
+
+    import sys
+    sys.stdout.flush()
+    bounds = [constraint for _ in controls[0]]
+
+    result = optimize.minimize(fun=perf, x0=controls, jac=grad, method='tnc', options=options,
+                               bounds=bounds)
+
+    #Verify that the controls meet requirements at zero.
+    perf_at_zero = grape_perf(np.array([ah * 0 for ah in ambient_hamiltonian[:-1]] + [ambient_hamiltonian[-1]]),
+                              control_hamiltonians,
+                              result.x, dt,
+                              target_operator)
+    #
+    # perf_at_zero = grape_perf(np.array([ah * 0 for ah in ambient_hamiltonian[:-1]] + [ambient_hamiltonian[-1]]),
+    #                           control_hamiltonians,
+    #                           np.zeros((1, num_steps*len(control_hamiltonians))), dt,
+    #                           target_operator)
+    print(perf_at_zero)
+    avg_perf = perf(result.x)
+    print(-perf_at_zero / (dimension ** 2))
+    #print("PERF AT ZERO: {}".format(perf_at_zero/(dimension ** 2)))
+    #print("Avg perf: {}".format(-avg_perf/(dimension ** 2)))
+
+    import sys
+    sys.stdout.flush()
+
+    while -perf_at_zero/(dimension ** 2) < threshold:
+        print(f"\n\n\nRetrying control {iteration}\n\n\n")
+        sys.stdout.flush()
+        controls = f()
+        result = optimize.minimize(fun=perf, x0=controls, jac=grad, method='tnc', options=options,
+                                   bounds=bounds)
+        perf_at_zero = grape_perf(np.array([ah * 0 for ah in ambient_hamiltonian[:-1]] + [ambient_hamiltonian[-1]]),
+                                  control_hamiltonians,
+                                  result.x, dt,
+                                  target_operator)
+        avg_perf = perf(result.x)
+        print(-perf_at_zero/(dimension ** 2))
+        #print("PERF AT ZERO: {}".format(perf_at_zero / (dimension ** 2)))
+        #print("Avg perf: {}".format(-avg_perf / (dimension ** 2)))
+        sys.stdout.flush()
+    return result.x
+
+
+if __name__ == "__main__":
+    np.random.seed(100)
+    I = np.eye(2)
+    X = np.array([[0, 1], [1, 0]])
+    Y = np.array([[0, -1.j], [1.j, 0]])
+    Z = np.array([[1, 0], [0, -1]])
+    ambient_hamiltonian = [Z]
+    control_hamiltonians = [X, Z]
+    target_operator = X
+    assert np.isclose(target_operator.dot(adjoint(target_operator)),
+                      np.eye(target_operator.shape[0])).all()
+    time = 2 * np.pi
+    num_steps = 10
+    x = GRAPE(ambient_hamiltonian, control_hamiltonians, target_operator, num_steps, time,
+              detunings=[.0001] * (len(control_hamiltonians) + len(ambient_hamiltonian)),
+              threshold=.9)
+    controls = x.reshape(-1, len(control_hamiltonians))
+    #print(reduce(lambda a, b: a.dot(b),
+                 #control_unitaries(ambient_hamiltonian, control_hamiltonians, controls, time / num_steps)))
+    import matplotlib.pyplot as plt
+    plt.step(list(range(len(controls.flatten()))), controls.flatten())
+    plt.show()
