@@ -102,9 +102,9 @@ def compute_ith_derivative(f, point, args, i, matsize):
     return res
 
 
-def optimal_weights(derivs, l2_constraint=False, l2_param=None, sparsity_param=None, sparsity=False, target=None, dt=None):
-    """Super hacky, but this now takes the target gate optionally, since we are moving from using the l2 norm to using
-    the agi, and that requires the target gate."""
+def optimal_weights(derivs, l2_constraint=False, l2_param=None, sparsity_param=None, sparsity=False, dt=None):
+    """Super hacky, but this now takes the dt optionally, since we are moving from using the l2 norm to using
+    the agi, and that requires us to exponentiate the error generator for some time."""
     mini = float('inf')
     res = None
     if sparsity:
@@ -127,13 +127,15 @@ def optimal_weights(derivs, l2_constraint=False, l2_param=None, sparsity_param=N
                 objective_argument = (t
                                       + cp.norm(np.real(ham_consts[-1]) * omega)
                                       + cp.norm(np.imag(ham_consts[-1]) * omega))
+                # TODO fix for sim
                 if l2_constraint:
                     import scipy
                     from GRAPE import adjoint, control_unitaries
                     agis = []
                     for ham in derivs[0]:
                         unitary = scipy.linalg.expm(-1.j * np.reshape(ham, (4, 4)) * dt)
-                        agis.append(np.trace(unitary) / target.shape[0])
+                        #only works for 1q rn
+                        agis.append((2+np.trace(unitary)) / 6)
                     ham_norm = np.matrix(agis)
                     # What does this do if I don't write norm???
                     objective_argument += cp.norm(l2_param * ham_norm * omega)
@@ -161,7 +163,14 @@ def optimal_weights(derivs, l2_constraint=False, l2_param=None, sparsity_param=N
         objective_argument = (cp.norm(np.real(ham_consts[-1]) * omega)
                               + cp.norm(np.imag(ham_consts[-1]) * omega))
         if l2_constraint:
-            ham_norm = np.matrix(norm(ham_consts[0], 2, 0))
+            import scipy
+            from GRAPE import adjoint, control_unitaries
+            agis = []
+            for ham in derivs[0]:
+                unitary = scipy.linalg.expm(-1.j * np.reshape(ham, (2, 2)) * dt)
+                # only works for 1q rn
+                agis.append((np.trace(np.kron(np.conj(unitary), unitary)) + 2)/6)
+            ham_norm = np.matrix(agis)
             # What does this do if I don't write norm???
             objective_argument += cp.norm(l2_param * ham_norm * omega)
         objective = cp.Minimize(objective_argument)
