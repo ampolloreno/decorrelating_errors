@@ -139,7 +139,7 @@ Process matrices written in this Pauli basis are often referred to as \emph{Paul
 	\end{array} 	
 	\right)
 \end{equation}
-The top row of all trace-preserving (TP) error maps is fixed to $\{1,0,0,0,\cdots\}$ and the remainder of the first column, $\vec{m}$, describes any deviations from unitality, as might arise from amplitude damping \cite{preskill1997lecture}. If the error map is unitary, then the error is called \textit{coherent} and the unital submatrix $R$ is a rotation matrix.  Importantly, if $R$ is diagonal, then the error is Pauli stochastic, with each diagonal entry corresponding to the probability that its associated Pauli error occurs in each application of the gate. \kcy{We might need more here defining coherent noise. There is a lot of literature on this, most of it inconsistent. Try Joel's Estimating the Coherence of Noise (terrible title) and Gottesman's paper on Maximally Sensitive States.}
+The top row of all trace-preserving (TP) error maps is fixed to $\{1,0,0,0,\cdots\}$ and the remainder of the first column, $\vec{m}$, describes any deviations from unitality, as might arise from amplitude damping \cite{preskill1997lecture}. If the error map is unitary, then the error is called \textit{coherent} and the unital submatrix $R$ is a rotation matrix.  Importantly, if $R$ is diagonal, then the error is Pauli stochastic, with each diagonal entry corresponding to the probability that its associated Pauli error occurs in each application of the gate. \kcy{We might need more here defining coherent noise. There is a lot of literature on this, most of it inconsistent. Try Joel's Estimating the Coherence of Noise (terrible title) and Gottesman's paper on Maximally Sensitive States, and Arnaud's work on the Polar Decomposition.}
 
 In what follows it will be useful to define the \emph{error generator}, $\genmat$, associated with a faulty gate: 
 \begin{align}
@@ -164,7 +164,8 @@ We call such randomized quantum operations \emph{mixed quantum gates} or MQGs. E
 	\label{eq:effective_error}
 	\error_{\rm eff} = \sum_i \weight_i \error_i.
 \end{equation}
-Two important error metrics are the average gate infidelity (AGI), $\AGI$, \kcy{We need a citation for this, and check if it's right! Gives weird answer if E = I. I feel like it should be $(d + \tr(\errmat))/(d+d^2)$. Maybe cite Nielsen's paper, or Horodecki**3.} and the diamond distance to the target (or simply, the \emph{diamond distance}), $\dnorm$ \cite{watrous2018theory}, defined as:
+Two important error metrics are the average gate infidelity (AGI), $\AGI$, \kcy{We need a citation for this, and check if it's right! Gives weird answer if E = I. I feel like it should be $(d + \tr(\errmat))/(d+d^2)$. Maybe cite Nielsen's paper, or Horodecki**3, ** cite QUANTUM GATE FIDELITY IN TERMS OF CHOI MATRICES NATHANIEL JOHNSTON AND DAVID W. KRIBS
+.} and the diamond distance to the target (or simply, the \emph{diamond distance}), $\dnorm$ \cite{watrous2018theory}, defined as:
 \begin{align}
 	\label{eq:def_agi}
 	&\AGI(\error) = \frac{d^2 - \tr{\errmat}}{d^2 + d},\\
@@ -420,17 +421,17 @@ Both optimizations are convex and efficiently solvable.
 \subsubsection{Sparsity Constraints}
 \label{sec:sparsity}
 \noindent
-As a practical consideration, we would also like to regularize our objective function to promote sparse weightings. Control electronics often have a limited amount of waveform memory, and thus it is important to be able to construct MQGs as few constituent gates as possible. In many machine learning contexts, lasso regularization \cite{tibshirani1996regression} can be used to enforce sparsity in solutions. Rather than penalizing the $\ell_0$ norm of the solution, which is not convex, lasso regularization penalizes the $\ell_1$, which is the convex relaxation of the $\ell_0$ norm. However this is insufficient for our purposes, as we require $\weight$ to be a valid probability distribution, which constrains the $\ell_1$ norm to be equal to $1$. Conveniently, the problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends (\ref{eq:robust_minimization}):
-
-\kcy{Make the rest of this section consistent with the current notation.}
+As a practical consideration, we would also like to regularize our objective function to promote sparse weightings. Control electronics often have a limited amount of waveform memory, and thus it is important to be able to construct MQGs as few constituent gates as possible. In many machine learning contexts, lasso regularization \cite{tibshirani1996regression} can be used to enforce sparsity in solutions. Rather than penalizing the $\ell_0$ norm of the solution, which is not convex, lasso regularization penalizes the $\ell_1$, which is the convex relaxation of the $\ell_0$ norm. However this is insufficient for our purposes, as we require $\weight$ to be a valid probability distribution, which constrains the $\ell_1$ norm to be equal to $1$. Conveniently, the problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends Eq.~\eqref{eq:minimization}:
 \begin{equation}\label{eq:minimization_regularization}
 \begin{split}
-&\underset{m\in[N]}{\textbf{minimize}}\\
-&\ \ \bunderbrace{\textbf{minimize}: }{\weight_i\geq0, |\weight|_1=1,\\ t\geq0} ||{\mathbf{D}^{\ell}}\weight||_1 + t\\
-&\ \ \textbf{subject to: } \weight_m > \frac{\lambda}{t}\\
-&\ \ \phantom{\textbf{subject to: }} \forall n<\ell, ||\sum \weight_iD_i^n||=0
+&\underset{m\in[1..N]}{\textbf{minimize:}}\\
+&\ \ \bunderbrace{\textbf{\hspace{.2cm}minimize:\hspace{.2cm}} }{\hspace{.1cm}\weight_i\geq0, |\weight|_1=1, t\geq0} ||\mathbf{L}\cdot\vec\weight||_2 + t\\
+&\ \ \hspace{.2cm}\textbf{subject to: } \weight_m > \frac{\lambda}{t}.
 \end{split}
-\end{equation} with $\lambda\geq0$. As with $\eta$ in the last subsection, the optimal value of $\lambda$ is problem specific, depending on $\mathbf{D}^\ell$ and how sparse the solution needs to be. In the following sections we discuss both experimental and numerical implementations of MQGs, leveraging these optimization techniques. 
+\end{equation}
+In this program, $\lambda > 0$ is a tunable parameter that can be used to control the degree of sparsity in the solution. 
+
+In the following sections we discuss both experimental and numerical implementations of MQGs, leveraging these optimization techniques. 
 
 
 % ==============================================================================
@@ -495,7 +496,7 @@ We note that, while this example is somewhat contrived (the calibrated gate is c
 % ------------------------------------------------------------------------------
 % Subsection: Single-qubit example
 % ------------------------------------------------------------------------------
-\subsection{Single-qubit example} 
+\subsubsection{Single-qubit example} 
 \label{sub:one_qubit}
 We consider the following dimensionless model for a single tunable qubit: 
 \begin{equation}\label{eq:1Qham}
@@ -503,7 +504,7 @@ We consider the following dimensionless model for a single tunable qubit:
 \end{equation}
 where $\epsilon$ corresponds to fluctuations in qubit frequency and $\delta$ corresponds to fluctuations in the control field.
 
-To generate the initial controls, we use the GRAPE algorithm\cite{Khaneja2005} with N=25 steps and total evolution time of $\pi$ to generate 100 candidate controls. However, by imposing the sparisty constraint discussed in Section \ref{sec:sparsity}, we found MQGs consisting of just 10 controls. In our implementation of the GRAPE algorithm, we use the performance function presented in \cite{Khaneja2005}, and average over different values of $\delta$ and $\epsilon$ using Gaussian quadrature when computing the gradient, so that we find controls that are naturally robust. The standard deviations considered for all parameters in our numerical experiments were fixed to $\sigma=.001$. Finally, we assume that the errors on $\sigma_x$ and $\sigma_y$ are perfectly correlated, as in our experimental implementation. We note that advanced quantum control protocols may provide an even more principled approach to control synthesis. DMORPH \cite{dominy2008exploring}, for example, explores continuous families of controls on fidelity level sets, thereby enabling further optimizations against secondary criteria, such as the duration of the control pulse or robustness to drift. 
+To generate the initial controls, we use the GRAPE algorithm\cite{Khaneja2005} with N=25 steps and total evolution time of $\pi$ to generate 100 candidate controls. However, by imposing the sparisty constraint discussed in Section \ref{sec:sparsity}, we found MQGs consisting of just \kcy{10 controls}. In our implementation of the GRAPE algorithm, we use the performance function presented in \cite{Khaneja2005}, and average over different values of $\delta$ and $\epsilon$ using Gaussian quadrature when computing the gradient, so that we find controls that are naturally robust. The standard deviations considered for all parameters in our numerical experiments were fixed to $\sigma=.001$. Finally, we assume that the errors on $\sigma_x$ and $\sigma_y$ are perfectly correlated, as in our experimental implementation. We note that advanced quantum control protocols may provide an even more principled approach to control synthesis. DMORPH \cite{dominy2008exploring}, for example, explores continuous families of controls on fidelity level sets, thereby enabling further optimizations against secondary criteria, such as the duration of the control pulse or robustness to drift. 
 
 Using controls generated in this way, the MQGs produced for $X_{\pi/2}$ and $Y_{\pi/2}$ are qualitatively similar, with the results for $X_{\pi/2}$ shown in Figure \ref{fig:YMQG}. By imposing the penalty from Section \ref{sec:norm}, we sought to ensure that the algorithm preferentially selected controls with smaller errors. Adding this constraint increased the performance of the 0MQG by nearly an order of magnitude at the origin, and produced a 1MQG whose performance is an order of magnitude better than the 0MQG away from the origin. Imposing this constraint allows us to trade off flatness for performance. This shows that through adding constraints to our optimization routine, we can make the MQG practically useful. 
 
@@ -517,7 +518,7 @@ Using controls generated in this way, the MQGs produced for $X_{\pi/2}$ and $Y_{
 % ------------------------------------------------------------------------------
 % Subsection: Single-qubit example
 % ------------------------------------------------------------------------------
-\subsection{Two-qubit example} 
+\subsubsection{Two-qubit example} 
 \label{sub:two_qubit}
 In our two-qubit example we consider the following model for two tunable qubits coupled by a resonant exchange interaction, similar to that in \cite{McKay2016}:
 \begin{equation} \label{eq:2Qham}
@@ -527,7 +528,7 @@ H(\vec{\delta}, \vec{\epsilon}, t) = &\sum_{j=1}^2(\epsilon_j\sigma_z^j + (1 + \
 \end{split}
 \end{equation}
 
-\amp{This section is still tough to read, but I'm not sure of a better way to handle it. The constituent controls are clearly contrived, so I think it best to be explicit about how they were constructed.}In this example it was infeasible to use GRAPE to return non-trivial solutions. Instead we manually selected piecewise constant echoing sequences with 500 steps and total evolution time of $\frac{5\pi}{2}$. In particular, we considered $RX(\pi)$, $RX(-\pi)$, $RY(\pi)$ and $RY(-\pi)$ bang-bang sequences \cite{bangbang}, consisting of all combinations of simultaneous $\pi$ pulses activated at multiples of $8$ steps from the beginning of the controls, and the same multiple of $8$ steps prior to the end of the controls. To give the control family a variety of RF errors, we also added uniformly distributed amplitude errors to each $\pi$ pulse, between $-.25$\% and $.25$\%.
+\amp{This section is still tough to read, but I'm not sure of a better way to handle it. The constituent controls are clearly contrived, so I think it best to be explicit about how they were constructed.}In this example it was infeasible to use GRAPE to return non-trivial solutions (always got the same result). Instead we manually selected piecewise constant echoing sequences with 500 steps and total evolution time of $\frac{5\pi}{2}$. In particular, we considered $RX(\pi)$, $RX(-\pi)$, $RY(\pi)$ and $RY(-\pi)$ bang-bang sequences \cite{bangbang}, consisting of all combinations of simultaneous $\pi$ pulses activated at multiples of $8$ steps from the beginning of the controls, and the same multiple of $8$ steps prior to the end of the controls. To give the control family a variety of RF errors, we also added uniformly distributed amplitude errors to each $\pi$ pulse, between $-.25$\% and $.25$\%.
 
 In this example, we find more modest improvements to performance, as shown in Figure \ref{fig:2MQG}. There are now four free parameters to optimize over, and the uncontrolled entangling interaction means that there is little room for variation in the controls. Nonetheless, using an MQG improves performance by half an order of magnitude at the origin relative to the constituent controls, and up to an order of magnitude away from the origin. For all values of the drifting parameters we see that the 1MQG performs as well or better than 0MQG.
 
