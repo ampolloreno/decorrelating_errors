@@ -429,10 +429,9 @@ As a practical consideration, we would also like to regularize our objective fun
 &\ \ \hspace{.2cm}\textbf{subject to: } \weight_m > \frac{\lambda}{t}.
 \end{split}
 \end{equation}
-In this program, $\lambda > 0$ is a tunable parameter that can be used to control the degree of sparsity in the solution. 
+Here, $\lambda > 0$ is a tunable parameter that can be used to control the degree of sparsity in the solution. Increasing $\lambda$ will increase the sparsity of the solution, but will generally decrease the likelihood that the solution will be generator-exact. 
 
-In the following sections we discuss both experimental and numerical implementations of MQGs, leveraging these optimization techniques. 
-
+In the following sections we discuss both experimental and numerical implementations of MQGs, leveraging each of these secondary optimizations. 
 
 % ==============================================================================
 % Section: Results
