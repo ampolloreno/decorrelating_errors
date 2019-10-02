@@ -139,7 +139,14 @@ Process matrices written in this Pauli basis are often referred to as \emph{Paul
 	\end{array} 	
 	\right)
 \end{equation}
-The top row of all trace-preserving (TP) error maps is fixed to $\{1,0,0,0,\cdots\}$ and the remainder of the first column, $\vec{m}$, describes any deviations from unitality, as might arise from amplitude damping \cite{preskill1997lecture}. If the error map is unitary, then the error is called \textit{coherent} and the unital submatrix $R$ is a rotation matrix.  Importantly, if $R$ is diagonal, then the error is Pauli stochastic, with each diagonal entry corresponding to the probability that its associated Pauli error occurs in each application of the gate. \kcy{We might need more here defining coherent noise. There is a lot of literature on this, most of it inconsistent. Try Joel's Estimating the Coherence of Noise (terrible title) and Gottesman's paper on Maximally Sensitive States, and Arnaud's work on the Polar Decomposition.}
+The top row of all trace-preserving (TP) error maps is fixed to $\{1,0,0,0,\cdots\}$ and the remainder of the first column, $\vec{m}$, describes any deviations from unitality, as might arise from amplitude damping \cite{preskill1997lecture}. If the error map is unitary, then the error is called \textit{coherent} and the unital submatrix $R$ is a rotation matrix.  Importantly, if $R$ is diagonal, then the error is Pauli stochastic, with each diagonal entry corresponding to the probability that its associated Pauli error occurs in each application of the gate.
+
+\amp{Not at all a final draft, but tried to take your note about coherence of noise and write something.}In general, an error will neither be fully coherent nor Pauli stochastic, and there is significant work defining precisely how coherent arbitrary noise is \cite{CarignanDugas2019, Wallman2015}. In particular, the unitarity of an error map can be defined to be:
+\begin{align}
+u(\mathcal{E}) = \frac{d}{d-1}\int d\psi ||\mathbf{n}[\mathcal{E}\cdot\vectorize{\ketbra{\psi}{\psi}}] - \mathbf{n}[\mathcal{E}\cdot\vectorize{\identmat_d}/2]||^2
+\end{align}
+where the integral is taken over all pure states and \textbf{n} is the norm of the Bloch vector. Even if we avoid measuring this unitarity, there are protocols to detect how unitary an error is by seeing how errors accumulate on different input states\cite{1907.05950}. In this work, we will be content if the unitarity of our error map decreases by any of these metrics.
+%Even if we avoid measuring the unitarity explicitly, we can assess how unitary an error is from how they compound. In particular, coherent errors have the property that they accumulate as the square of the number of qubits. To this end, there are protocols such as that given in \cite{1907.05950} that will use a collection of maximally sensitive inputs to detect this scaling.
 
 In what follows it will be useful to define the \emph{error generator}, $\genmat$, associated with a faulty gate: 
 \begin{align}
@@ -164,8 +171,7 @@ We call such randomized quantum operations \emph{mixed quantum gates} or MQGs. E
 	\label{eq:effective_error}
 	\error_{\rm eff} = \sum_i \weight_i \error_i.
 \end{equation}
-Two important error metrics are the average gate infidelity (AGI), $\AGI$, \kcy{We need a citation for this, and check if it's right! Gives weird answer if E = I. I feel like it should be $(d + \tr(\errmat))/(d+d^2)$. Maybe cite Nielsen's paper, or Horodecki**3, ** cite QUANTUM GATE FIDELITY IN TERMS OF CHOI MATRICES NATHANIEL JOHNSTON AND DAVID W. KRIBS
-.} and the diamond distance to the target (or simply, the \emph{diamond distance}), $\dnorm$ \cite{watrous2018theory}, defined as:
+Two important error metrics are the average gate infidelity (AGI), $\AGI$\cite{Johnston2011}, and the diamond distance to the target (or simply, the \emph{diamond distance}), $\dnorm$ \cite{watrous2018theory}, defined as:
 \begin{align}
 	\label{eq:def_agi}
 	&\AGI(\error) = \frac{d^2 - \tr{\errmat}}{d^2 + d},\\
@@ -280,7 +286,7 @@ This optimization problem is equivalent to:
 \end{equation}
 Where $\mathbf{L}=\left( \mathsf{col}(\genmat_1) \; \mathsf{col}(\genmat_2) \; \cdots \;  \right)$ is the $d^2\times m$-dimensional matrix of column-stacked error generators and $||\cdot||_2$ is the $\ell_2$ norm. 
 
-The constraints on these optimizations are required to ensure that the weights, $\weight_i$, form a proper probability distribution. Linearly constrained minimization problems with quadratic cost functions are convex and have been proven to be efficiently solvable by, e.g. the ellipsoid method \cite{wright1999numerical, khachiyan}. Many existing convex solver software packages are available that can solve these problems efficiently in practice. \kcy{Need some citations here.}
+The constraints on these optimizations are required to ensure that the weights, $\weight_i$, form a proper probability distribution. Linearly constrained minimization problems with quadratic cost functions are convex and have been proven to be efficiently solvable by, e.g. the ellipsoid method \cite{wright1999numerical, khachiyan}. Many existing convex solver software packages are available that can solve these problems efficiently in practice\cite{cvxpy, cvxpy_rewriting}.
 
 %In both cases it is clear that we should select the gates with smaller error, i.e. $\{U_{\epsilon}, U_{-\epsilon}\}$, rather than those with larger error, to minimize the multiplicative coefficient on the error. Despite this, literature commonly assumes that all controls are less than some threshold value, below which differences in performance don't matter. \cite{Campbell2017} In realistic scenarios, some controls will have better performance than others, and it is important to select from those controls when able to. We will discuss numerical approaches to solving this Section \ref{sec:norm}.
 
@@ -295,7 +301,7 @@ The constraints on these optimizations are required to ensure that the weights, 
 
 \subsubsection{Pauli-exact MQGs} % (fold)
 \label{sub:off_diagonals}
-As quantum devices grow in size, it is increasingly expensive to simulate their dynamics. Coherent errors impose a particular burden on classical simulators, as the entire quantum state must be tracked continually. As discussed above, Pauli-exact MQGs can be constructed with vanishing coherent error, enabling the use of much more efficient Pauli stochastic simulators that are able to model significantly more qubits than their vector-state counterparts. \kcy{say something more concrete here and PROVIDE CITATIONS!} Like generator-exact MQGs, the optimal weights can be found efficiently by a convex optimization. 
+As quantum devices grow in size, it is increasingly expensive to simulate their dynamics. Coherent errors impose a particular burden on classical simulators, as the entire quantum state must be tracked continually. As discussed above, Pauli-exact MQGs can be constructed with vanishing coherent error, enabling the use of much more efficient Pauli stochastic simulators that are able to model significantly more qubits than their vector-state counterparts. \amp{Still not sure what you want here. In the \textit{general} case, it doesn't matter if the error is Pauli, since you could have nasty unitaries other places in the circuit. If all of the gates in the circuit are clifford, of course, then this helps, since now the arbitrary noise turns into just propagating some probability vector. Is that what you had in mind?} \kcy{say something more concrete here and PROVIDE CITATIONS!} Like generator-exact MQGs, the optimal weights can be found efficiently by a convex optimization. 
 
 As above, we assume that we have access to $m$ distinct gate implementations, each of which is associated with its own error matrix, $\errmat_i$. We wish to construct an MQG whose effective error is Pauli-stochastic and is therefore diagonal. This can be done with the following simple minimization:
 \begin{equation}\label{eq:minimization2}
@@ -303,7 +309,7 @@ As above, we assume that we have access to $m$ distinct gate implementations, ea
     &\underset{\weight_i\geq0, \sum_i\weight_1=1}{\textbf{minimize}: } ||\sum_i\weight_i \errmat_i - \mathsf{diag}(\sum_i \weight_i \errmat_i)||_2\\
   \end{split}
 \end{equation}
-Here $(\mathsf{diag}(\mathcal{A}))_{ij} = \mathcal{A}_{ij}\delta_{ij}$ sets the off-diagonal elements of a matrix to zero. This can be more transparently written as a convex program by constructing the $(d^2-d)\times m$-dimensional matrix, $\mathbf{E}$\amp{Why E?}, whose $i$\textsuperscript{th} column is a vector composed of all of the off-diagonal entries of the error generators $\errmat_i$. \footnote{Exactly \emph{how} the off-diagonal entries are vectorized is unimportant, so long as it is consistent across error matrices.} Eq.~\eqref{eq:minimization2} is then equivalent to 
+Here $(\mathsf{diag}(\mathcal{A}))_{ij} = \mathcal{A}_{ij}\delta_{ij}$ sets the off-diagonal elements of a matrix to zero. This can be more transparently written as a convex program by constructing the $(d^2-d)\times m$-dimensional matrix, $\mathbf{E}$, whose $i$\textsuperscript{th} column is a vector composed of all of the off-diagonal entries of the error generators $\errmat_i$. \footnote{Exactly \emph{how} the off-diagonal entries are vectorized is unimportant, so long as it is consistent across error matrices.} Eq.~\eqref{eq:minimization2} is then equivalent to 
 \begin{equation}\label{eq:minimization3}
   \begin{split}
     &\underset{\weight_i\geq0, |\weight|_1=1}{\textbf{minimize}: } ||\mathbf{E}\cdot\vec\weight||_2
@@ -393,7 +399,7 @@ If we do not expect to have a space of generator-exact solutions available, then
     &\underset{\weight_i\geq0, |\weight|_1=1}{\textbf{minimize}: } ||\mathbf{L}\cdot\vec\weight||_2  + \eta \sum_i \weight_i\; \AGI(\errmat_i)
   \end{split}
 \end{equation}
-Both optimizations are convex and efficiently solvable. 
+Both optimizations are convex and efficiently solvable\cite{Shah2001}. 
 
 % then we can instead incentivize the construction of a lowest-error MQG by including an AGI penalty directly in the 
 
@@ -445,7 +451,8 @@ In the following sections we discuss both experimental and numerical implementat
 
 \subsection{Experimental implementation } % (fold)
 \label{sub:experimental}
-\noindent We implemented our methods using the 19Q-Acorn superconducting transmon processor at Rigetti Computing. Comprehensive characterization of this device can be found in \cite{1712.05771}. While this device consisted of 20 qubits with fixed couplings, we used only qubit \#8 for our demonstration. Controls were derived from a single, 10-sample, 50ns Gaussian $X_{\pi/2}$ pulse calibrated via Rabi oscillation. Four intentionally miscalibrated Gaussian pulses, labeled $\mathsf{Pulse1}$ through $\mathsf{Pulse4}$, were derived by scaling the amplitude of the calibrated $X_{\pi/2}$ pulse by a factor $S \in \{1.064, 1.039,0.937, 0.912\}$, respectively. We model their effect on the qubit state as perfectly unitary rotations, $X_{A \pi/2} = \exp{(-i A \pi/2 \sigma_x)}$. These gates are then used as in Sec.~\ref{sub:off_diagonals} to construct a Pauli-exact MQG, which samples from the miscalibrated waveforms with probabilities, \kcy{What are they?}\amp{I'll have to go hunting, I didn't save these}, respectively. 
+\noindent We implemented our methods using the 19Q-Acorn superconducting transmon processor at Rigetti Computing. Comprehensive characterization of this device can be found in \cite{1712.05771}. While this device consisted of 20 qubits with fixed couplings, we used only qubit \#8 for our demonstration. Controls were derived from a single, 10-sample, 50ns Gaussian $X_{\pi/2}$ pulse calibrated via Rabi oscillation. Four intentionally miscalibrated Gaussian pulses, labeled $\mathsf{Pulse1}$ through $\mathsf{Pulse4}$, were derived by scaling the amplitude of the calibrated $X_{\pi/2}$ pulse by a factor $S \in \{1.064, 1.039,0.937, 0.912\}$, respectively. We model their effect on the qubit state as perfectly unitary rotations, $X_{A \pi/2} = \exp{(-i A \pi/2 \sigma_x)}$. These gates are then used as in Sec.~\ref{sub:off_diagonals} to construct a Pauli-exact MQG, which samples from the miscalibrated waveforms with probabilities $P\in \{0.307, 0.283, 0.211, 0.199\}$ respectively. 
+
 
 We characterize the performance of the MQG using a series of randomized benchmarking (RB) experiments\cite{Magesan2011}: one for each of the miscalibrated pulses, one using the calibrated pulse, and using the MQG. In each case, the Clifford operations were decomposed into $X_{\pi/2}$ gates, which were implemented directly using the relevant waveforms, and $Y_{\pi/2}$ gates, which were implemented by phase-shifting the relevant waveform $\pi/2$ radians.  An RB experiment consisted of sampling and running $10$ random Clifford sequences at each of lengths $L\in\{2, 4, 8, 16, 32, 64\}$. Each sequence was repeated $1000$ times. We emphasize that, when benchmarking the MQG, each sequence repetition used a new, randomly sampled sequence of waveforms consistent with its definition.  Results of the standard RB analysis are discussed in Table.~\eqref{tabl:rb}. The MQG is seen to perform nearly as well as the calibrated pulse, and better than any of the constituent pulses individually.  
 
@@ -476,7 +483,7 @@ By minimizing the off-diagonal elements of the process matrix, we expect the res
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{rb_data.pdf}
-  \caption{\textbf{Evidence of reduced coherent error:}. Shown here is the distribution of randomized benchmarking survival probabilities at $L=64$ for each of six native gate implementations. The first four boxes (light blue) result four intentionally miscalibrated ${\pi/2}$ rotations. The coherent noise present in these implementations leads to large variance in the survival probability over sequences. The fifth (dark blue) box illustrates the survival probability using a highly-tuned gate implementation. It displays improved average survival probability as well as reduced variance. The final box (dark red) illustrates the distribution for a randomized MQG composed of $\mathsf{Pulse1}$ through $\mathsf{Pulse4}$. It performs comparably to the highly-calibrated implementation in both average survival probability and variance over random sequences. The reduced variance of the MQG is a tell-tale sign of reduced coherent error in the effective channel \kcy{cite Biercuk's paper}. }
+  \caption{\textbf{Evidence of reduced coherent error:}. Shown here is the distribution of randomized benchmarking survival probabilities at $L=64$ for each of six native gate implementations. The first four boxes (light blue) result four intentionally miscalibrated ${\pi/2}$ rotations. The coherent noise present in these implementations leads to large variance in the survival probability over sequences. The fifth (dark blue) box illustrates the survival probability using a highly-tuned gate implementation. It displays improved average survival probability as well as reduced variance. The final box (dark red) illustrates the distribution for a randomized MQG composed of $\mathsf{Pulse1}$ through $\mathsf{Pulse4}$. It performs comparably to the highly-calibrated implementation in both average survival probability and variance over random sequences. The reduced variance of the MQG is a tell-tale sign of reduced coherent error in the effective channel\cite{Ball2016}.}
   \label{fig:rb}
 \end{figure}
 
