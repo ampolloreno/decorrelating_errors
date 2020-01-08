@@ -1,10 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% RevTeX 4.1 LaTeX
-% Kevin C. Young
-% Scalable & Secure Systems Research (08961)
-% Thu Mar  5 15:29:19 PST 2015
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \documentclass[aps,nofootinbib,pra,notitlepage,twocolumn]{revtex4-1}
 \usepackage{amsfonts,amsmath,amssymb,amsthm}
  \usepackage{array,bm,color}
@@ -27,14 +20,12 @@
 \newcommand{\abs}[1]{\left\vert #1 \right\vert}
 \newcommand{\expect}[1]{\ensuremath{\left\langle{#1}\right\rangle}}
 \newcommand{\timeorder}{\ensuremath{\underset{\leftarrow}{\mathcal{T}}}}
-% \newcommand{\identmat}{{\mathbb1}}
 \newcommand{\order}[1]{\mathcal{O}\left( #1 \right)}
 \newcommand{\diag}[1]{\mathrm{diag}\{#1\}}
 \newcommand{\trans}[1]{#1^\mathsf{T}}
 \newcommand{\T}{\mathsf{T}}
 \newcommand{\erf}[1]{Eq.~(\ref{#1})}
 \newcommand{\needcite}{{\color{blue}\textsuperscript{[citation needed]}}}
-% \newcommand{\note}[1]{{\color{red}[#1]}}
 \newcommand{\note}[1]{}
 \newcommand{\kcy}[1]{{\color{red}[#1]\textsubscript{\rm{KCY}}}}
 \newcommand{\amp}[1]{{\color{red}[#1]\textsubscript{\rm{AMP}}}}
@@ -219,20 +210,7 @@ If the diamond distance error rates of the component gates are bounded by $\alph
 \end{figure}
 
 While generator-exact MQGs can provide a guaranteed suppression of the diamond distance, their effective error channels are unlikely to be a purely stochastic. Second- and higher-order terms in \eqref{eq:generators_and_effective_error} can easily contribute to lingering coherent errors that impact the efficient simulability of the channel. In order to definitively eliminate these coherent errors, we could instead seek weights, $\weight^P_i$, that annihilate the off-diagonal entries of the effective error map. The resulting diagonal error map will be Pauli-stochastic. For a single qubit gate, it takes the form,
-% \begin{equation}
-% 	\errmat_{eff} = 
-% 	\left(\begin{array}{@{}ccccc@{}}
-% 		\cdot & \cdot & \cdot & \cdot \\ 
-%   		\cline{1-1}\cline{3-4}
-%     	\multicolumn{1}{|c}{0} & \multicolumn{1}{|c}{\cdot} & \multicolumn{1}{|c}{0} & \multicolumn{1}{c|}{0} \\
-%     	\cline{2-2}\cline{3-3}		
-% 		\multicolumn{1}{|c}{0} & 0 & \multicolumn{1}{|c}{\cdot} & \multicolumn{1}{|c|}{0}\\
-% 		\cline{3-3}\cline{4-4}	
-% 		\multicolumn{1}{|c}{0} & 0 & 0 & \multicolumn{1}{|c}{\cdot}\\
-% 		\cline{1-3}
-% 	\end{array} 	
-% 	\right).
-% \end{equation}
+
 \begin{equation}
 	\errmat_{\rm{eff}} = \sum_i \weight_i^P \errmat_i = 
 	\left(\begin{array}{@{}ccccc@{}}
@@ -245,9 +223,6 @@ While generator-exact MQGs can provide a guaranteed suppression of the diamond d
 \end{equation}
 where $p_x, p_y$ and $p_z$ are the rates of Pauli $X$, $Y$, and $Z$ errors, respectively. We refer to such channels as \emph{Pauli-exact} MQGs, and the same geometric argument we used in constructing generator-exact MQGs is again applicable here. The off-diagonal elements of the error map form a vector space, so we need only check that the origin is in the convex hull of the vectors of off-diagonal elements for each of the component operations, $\errmat_i$. If the error map contains non-unital components or correlated Pauli-stochastic errors (such as $X+Y$), then this strict geometric condition may not hold and no Pauli-exact MQG would exist. However, MQGs that approximate the Pauli-exact condition can be found via the convex programing techniques discussed in Sec.~\ref{sub:off_diagonals}.
 
-% In the remainder of this paper, we will formalize this process, laying out efficient convex programs to both generate a family of unitary controls \kcy{do we do this?} and compute the weights required to yield either type of MQG. We discuss how one might include additional desiderata, including reduced sensitivity to environmental fluctuation as well as limiting the number of native unitaries that participate in the MQG.
-
-
 
 % ==============================================================================
 % Section: Constructing Useful mixed quantum gates
@@ -257,8 +232,6 @@ where $p_x, p_y$ and $p_z$ are the rates of Pauli $X$, $Y$, and $Z$ errors, resp
 \noindent We now present a methodology for constructing mixed quantum channels, formalizing the intuitive approach discussed above with a series of explicit convex programs. As mentioned, our method requires two steps. The first is a control synthesis step, in which we construct an ensemble of gate implementations. Campbell and Hastings draw their ensembles from various different gate compilations, but for this work we use utilize quantum optimal control theory. Many standard control-generation algorithms, such as GRAPE \cite{Khaneja2005}, take a random initial guess for the control and iteratively improve it to yield a gate that well-approximates a target. By seeding such algorithms with many initial guesses, one can quickly construct a large ensemble of approximate quantum gates, each with a different error channel. We discuss this approach in some detail in Sec.~\ref{sec:numerical_results}. 
 
 The remainder of this section will assume such a capability for generating a large ensemble of gate implementations, and will focus instead on the second step: constructing a distribution over that ensemble that reduces the coherence of the effective error channel. We will begin by discussing the two broad optimization targets introduced above: i) generator-exact MQGs and ii) Pauli-exact MQGs. We then propose a set of secondary optimization targets that can improve the performance by i) incorporating robustness to drift, ii) targeting low-error-rate solutions, and iii) reducing the number of native unitaries that contribute to the effective channel. 
-
-% In the examples that were discussed, all objective functions were linear, and reduced to finding a collection of controls whose convex hull contained the origin in some high-dimensional vector space. In those cases, the vectors might represent a collection of error generators or the off-diagonal elements of a collection of error maps. As we'll see in Section \ref{sub:adding_robustness}, we can also consider the derivatives of the error generators to minimize the sensitivity of the controls to drift. In this way, we see that by considering the appropriate collection of vectors, we can optimize our MQG for different purposes, and which routine we choose will depend on the quantities we are trying to minimize.
 
 % ==============================================================================
 % Section: Generators
@@ -290,17 +263,6 @@ Where $\mathbf{L}=\left( \mathsf{col}(\genmat_1) \; \mathsf{col}(\genmat_2) \; \
 
 The constraints on these optimizations are required to ensure that the weights, $\weight_i$, form a proper probability distribution. Linearly constrained minimization problems with quadratic cost functions are convex and have been proven to be efficiently solvable by, e.g. the ellipsoid method \cite{wright1999numerical, khachiyan}. Many existing convex solver software packages are available that can solve these problems efficiently in practice\cite{cvxpy, cvxpy_rewriting}.
 
-%In both cases it is clear that we should select the gates with smaller error, i.e. $\{U_{\epsilon}, U_{-\epsilon}\}$, rather than those with larger error, to minimize the multiplicative coefficient on the error. Despite this, literature commonly assumes that all controls are less than some threshold value, below which differences in performance don't matter. \cite{Campbell2017} In realistic scenarios, some controls will have better performance than others, and it is important to select from those controls when able to. We will discuss numerical approaches to solving this Section \ref{sec:norm}.
-
-%Another interesting property of the MQG given in Equation \ref{eq:balanced} is that it maintains its first-order insensitivity even in the presence of drift. In particular, if the control amplitudes that implement these gates drift, they will drift in equal and opposite ways. Thus, the resulting depolarizing channel (see Figure \ref{fig:simple_example}) will have a time-dependent strength, but it will remain first-order insensitivity to the static detuning $\epsilon$. In Section \ref{sec:robustly_mixed} we will provide a method for producing controls that exhibit this robustness to drift to arbitrary order. Given these considerations from this simple example, we will now consider a numerical strategy for generating MQGs.
-
-
-% subsection first_order_generators (end)
-
-% ==============================================================================
-% Section: Off-diagonals
-% ==============================================================================
-% contrast coherent errors with stochastic where an expectation can be computed and then the circuit can be rerun, rather than having to track the the whole state.
 
 \subsubsection{Pauli-exact MQGs} % (fold)
 \label{sub:off_diagonals}
@@ -321,7 +283,6 @@ Here $(\mathsf{diag}(\mathcal{A}))_{ij} = \mathcal{A}_{ij}\delta_{ij}$ sets the 
   \end{split}
 \end{equation}
 The similarity with Eq.~\ref{eq:minimization} is clear and the same methods can be used to solve both. If the solver routine finds a solution for which the cost function is equal to 0, then the resulting error channel will be \textit{exactly} a Pauli channel. 
-%As mentioned, circuits composed of gates with Pauli stochastic error channels can be more efficiently simulated by Monte Carlo methods. Furthermore, if the bare circuit consists of only Clifford gates, stabilizer methods can be used in conjunction with the Monte Carlo methods to give sub-exponential simulation times.\cite{quant-ph/9807006} \kcy{Why this paper?} 
 
 % subsection off_diagonals (end)
 
@@ -377,8 +338,6 @@ We call a gate constructed in this way a \emph{robust} generator-exact MQG. Thes
   \label{fig:vectorspace2}
 \end{figure}
 
-% subsection adding_robustness (end)
-
 % ==============================================================================
 % Section: Norm regularization
 % ==============================================================================
@@ -404,25 +363,6 @@ If we do not expect to have a space of generator-exact solutions available, then
 \end{equation}
 Both optimizations are convex and efficiently solvable\cite{Shah2001}. 
 
-% then we can instead incentivize the construction of a lowest-error MQG by including an AGI penalty directly in the 
-
-% \begin{equation}\label{eq:minimization}
-%   \begin{split}
-%     &\underset{\weight_i\geq0, |\weight|_1=1}{\textbf{minimize}: } \sum_i \weight_i\; \AGI(\errmat_i)\\
-%     & \textbf{subject to}: ||\mathbf{L}\cdot\vec\weight||_2 = 0 
-%   \end{split}
-% \end{equation}
-
-
-% \begin{equation}\label{eq:minimization_l2}
-% \begin{split}
-% & \ \bunderbrace{\textbf{minimize}: }{\weight_i\geq0, |\weight|_1=1} ||{\mathbf{D}^{\ell}}\weight||_1+ \eta\sum\weight_i||D^0_i||_2\\
-% &\ \ \textbf{subject to: } \forall n<\ell, ||\sum \weight_iD_i^n||=0\\
-% \end{split}
-% \end{equation}
-% with $\eta \geq 0$. By increasing $\eta$, we can encourage the optimizer to include better controls while minimizing the diamond norm. The value of $\eta$ that is best for any particular problem instance will depend on the values in $\mathbf{D}^\ell$.
-
-%Naively generating the 1Q 0MQG in the previous section results in nontrivial support on all the members of the control family. However, as we will see in the next section, we can rewrite the minimization to impose a sparsity constraint, and the resulting 0MQG uses just five of the controls. 
 % ==============================================================================
 % Section: Sparsity
 % ==============================================================================
@@ -467,7 +407,6 @@ An RB experiment consisted of sampling and running $10$ random Clifford sequence
 
 \setlength{\tabcolsep}{0.5em} 
 {\renewcommand{\arraystretch}{1.2}
-% \newcolumntype{d}[1]{D{.}{.}{#1}}
 \begin{table}[h]
 	\centering
 	\begin{tabular}{@{}ccc@{}}
