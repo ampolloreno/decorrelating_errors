@@ -1,0 +1,24 @@
+\BOOKMARK [0][-]{section*.2}{Robustly decorrelating errors with mixed quantum gates}{}% 2
+\BOOKMARK [1][-]{section*.1}{Abstract}{section*.2}% 1
+\BOOKMARK [1][-]{section*.3}{Introduction}{section*.2}% 3
+\BOOKMARK [1][-]{section*.4}{Preliminaries}{section*.2}% 4
+\BOOKMARK [2][-]{section*.5}{Representing Errors in Quantum Gates}{section*.4}% 5
+\BOOKMARK [2][-]{section*.6}{Mixed Quantum Gates}{section*.4}% 6
+\BOOKMARK [1][-]{section*.7}{Constructing mixed quantum gates}{section*.2}% 7
+\BOOKMARK [2][-]{section*.8}{Convex Programs for Constructing Mixed Quantum Gates}{section*.7}% 8
+\BOOKMARK [3][-]{section*.9}{Generator-exact MQGs}{section*.8}% 9
+\BOOKMARK [3][-]{section*.10}{Pauli-exact MQGs}{section*.8}% 10
+\BOOKMARK [2][-]{section*.11}{Secondary Objectives}{section*.7}% 11
+\BOOKMARK [3][-]{section*.12}{Robustness to drift and model uncertainty}{section*.11}% 12
+\BOOKMARK [3][-]{section*.13}{Improving the average gate fidelity}{section*.11}% 13
+\BOOKMARK [3][-]{section*.14}{Sparsity Constraints}{section*.11}% 14
+\BOOKMARK [1][-]{section*.15}{Results}{section*.2}% 15
+\BOOKMARK [2][-]{section*.16}{Experimental implementation }{section*.15}% 16
+\BOOKMARK [2][-]{section*.17}{Numerical implementations}{section*.15}% 17
+\BOOKMARK [3][-]{section*.18}{Single-qubit example}{section*.17}% 18
+\BOOKMARK [3][-]{section*.19}{Two-qubit example}{section*.17}% 19
+\BOOKMARK [1][-]{section*.20}{Conclusion and Future Work}{section*.2}% 20
+\BOOKMARK [1][-]{section*.21}{Acknowledgements}{section*.2}% 21
+\BOOKMARK [1][-]{section*.22}{References}{section*.2}% 22
+\BOOKMARK [1][-]{section*.23}{Appendix}{section*.2}% 23
+\BOOKMARK [2][-]{section*.24}{Proof of diamond distance inequality}{section*.23}% 24
