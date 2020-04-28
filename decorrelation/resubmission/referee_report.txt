@@ -1,0 +1,123 @@
+---------- Forwarded message ---------
+From: <pra@aps.org>
+Date: Mon, Feb 10, 2020 at 8:13 AM
+Subject: Your_manuscript AN11713 Polloreno
+To: <anthony.polloreno@gmail.com>
+
+
+
+Re: AN11713
+    Robustly decorrelating errors with mixed quantum gates
+    by Anthony M. Polloreno and Kevin C. Young
+
+Dear Anthony Polloreno,
+
+The above manuscript has been reviewed by two of our referees.
+Comments from the reports appear below.
+
+These comments suggest that considerable revision of your paper may be
+in order.  If you resubmit your manuscript, please include a summary of
+the changes made and a brief response to all recommendations or
+criticisms.
+
+Yours sincerely,
+
+Thomas Pattard
+Managing Editor
+Physical Review A
+Email: pra@aps.org
+https://journals.aps.org/pra/
+
+In celebration of the 50th Anniversary of Physical Review A, B, C,
+and D, APS is offering 50% off open access article publication
+charges (APCs) in all hybrid journals for papers submitted during the
+2020 calendar year. Additionally, Physical Review Research will
+continue to waive APCs through June 30, 2020. For details about APC
+pricing, see https://journals.aps.org/authors/apcs.
+
+----------------------------------------------------------------------
+Report of the First Referee -- AN11713/Polloreno
+----------------------------------------------------------------------
+
+In this paper, the authors propose novel techniques to solve the
+problem of coherent errors in quantum computation. Their techniques,
+which are obtained by extending previous approaches, are based on
+various optimization methods. This topic is timely and the methods
+proposed here will be useful in the field of quantum information
+science. So, I recommend its publication in PRA.
+
+Here I have a comment for readability. The presentation in Secs. IIIB3
+and IVB1 with Fig. 6 may be difficult to understand, especially for
+readers not familiar with sparse modeling. I recommend the improvement
+of the parts.
+
+----------------------------------------------------------------------
+Report of the Second Referee -- AN11713/Polloreno
+----------------------------------------------------------------------
+
+The manuscript by Pollareno et al. presents a convex algorithm for
+compiling gates in quantum algorithms in a random fashion. Instead of
+applying a fixed gate pulse (which can have both coherent and
+incoherent errors), the authors pick the gates from ensembles with
+intentionally injected control errors. This procedure is meant to
+randomize coherent errors and mitigate any amplification of such
+errors in quantum circuits. The authors then performed a simple
+single-qubit RB experiment using their qubit device, where they show
+that the coherent errors of individual (intentionally misaligned)
+pulses are suppressed if the SQ gates are chosen from an ensemble of
+such misaligned gates. Some numerics are also done for two-qubit gates
+arguing for similar, beneficial outcomes.
+
+Randomized compiling is technique known to the QC community for quite
+some time now and therefore there is nothing particularly novel about
+the technique itself. What appears to be the highlight of the paper is
+the convex algorithm that the authors used to choose random gates and
+the experimental demonstration. While these are good steps toward a
+nice direction, I feel the demonstrations are not sufficiently
+convincing, particularly in regard to the experimental part (which the
+authors themselves acknowledge as being "contrived"). Here are my main
+concerns:
+
+1. For the experiment, it is completely trivial to me that randomly
+picking four faulty unitaries outperforms choosing just one of them.
+Here the only coherent errors the authors introduced are under and
+over-rotations to the Rabi angle. These over- and under-rotations
+would naturally build up and amplify if left by themselves. However,
+if chosen at random, they would cancel each other out and give better
+fidelity at the end of the sequence. Correct? I fail to see any
+surprise here and how the authors' lengthy algorithm even plays a role
+for this demonstration.
+
+2. It seems to me that authors can very easily go a step further: A SQ
+unitary is parametrized by three angles: Rabi angle, off-diagonal and
+diagonal phases. Why not introduce coherent errors to all three phases
+(or at least two, such as the Rabi angle and the off-diagonal phase)?
+To me this will be much less trivial.
+
+3. The whole point of RB is meant to randomize coherent errors and
+turn them into a depolarization channel. It is bizarre to me that the
+authors chose to demonstrate their randomized compiling through an
+experiment that is in itself random. Wouldn't a structured algorithm
+(QAOA or anything else that is not random) be a far better candidate
+for demonstrating the efficacy of randomized compiling?
+
+4. Why is the two-qubit experiment not done? It shouldn't be that
+difficult to do, if the authors believe that their method works
+(according to numerics). SQ demonstrations just too trivial to show
+anything given their simplicity.
+
+5. I'm still confused about how the algorithm works. Suppose we have
+gates that have systematic errors on some unitary angles. These errors
+are, of course, not known to me. Now, what do I do exactly? I start
+introducing a bunch of (additional and known) random errors to the
+gates, then compile the quantum circuit by picking gates from this
+random ensemble I constructed? If so, what the authors seemed to have
+showed is that the error of the randomly compiled circuit beats that
+of the circuit made from any one of the faulty gates in the ensemble
+(which I constructed myself), NOT the coherent error in the original
+gate. This seemed rather useless, as the endgame is to suppress the
+original, unknown coherent error, NOT the artificial errors I
+introduced. Am I missing something?
+
+All in all, I cannot recommend the publication of the manuscript until
+the authors clarify my concerns above.
