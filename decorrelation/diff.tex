@@ -1,4 +1,7 @@
 \documentclass[aps,nofootinbib,pra,notitlepage,twocolumn]{revtex4-1}
+%DIF LATEXDIFF DIFFERENCE FILE
+%DIF DEL ../../mixed_unitaries.tex   Wed Apr 22 13:22:05 2020
+%DIF ADD mixed_unitaries.tex         Tue Apr 28 13:13:02 2020
 \usepackage{amsfonts,amsmath,amssymb,amsthm}
  \usepackage{array,bm,color}
 \usepackage{epsfig,graphicx,nomencl,revsymb4-1,upgreek,url}
@@ -53,6 +56,88 @@
   \end{array}}
 
 %-------------Header begins here----------------------------------------
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFaddtex}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdeltex}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+\providecommand{\DIFmodbegin}{} %DIF PREAMBLE
+\providecommand{\DIFmodend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF HYPERREF PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{\texorpdfstring{\DIFaddtex{#1}}{#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{\texorpdfstring{\DIFdeltex{#1}}{}} %DIF PREAMBLE
+\newcommand{\DIFscaledelfig}{0.5}
+%DIF HIGHLIGHTGRAPHICS PREAMBLE %DIF PREAMBLE
+\RequirePackage{settobox} %DIF PREAMBLE
+\RequirePackage{letltxmacro} %DIF PREAMBLE
+\newsavebox{\DIFdelgraphicsbox} %DIF PREAMBLE
+\newlength{\DIFdelgraphicswidth} %DIF PREAMBLE
+\newlength{\DIFdelgraphicsheight} %DIF PREAMBLE
+% store original definition of \includegraphics %DIF PREAMBLE
+\LetLtxMacro{\DIFOincludegraphics}{\includegraphics} %DIF PREAMBLE
+\newcommand{\DIFaddincludegraphics}[2][]{{\color{blue}\fbox{\DIFOincludegraphics[#1]{#2}}}} %DIF PREAMBLE
+\newcommand{\DIFdelincludegraphics}[2][]{% %DIF PREAMBLE
+\sbox{\DIFdelgraphicsbox}{\DIFOincludegraphics[#1]{#2}}% %DIF PREAMBLE
+\settoboxwidth{\DIFdelgraphicswidth}{\DIFdelgraphicsbox} %DIF PREAMBLE
+\settoboxtotalheight{\DIFdelgraphicsheight}{\DIFdelgraphicsbox} %DIF PREAMBLE
+\scalebox{\DIFscaledelfig}{% %DIF PREAMBLE
+\parbox[b]{\DIFdelgraphicswidth}{\usebox{\DIFdelgraphicsbox}\\[-\baselineskip] \rule{\DIFdelgraphicswidth}{0em}}\llap{\resizebox{\DIFdelgraphicswidth}{\DIFdelgraphicsheight}{% %DIF PREAMBLE
+\setlength{\unitlength}{\DIFdelgraphicswidth}% %DIF PREAMBLE
+\begin{picture}(1,1)% %DIF PREAMBLE
+\thicklines\linethickness{2pt} %DIF PREAMBLE
+{\color[rgb]{1,0,0}\put(0,0){\framebox(1,1){}}}% %DIF PREAMBLE
+{\color[rgb]{1,0,0}\put(0,0){\line( 1,1){1}}}% %DIF PREAMBLE
+{\color[rgb]{1,0,0}\put(0,1){\line(1,-1){1}}}% %DIF PREAMBLE
+\end{picture}% %DIF PREAMBLE
+}\hspace*{3pt}}} %DIF PREAMBLE
+} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddbegin}{\DIFaddbegin} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddend}{\DIFaddend} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelbegin}{\DIFdelbegin} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelend}{\DIFdelend} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddbegin}{\DIFOaddbegin \let\includegraphics\DIFaddincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddend}{\DIFOaddend \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelbegin}{\DIFOdelbegin \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelend}{\DIFOaddend \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddbeginFL}{\DIFaddbeginFL} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddendFL}{\DIFaddendFL} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelbeginFL}{\DIFdelbeginFL} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelendFL}{\DIFdelendFL} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddbeginFL}{\DIFOaddbeginFL \let\includegraphics\DIFaddincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelbeginFL}{\DIFOdelbeginFL \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+%DIF LISTINGS PREAMBLE %DIF PREAMBLE
+\RequirePackage{listings} %DIF PREAMBLE
+\RequirePackage{color} %DIF PREAMBLE
+\lstdefinelanguage{DIFcode}{ %DIF PREAMBLE
+%DIF DIFCODE_UNDERLINE %DIF PREAMBLE
+  moredelim=[il][\color{red}\sout]{\%DIF\ <\ }, %DIF PREAMBLE
+  moredelim=[il][\color{blue}\uwave]{\%DIF\ >\ } %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstdefinestyle{DIFverbatimstyle}{ %DIF PREAMBLE
+	language=DIFcode, %DIF PREAMBLE
+	basicstyle=\ttfamily, %DIF PREAMBLE
+	columns=fullflexible, %DIF PREAMBLE
+	keepspaces=true %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim}{\lstset{style=DIFverbatimstyle}}{} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim*}{\lstset{style=DIFverbatimstyle,showspaces=true}}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
 \begin{document}
 \title{Robustly decorrelating errors with mixed quantum gates}
 
@@ -66,7 +151,7 @@
 \date{\today}
 
 \begin{abstract}
-\noindent Coherent errors in quantum operations are ubiquitous. Whether arising from spurious environmental couplings or errors in control fields, such errors can accumulate rapidly and degrade the performance of a quantum circuit significantly more than an average gate fidelity may indicate. As Hastings \cite{Hastings2017} and Campbell \cite{Campbell2017} have recently shown, by replacing the deterministic implementation of a quantum gate with a randomized ensemble of implementations, one can dramatically suppress coherent errors. Our work begins by reformulating the results of Hastings and Campbell as a quantum optimal control problem. We then discuss a family of convex programs designed to improve the performance, implementability, and robustness of the resulting mixed quantum gates. Finally, we implement these mixed quantum gates on a superconducting qubit and discuss randomized benchmarking results consistent with a marked reduction in the coherent error.\\
+\noindent Coherent errors in quantum operations are ubiquitous. Whether arising from spurious environmental couplings or errors in control fields, such errors can accumulate rapidly and degrade the performance of a quantum circuit significantly more than an average gate fidelity may indicate. As Hastings \cite{Hastings2017} and Campbell \cite{Campbell2017} have recently shown, by replacing the deterministic implementation of a quantum gate with a randomized ensemble of implementations, \DIFdelbegin \DIFdel{on }\DIFdelend \DIFaddbegin \DIFadd{one }\DIFaddend can dramatically suppress coherent errors. Our work begins by reformulating the results of Hastings and Campbell as a quantum optimal control problem. We then discuss a family of convex programs designed to improve the performance, implementability, and robustness of the resulting mixed quantum gates. Finally, we implement these mixed quantum gates on a superconducting qubit and discuss randomized benchmarking results consistent with a marked reduction in the coherent error.\\
 {[1]} M. B. Hastings, \emph{Quantum Information \& Computation} 17, 488 (2017). \\
 {[2]} E. Campbell, \emph{Physical Review A} 95, 042306 (2017).
 \end{abstract}
@@ -90,9 +175,17 @@
   \label{fig:simple_example}
 \end{figure}
 
-Campbell \cite{Campbell2017,Campbell2019} and Hastings \cite{Hastings2017} have developed a technique for suppressing coherent noise by replacing deterministic gate implementations with a \emph{mixed quantum gate} (MQG) consisting of a randomly sampled ensemble of implementations. They focus on errors in gate compilation, such as those that arise from the Solovey-Kitaev algorithm, for which any lingering approximation errors are generally coherent, even if the underlying native gates are perfect. Different approximate gate compilations of the same target unitary will almost certainly result in different unitary errors. So by selecting from these various compilations at random, the resulting quantum channel becomes a mixture of unitaries \cite{DBLP:journals/corr/cs-CC-0012017}, which can have significantly less coherent error than any single compilation on its own. A very simple example of this reduction in coherent error by mixed quantum gates is illustrated in Fig.~\ref{fig:simple_example}. 
+Campbell \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{Campbell2017,1811.08017} }\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{Campbell2017,Campbell2019} }\hspace{0pt}%DIFAUXCMD
+}\DIFaddend and Hastings \cite{Hastings2017} have developed a technique for suppressing coherent noise by replacing deterministic gate implementations with a \emph{mixed quantum gate} (MQG) consisting of a randomly sampled ensemble of implementations. They focus on errors in gate compilation, such as those that arise from the Solovey-Kitaev algorithm, for which any lingering approximation errors are generally coherent, even if the underlying native gates are perfect. Different approximate gate compilations of the same target unitary will almost certainly result in different unitary errors. So by selecting from these various compilations at random, the resulting quantum channel becomes a mixture of unitaries \cite{DBLP:journals/corr/cs-CC-0012017}, which can have significantly less coherent error than any single compilation on its own. A very simple example of this reduction in coherent error by mixed quantum gates is illustrated in Fig.~\ref{fig:simple_example}. 
 
-Randomized protocols have a long history of outperforming their deterministic counterparts\cite{Viola2005, Santos2006}. In circuit models, Pauli Frame Randomization \cite{Wallman2016, 1803.01818, dahlen2018experimental} has been shown to reduce coherent errors by introducing randomness in a compilation step. MQGs are an alternative approach to solving this problem. Because they are implemented by randomly drawing from different gate realizations, they only require randomness at run-time. Moreover, when the construction of MQGs is posed as a numerical optimization problem, numerous useful modifications can be made to augment their performance.
+Randomized protocols have a long history of outperforming their deterministic counterparts\cite{Viola2005, Santos2006}. In circuit models, Pauli Frame Randomization \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{Wallman2016, 1803.01818} }\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{Wallman2016, 1803.01818, dahlen2018experimental} }\hspace{0pt}%DIFAUXCMD
+}\DIFaddend has been shown to reduce coherent errors by introducing randomness in a \DIFdelbegin \DIFdel{pre-compilation step. While Pauli Frame Randomization shares the some favorable properties with MQGs , we will see that MQGs additionally admit a hardware-efficient implementation and numerous useful modifications when they are }\DIFdelend \DIFaddbegin \DIFadd{compilation step. MQGs are an alternative approach to solving this problem. Because they are implemented by randomly drawing from different gate realizations, they only require randomness at run-time. Moreover, when the construction of MQGs is }\DIFaddend posed as a numerical optimization problem\DIFaddbegin \DIFadd{, numerous useful modifications can be made to augment their performance}\DIFaddend .
 
 In this article, we extend the work of Campbell and Hastings to numerically optimized quantum gates and show that the advantages of their approach can be made robust to drift and model uncertainty. We provide an explicit series of convex programs able to efficiently compute MQGs with a variety of useful properties. We demonstrate our results on a superconducting testbed device at Rigetti Computing.  In a simple experiment based on randomized benchmarking circuits, MQGs demonstrate a marked improvement in error rates and a reduced variance in circuit outcome probabilities, consistent with a significant reduction in the coherence of the error \cite{Ball2016}. We further apply our methods in simulation, constructing both single- and two-qubit mixed unitary controls that are robust to drift and uncertainty in the control parameters.
 
@@ -173,7 +266,7 @@ Two important error metrics are the average gate infidelity (AGI), $\AGI$\cite{J
 		= \frac{1}{2} \sup_\rho \vert \vert (\ident_d\otimes \ident_d)(\rho) 
 										  - (\error \otimes \ident_d)(\rho) \vert\vert_1,
 \end{align}
-where $d=2^n$, with $n$ being the number of qubits, and $\ident_d$ is the $d$-dimensional identity operator.  In Eq.~\eqref{eq:def_agi}, we have written the AGI for an error map, $\error$, in terms of its associated Pauli transfer matrix, $\errmat$. If the error channel is purely stochastic, then $\dnorm(\error) = \AGI(\error)$, but if the error channel has a unitary component, then the diamond distance will generically be larger than the average gate infidelity \cite{1511.00727}. The diamond distance is subadditive \cite{watrous2018theory} under gate composition, so is particularly useful for constructing bounds on quantum circuit performance: the total variation distance between the outcome probabilities of a faulty and perfect quantum circuit is less than or equal to the sum of the diamond distances for gates that compose the circuit \cite{aharonov1998quantum}.
+where $d=2^n$, with $n$ being the number of qubits, and $\ident_d$ is the $d$-dimensional identity operator.  In Eq.~\eqref{eq:def_agi}, we have written the AGI for an error map, $\error$, in terms of its associated Pauli transfer matrix, $\errmat$. If the error channel is purely stochastic, then $\dnorm(\error) = \AGI(\error)$, but if the error channel has a unitary component, then the diamond distance will generically be larger than the average gate infidelity \cite{1511.00727}. The diamond distance is \DIFdelbegin \DIFdel{subaddative }\DIFdelend \DIFaddbegin \DIFadd{subadditive }\DIFaddend \cite{watrous2018theory} under gate composition, so is particularly useful for constructing bounds on quantum circuit performance: the total variation distance between the outcome probabilities of a faulty and perfect quantum circuit is less than or equal to the sum of the diamond distances for gates that compose the circuit \cite{aharonov1998quantum}.
 
 Because $\AGI$ is linear in the error map, we have:
 \begin{equation}
@@ -209,7 +302,7 @@ If the diamond distance error rates of the component gates are bounded by $\alph
   \label{fig:vectorspace}
 \end{figure}
 
-While generator-exact MQGs can provide a guaranteed suppression of the diamond distance, their effective error channels are unlikely to be purely stochastic. Second- and higher-order terms in \eqref{eq:generators_and_effective_error} can easily contribute to lingering coherent errors that impact the efficient simulability of the channel. In order to definitively eliminate these coherent errors, we could instead seek weights, $\weight^P_i$, that annihilate the off-diagonal entries of the effective error map. The resulting diagonal error map will be Pauli-stochastic. For a single qubit gate, it takes the form,
+While generator-exact MQGs can provide a guaranteed suppression of the diamond distance, their effective error channels are unlikely to be \DIFdelbegin \DIFdel{a }\DIFdelend purely stochastic. Second- and higher-order terms in \eqref{eq:generators_and_effective_error} can easily contribute to lingering coherent errors that impact the efficient simulability of the channel. In order to definitively eliminate these coherent errors, we could instead seek weights, $\weight^P_i$, that annihilate the off-diagonal entries of the effective error map. The resulting diagonal error map will be Pauli-stochastic. For a single qubit gate, it takes the form,
 
 \begin{equation}
 	\errmat_{\rm{eff}} = \sum_i \weight_i^P \errmat_i = 
@@ -229,7 +322,7 @@ where $p_x, p_y$ and $p_z$ are the rates of Pauli $X$, $Y$, and $Z$ errors, resp
 % ==============================================================================
 \section{Constructing mixed quantum gates}
 \label{sec:mixed_unitary_processes}
-\noindent We now present a methodology for constructing mixed quantum channels, formalizing the intuitive approach discussed above with a series of explicit convex programs. As mentioned, our method requires two steps. The first is a control synthesis step, in which we construct an ensemble of gate implementations. Campbell and Hastings draw their ensembles from various different gate compilations, but for this work we utilize quantum optimal control theory. Many standard control-generation algorithms, such as GRAPE \cite{Khaneja2005}, take a random initial guess for the control and iteratively improve it to yield a gate that well-approximates a target. By seeding such algorithms with many initial guesses, one can quickly construct a large ensemble of approximate quantum gates, each with a different error channel. We discuss this approach in some detail in Sec.~\ref{sec:numerical_results}. 
+\noindent We now present a methodology for constructing mixed quantum channels, formalizing the intuitive approach discussed above with a series of explicit convex programs. As mentioned, our method requires two steps. The first is a control synthesis step, in which we construct an ensemble of gate implementations. Campbell and Hastings draw their ensembles from various different gate compilations, but for this work we \DIFdelbegin \DIFdel{use }\DIFdelend utilize quantum optimal control theory. Many standard control-generation algorithms, such as GRAPE \cite{Khaneja2005}, take a random initial guess for the control and iteratively improve it to yield a gate that well-approximates a target. By seeding such algorithms with many initial guesses, one can quickly construct a large ensemble of approximate quantum gates, each with a different error channel. We discuss this approach in some detail in Sec.~\ref{sec:numerical_results}. 
 
 The remainder of this section will assume such a capability for generating a large ensemble of gate implementations, and will focus instead on the second step: constructing a distribution over that ensemble that reduces the coherence of the effective error channel. We will begin by discussing the two broad optimization targets introduced above: i) generator-exact MQGs and ii) Pauli-exact MQGs. We then propose a set of secondary optimization targets that can improve the performance by i) incorporating robustness to drift, ii) targeting low-error-rate solutions, and iii) reducing the number of native unitaries that contribute to the effective channel. 
 
@@ -237,8 +330,8 @@ The remainder of this section will assume such a capability for generating a lar
 % Section: Generators
 % ==============================================================================
 \subsection{Convex Programs for Constructing Mixed Quantum Gates}
-\label{sec:convex_programs}
-\subsubsection{Generator-exact MQGs} % (fold)
+\DIFaddbegin \label{sec:convex_programs}
+\DIFaddend \subsubsection{Generator-exact MQGs} % (fold)
 \label{sub:first_order_generators}
 \noindent A compelling reason to construct an MQG is to improve the worst-case performance of a quantum gate. The diamond distance bounds this worst-case performance, and so one might assume minimizing it would be a natural optimization target:
 \begin{equation}\label{eq:ddmin}
@@ -269,7 +362,11 @@ The constraints on these optimizations are required to ensure that the weights, 
 \label{sub:off_diagonals}
 As quantum devices grow in size, it is increasingly expensive to simulate their dynamics. Coherent errors impose a particular burden on classical simulators, as the entire quantum state must be tracked continually. Existing work generally approximates channels as Pauli-stochastic channels, and assesses the quality of these approximations\cite{Puzzuoli2014, Magesan2013}. Pauli Frame Randomization adds additional gates into circuits leaving the computation unchanged but randomizing the noise in such a way that it becomes a Pauli-stochastic channel. MQGs offer another path forward. Pauli-exact MQGs can be constructed with vanishing coherent error and without adding any additional gates or compilation time. Building MQGs with diminished coherent error enables the use of much more efficient Pauli-stochastic simulators that are able to model significantly more qubits than their vector-state counterparts. 
 
-In particular, the well-known stabilizer formalism \cite{quant-ph/9807006} for quantum simluation gives a polynomial-time algorithm to compute expectation values of circuits consisting of only Clifford operations. These circuits are useful because they give examples of quantum circuits whose performance can be efficiently assessed using classical simulation. This has motivated significant development of these techniques, including extensions to simulating stabilizer circuits with mixed state inputs\cite{Aaronson2004} and linear combinations of stabilizer circuits\cite{Yoder, Bennink2017}. An interesting property of such simulation techniques is that the cost of the classical simulation is proportional to how non-Clifford the circuit is. Therefore Pauli-exact MQGs have a clear benefit - if the error channels of a circuit can be made to look more like Pauli-stochastic errors, they will be more amenable to efficient classical simulation. 
+In particular, the well-known stabilizer formalism \cite{quant-ph/9807006} for quantum simluation gives a polynomial-time algorithm to compute expectation values of circuits consisting of only Clifford operations. These circuits are useful because they give examples of quantum circuits whose performance can be efficiently assessed using classical simulation. This has motivated significant development of these techniques, including extensions to simulating stabilizer circuits with mixed state inputs\cite{Aaronson2004} and linear combinations of stabilizer circuits\DIFdelbegin \DIFdel{. \mbox{%DIFAUXCMD
+\cite{Yoder, Bennink2017}}\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{Yoder, Bennink2017}}\hspace{0pt}%DIFAUXCMD
+. }\DIFaddend An interesting property of such simulation techniques is that the cost of the classical simulation is proportional to how non-Clifford the circuit is. Therefore Pauli-exact MQGs have a clear benefit - if the error channels of a circuit can be made to look more like Pauli-stochastic errors, they will be more amenable to efficient classical simulation. 
 
 Like generator-exact MQGs, the optimal weights can be found efficiently by a convex optimization. As above, we assume that we have access to $m$ distinct gate implementations, each of which is associated with its own error matrix, $\errmat_i$. We wish to construct an MQG whose effective error is Pauli-stochastic and is therefore diagonal. This can be done with the following simple minimization:
 \begin{equation}\label{eq:minimization2}
@@ -292,7 +389,7 @@ The similarity with Eq.~\ref{eq:minimization} is clear and the same methods can 
 % ==============================================================================
 \subsection{Secondary Objectives}
 \noindent 
-Often, the cost of generating distinct gate implementations is quite small, so large ensembles of them can be computed rather quickly. One may then have available many more distinct gate implementations than there are parameters in the relevant vector space (see Fig.~\ref{fig:vectorspace}). This can lead to the minimization problems discussed in the previous section being massively under-constrained, yielding a large continuous family of exact solutions. Secondary objectives provide a means for choosing among this family of exact MQGs those with increased performance in a desired area. In this section we present explicit convex programs for such secondary objectives, including adding robustness to drift or model uncertainty, reducing the effective gate error, and minimizing the number of constituent gates utilized by the MQG. We choose to take generator-exact MQGs as our starting point, though the following sections apply equally well to Pauli-exact MQGs with only trivial modifications. 
+Often, the cost of generating distinct gate implementations is quite small, so large ensembles of them can be computed rather quickly. One may then have available many more distinct gate implementations than there are parameters in the relevant vector space (see Fig.~\ref{fig:vectorspace}). This can lead to the \DIFdelbegin \DIFdel{the }\DIFdelend minimization problems discussed in the previous section being massively under-constrained, yielding a large continuous family of exact solutions. Secondary objectives provide a means for choosing among this family of exact MQGs those with increased performance in a desired area. In this section we present explicit convex programs for such secondary objectives, including adding robustness to drift or model uncertainty, reducing the effective gate error, and minimizing the number of constituent gates utilized by the MQG. We choose to take generator-exact MQGs as our starting point, though the following sections apply equally well to Pauli-exact MQGs with only trivial modifications. 
 
 \subsubsection{Robustness to drift and model uncertainty} % (fold)
 \label{sub:adding_robustness}
@@ -371,19 +468,23 @@ Both optimizations are convex and efficiently solvable\cite{Shah2001}.
 \subsubsection{Sparsity Constraints}
 \label{sec:sparsity}
 \noindent
-As a practical consideration, we would also like to regularize our objective function to promote sparse weightings, resulting in MQGs with only a small number of gate implementations. Control electronics often have a limited amount of waveform memory, and thus it is important to be able to construct MQGs with as few constituent gates as possible. In many machine learning contexts, a technique called lasso regularization \cite{tibshirani1996regression} can be used to enforce this sparsity in solutions. 
+As a practical consideration, we would also like to regularize our objective function to promote sparse weightings\DIFaddbegin \DIFadd{, resulting in MQGs with only a small number of gate implementations}\DIFaddend . Control electronics often have a limited amount of waveform memory, and thus it is important to be able to construct MQGs with as few constituent gates as possible. In many machine learning contexts, \DIFaddbegin \DIFadd{a technique called }\DIFaddend lasso regularization \cite{tibshirani1996regression} can be used to enforce \DIFaddbegin \DIFadd{this }\DIFaddend sparsity in solutions. 
+\DIFaddbegin 
 
-Rather than penalizing the $\ell_0$ norm of the solution, which is not convex, lasso regularization penalizes the $\ell_1$ norm, which is a convex relaxation of the $\ell_0$ norm. However this is insufficient for our purposes, as we already require $\weight$ to be a valid probability distribution, which constrains the $\ell_1$ norm to be equal to $1$.
+\DIFaddend Rather than penalizing the $\ell_0$ norm of the solution, which is not convex, lasso regularization penalizes the $\ell_1$ \DIFaddbegin \DIFadd{norm}\DIFaddend , which is \DIFdelbegin \DIFdel{the }\DIFdelend \DIFaddbegin \DIFadd{a }\DIFaddend convex relaxation of the $\ell_0$ norm. However this is insufficient for our purposes, as we already require $\weight$ to be a valid probability distribution, which constrains the $\ell_1$ norm to be equal to $1$.
+\DIFdelbegin \DIFdel{Conveniently, the }\DIFdelend \DIFaddbegin 
 
-The problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends Eq.~\eqref{eq:minimization}:
-\begin{equation}\label{eq:minimization_sparsity}
-\begin{split}
+\DIFadd{The }\DIFaddend problem of enforcing sparsity in such situations has been considered in \cite{NIPS2012_4504} and can be expressed via another convex program that extends Eq.~\eqref{eq:minimization}:
+\begin{equation}\DIFdelbegin %DIFDELCMD < \label{eq:minimization_regularization}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \label{eq:minimization_sparsity}
+\DIFaddend \begin{split}
 &\underset{m\in[1..N]}{\textbf{minimize:}}\\
 &\ \ \bunderbrace{\textbf{\hspace{.2cm}minimize:\hspace{.2cm}} }{\hspace{.1cm}\weight_i\geq0, |\weight|_1=1, t\geq0} ||\mathbf{L}\cdot\vec\weight||_2 + t\\
 &\ \ \hspace{.2cm}\textbf{subject to: } \weight_m > \frac{\lambda}{t}.
 \end{split}
 \end{equation}
-Here, $\lambda \geq 0$ is a tunable parameter that can be used to control the degree of sparsity in the solution. If $\lambda$ is set to zero, the inner program reduces to Eq.~\eqref{eq:minimization} and the outer minimization is redundant. If $\lambda$ is very large each inner minimization problem is minimized for an MQG with a single control. Therefore the outer minimization simply selects the control which has the error generator of smallest norm. While this gives a maximally sparse solution, it doesn't allow for any cancellation of coherent errors. In particular, increasing $\lambda$ will increase the sparsity of the solution, but will generally decrease the likelihood that the solution will be generator-exact. 
+Here, \DIFdelbegin \DIFdel{$\lambda > 0$ }\DIFdelend \DIFaddbegin \DIFadd{$\lambda \geq 0$ }\DIFaddend is a tunable parameter that can be used to control the degree of sparsity in the solution. \DIFdelbegin \DIFdel{Increasing }\DIFdelend \DIFaddbegin \DIFadd{If }\DIFaddend $\lambda$ \DIFaddbegin \DIFadd{is set to zero, the inner program reduces to Eq.~}\eqref{eq:minimization} \DIFadd{and the outer minimization is redundant. If $\lambda$ is very large each inner minimization problem is minimized for an MQG with a single control. Therefore the outer minimization simply selects the control which has the error generator of smallest norm. While this gives a maximally sparse solution, it doesn't allow for any cancellation of coherent errors. In particular, increasing $\lambda$ }\DIFaddend will increase the sparsity of the solution, but will generally decrease the likelihood that the solution will be generator-exact. 
 
 In the following sections we discuss both experimental and numerical implementations of MQGs, leveraging each of these secondary optimizations. 
 
@@ -401,19 +502,22 @@ In the following sections we discuss both experimental and numerical implementat
 \subsection{Experimental implementation } % (fold)
 \label{sub:experimental}
 \noindent We implemented our methods using the 19Q-Acorn superconducting transmon processor at Rigetti Computing. Comprehensive characterization of this device can be found in \cite{1712.05771}. While this device consisted of 20 qubits with fixed couplings, we used only qubit \#8 for our demonstration.
+\DIFaddbegin 
 
-To construct an MQG, there needs to be several different realizations of the desired gate available. To see improved performance, these realizations need to be imperfect in different ways, from drift, miscalibration, or other sources of error. Because the qubit used in our demonstration was coherence-limited, and therefore did not suffer from miscalibration errors, we intentionally introduced coherent errors to showcase our technique.  Controls were derived from a single, 10-sample, 50ns Gaussian $X_{\pi/2}$ pulse calibrated via Rabi oscillation. Four intentionally miscalibrated Gaussian pulses, labeled $\mathsf{Pulse1}$ through $\mathsf{Pulse4}$, were derived by scaling the amplitude of the calibrated $X_{\pi/2}$ pulse by a factor $S \in \{1.064, 1.039,0.937, 0.912\}$, respectively. We model their effect on the qubit state as perfectly unitary rotations, $X_{A \pi/2} = \exp{(-i A \pi/2 \sigma_x)}$.
+\DIFadd{To construct an MQG, there needs to be several different realizations of the desired gate available. To see improved performance, these realizations need to be imperfect in different ways, from drift, miscalibration, or other sources of error. Because the qubit used in our demonstration was coherence-limited, and therefore did not suffer from miscalibration errors, we intentionally introduced coherent errors to showcase our technique.  }\DIFaddend Controls were derived from a single, 10-sample, 50ns Gaussian $X_{\pi/2}$ pulse calibrated via Rabi oscillation. Four intentionally miscalibrated Gaussian pulses, labeled $\mathsf{Pulse1}$ through $\mathsf{Pulse4}$, were derived by scaling the amplitude of the calibrated $X_{\pi/2}$ pulse by a factor $S \in \{1.064, 1.039,0.937, 0.912\}$, respectively. We model their effect on the qubit state as perfectly unitary rotations, $X_{A \pi/2} = \exp{(-i A \pi/2 \sigma_x)}$.
+\DIFaddbegin 
 
- These gates are then used as in Sec.~\ref{sub:off_diagonals} to construct a Pauli-exact MQG, which samples from the miscalibrated waveforms with probabilities $P\in \{0.307, 0.283, 0.211, 0.199\}$ respectively. Using these probabilities and pulse amplitudes we have plotted the corresponding error generators in Fig. \ref{ptms}. $\mathsf{Pulse1}$ through $\mathsf{Pulse4}$ show clear coherent errors as off-diagonal elements while the MQG exhibits a clear suppression of these off-diagonal elements.
+ \DIFaddend These gates are then used as in Sec.~\ref{sub:off_diagonals} to construct a Pauli-exact MQG, which samples from the miscalibrated waveforms with probabilities $P\in \{0.307, 0.283, 0.211, 0.199\}$ respectively. Using these probabilities and pulse amplitudes we have plotted the corresponding \DIFdelbegin \DIFdel{Pauli transfer matrices }\DIFdelend \DIFaddbegin \DIFadd{error generators }\DIFaddend in Fig. \ref{ptms}. $\mathsf{Pulse1}$ through $\mathsf{Pulse4}$ show clear coherent errors as off-diagonal elements while the MQG exhibits a clear \DIFdelbegin \DIFdel{supression }\DIFdelend \DIFaddbegin \DIFadd{suppression }\DIFaddend of these off-diagonal elements.
 \begin{figure}
 \includegraphics[scale=.5]{experimental-ptm.png}
 \label{ptms}
-\caption{Hinton diagrams representing the error generators for a) $\mathsf{Pulse1}$, b) $\mathsf{Pulse2}$, c) $\mathsf{Pulse3}$, d) $\mathsf{Pulse4}$ and e) a Pauli-exact MQG. White boxes correspond to positive values, black  boxes correspond to negative values, and the size of the box corresponds to the magnitude of each entry. The four constituent pulses can be seen to have coherent errors from the off-diagonal components of their error generators. The Pauli-exact MQG has been constructed to have minimal coherent error and therefore has only diagonal elements.}   
+\caption{\DIFdelbeginFL \DIFdelFL{Pauli transfer matrices }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Hinton diagrams representing the error generators }\DIFaddendFL for a) $\mathsf{Pulse1}$, b) $\mathsf{Pulse2}$, c) $\mathsf{Pulse3}$, d) $\mathsf{Pulse4}$ and e) a Pauli-exact MQG. \DIFaddbeginFL \DIFaddFL{White boxes correspond to positive values, black  boxes correspond to negative values, and the size of the box corresponds to the magnitude of each entry. }\DIFaddendFL The four constituent pulses can be seen to have coherent \DIFdelbeginFL \DIFdelFL{error }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{errors }\DIFaddendFL from the off-diagonal components of their \DIFdelbeginFL \DIFdelFL{Pauli transfer matrices, while the }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{error generators. The }\DIFaddendFL Pauli-exact MQG has been constructed to have minimal coherent error and therefore has \DIFdelbeginFL \DIFdelFL{predominantly }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{only }\DIFaddendFL diagonal elements.}   
 \end{figure}
 
 We characterize the performance of the MQG using a series of randomized benchmarking (RB) experiments\cite{Magesan2011}: one for each of the miscalibrated pulses, one using the calibrated pulse, and using the MQG. In each case, the Clifford operations were decomposed into $X_{\pi/2}$ gates, which were implemented directly using the relevant waveform, and $Y_{\pi/2}$ gates, which were implemented by phase-shifting the relevant waveform $\pi/2$ radians. All circuits were precompiled on the host computer and sent to be executed on the control electronics, rather than using the FPGA or lower-level firmware to sample from $\mathsf{Pulse1}$ through $\mathsf{Pulse4}$ at run-time.
 
-An RB experiment consisted of sampling and running $10$ random Clifford sequences at each of lengths $L\in\{2, 4, 8, 16, 32, 64\}$. Each sequence was repeated $1000$ times. We emphasize that, when benchmarking the MQG, each sequence repetition used a new, randomly sampled sequence of waveforms consistent with its definition. Results of the standard RB analysis are discussed in Table.~\ref{tabl:rb}. The MQG is seen to perform nearly as well as the calibrated pulse, and better than any of the constituent pulses individually. While, as discussed in Sec.~\ref{sec:mqg}, the AGI of an MQG cannot be lower than any of constituent controls, the AGI of a circuit can be improved by using MQGs. We see from this experiment that by reducing the diamond distance of the MQG, we can improve the AGI of the total circuit.
+An RB experiment consisted of sampling and running $10$ random Clifford sequences at each of lengths $L\in\{2, 4, 8, 16, 32, 64\}$. Each sequence was repeated $1000$ times. We emphasize that, when benchmarking the MQG, each sequence repetition used a new, randomly sampled sequence of waveforms consistent with its definition. Results of the standard RB analysis are discussed in Table.~\ref{tabl:rb}. The MQG is seen to perform nearly as well as the calibrated pulse, and better than any of the constituent pulses individually. \DIFaddbegin \DIFadd{While, as discussed in Sec.~\ref{sec:mqg}, the AGI of an MQG cannot be lower than any of constituent controls, the AGI of a circuit can be improved by using MQGs. We see from this experiment that by reducing the diamond distance of the MQG, we can improve the AGI of the total circuit.
+}\DIFaddend 
 
 \setlength{\tabcolsep}{0.5em} 
 {\renewcommand{\arraystretch}{1.2}
@@ -469,20 +573,27 @@ We consider the following dimensionless model for a single qubit subject to freq
 where $\epsilon$ corresponds to fluctuations in qubit frequency and $\delta$ corresponds to fluctuations in the control field.
 
 \begin{figure}
-\includegraphics[scale=.5]{sparisity-versus-parameter_kcy.png}
-\caption{Sparsity of MQGs as a function of the sparisty parameter $\lambda$. Numerical values of $\lambda_i$ are: $\lambda_0=0$, $\lambda_1=0.0001$, $\lambda_2=0.00025$ and $\lambda_3=0.0005$. As the parameter is increased from zero, the number of controls with low probability increases (seen on the plot as the probability mass moving to the left). For $\lambda_3$ virtually all of the 750 controls have vanishingly small probability, allowing for the restriction of the MQG to a small number of controls.}
+\DIFdelbeginFL %DIFDELCMD < \includegraphics[scale=.5]{sparisity-versus-parameter.png}
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \includegraphics[scale=.5]{sparisity-versus-parameter_kcy.png}
+\DIFaddendFL \caption{Sparsity of MQGs as a function of the sparisty parameter $\lambda$\DIFdelbeginFL \DIFdelFL{, with higher weight controls omitted to emphasize the low-weight distribution}\DIFdelendFL . Numerical values of $\lambda_i$ are: $\lambda_0=0$, \DIFdelbeginFL \DIFdelFL{$\lambda_1=6.25$e-05}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{$\lambda_1=0.0001$}\DIFaddendFL , \DIFdelbeginFL \DIFdelFL{$\lambda_2=0.0001$, $\lambda_3=0.00025$ }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{$\lambda_2=0.00025$ }\DIFaddendFL and \DIFdelbeginFL \DIFdelFL{$\lambda_4=0.0005$}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{$\lambda_3=0.0005$}\DIFaddendFL . As the parameter is increased from zero, the number of controls with low probability increases \DIFaddbeginFL \DIFaddFL{(seen on the plot as the probability mass moving to the left)}\DIFaddendFL . For \DIFdelbeginFL \DIFdelFL{$\lambda_4$ }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{$\lambda_3$ }\DIFaddendFL virtually all of the 750 controls have vanishingly small probability, allowing for the restriction of the MQG to a small number of controls.}
 \label{fig:sparsity}
 \end{figure}
-To generate the initial controls, we use the GRAPE algorithm\cite{Khaneja2005} with N=25 steps and total evolution time of $\pi$ to generate 750 candidate controls. Using the results from in Section \ref{sec:sparsity} we generated MQGs that sample from only 10 of these controls. Fig.~\ref{fig:sparsity} shows solutions to Eq.~\eqref{eq:minimization_sparsity} for different choices of  $\lambda$. As $\lambda$ increases, the optimal solution contains less controls. 
+To generate the initial controls, we use the GRAPE algorithm\cite{Khaneja2005} with N=25 steps and total evolution time of $\pi$ to generate 750 candidate controls. \DIFdelbegin \DIFdel{However, by imposing the sparisty constraint discussed }\DIFdelend \DIFaddbegin \DIFadd{Using the results from }\DIFaddend in Section \ref{sec:sparsity} \DIFdelbegin \DIFdel{, we found MQGs consisting of just }\DIFdelend \DIFaddbegin \DIFadd{we generated MQGs that sample from only }\DIFaddend 10 \DIFaddbegin \DIFadd{of these }\DIFaddend controls. Fig.~\ref{fig:sparsity} shows \DIFdelbegin \DIFdel{that as }\DIFdelend \DIFaddbegin \DIFadd{solutions to Eq.~}\eqref{eq:minimization_sparsity} \DIFadd{for different choices of  }\DIFaddend $\lambda$\DIFdelbegin \DIFdel{(Eq.}%DIFDELCMD < \eqref{eq:minimization_regularization}%%%
+\DIFdel{) }\DIFdelend \DIFaddbegin \DIFadd{. As $\lambda$ }\DIFaddend increases, the \DIFdelbegin \DIFdel{support of the MQGs become more peaked, with most of their probability mass concentrating on a smaller number of controls. 
+}\DIFdelend \DIFaddbegin \DIFadd{optimal solution contains less controls. 
+}
 
-In our implementation of the GRAPE algorithm, we use the performance function presented in \cite{Khaneja2005}, and average over different values of $\delta$ and $\epsilon$ using Gaussian quadrature when computing the gradient, so that we find controls that are naturally robust. The standard deviations considered for all parameters in our numerical experiments were fixed to $\sigma=.001$. Finally, we assume that the errors on $\sigma_x$ and $\sigma_y$ are perfectly correlated, as in our experimental implementation. We note that advanced quantum control protocols may provide an even more principled approach to control synthesis. DMORPH \cite{dominy2008exploring}, for example, explores continuous families of controls on fidelity level sets, thereby enabling further optimizations against secondary criteria, such as the duration of the control pulse or robustness to drift. 
+\DIFaddend In our implementation of the GRAPE algorithm, we use the performance function presented in \cite{Khaneja2005}, and average over different values of $\delta$ and $\epsilon$ using Gaussian quadrature when computing the gradient, so that we find controls that are naturally robust. The standard deviations considered for all parameters in our numerical experiments were fixed to $\sigma=.001$. Finally, we assume that the errors on $\sigma_x$ and $\sigma_y$ are perfectly correlated, as in our experimental implementation. We note that advanced quantum control protocols may provide an even more principled approach to control synthesis. DMORPH \cite{dominy2008exploring}, for example, explores continuous families of controls on fidelity level sets, thereby enabling further optimizations against secondary criteria, such as the duration of the control pulse or robustness to drift. 
 
 Using controls generated in this way, the MQGs produced for $X_{\pi/2}$ and $Y_{\pi/2}$ are qualitatively similar, with the results for $X_{\pi/2}$ shown in Fig. \ref{fig:YMQG}. By imposing the penalty from Section \ref{sec:norm}, we sought to ensure that the algorithm preferentially selected controls with smaller errors. Adding this constraint increased the performance of the generator-exact MQG by nearly an order of magnitude at the origin, and produced a robust generator-exact MQG whose performance is an order of magnitude better than the generator-exact MQG away from the origin. Imposing this constraint allows us to trade off flatness for performance. This shows that through adding constraints to our optimization routine, we can make the MQG practically useful. 
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\columnwidth]{1q_robustness_delta.pdf}
-  \caption{\textbf{One-qubit robust generator-exact MQG} Numerical results showing the diamond distance errors for a generator-exact MQG (dashed blue), a robust generator-exact MQG (solid orange), and a large set of bare unitary controls (thin solid grey) as a function of a the fractional amplitude error. The target is an $X_{\pi/2}$ gate on a single qubit. The generator-exact MQG dramatically outperforms both the robust generator-exact and any of the bare unitaries at $\delta=0$. However, even a relatively small amplitude error leads to a regime in which the robust generator-exact will yield the better gate. Similar results are obtained for drift in the qubit frequency.}
+  \DIFdelbeginFL %DIFDELCMD < \includegraphics[width=\columnwidth]{figures/1q_robustness_delta.pdf}
+%DIFDELCMD <   %%%
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\columnwidth]{1q_robustness_delta.pdf}
+  \DIFaddendFL \caption{\textbf{One-qubit robust generator-exact MQG} Numerical results showing the \DIFdelbeginFL \DIFdelFL{the }\DIFdelendFL diamond distance errors for a generator-exact MQG (dashed blue), a robust generator-exact MQG (solid orange), and a large set of bare unitary controls (thin solid grey) as a function of a the fractional amplitude error. The target is an $X_{\pi/2}$ gate on a single qubit. The generator-exact MQG dramatically outperforms both the robust generator-exact and any of the bare unitaries at $\delta=0$. However, even a relatively small amplitude error leads to a regime in which the \DIFdelbeginFL \DIFdelFL{the }\DIFdelendFL robust generator-exact will yield the better gate. Similar results are obtained for drift in the qubit frequency.}
   \label{fig:YMQG}
 \end{figure}
 
@@ -505,8 +616,10 @@ In this example, we find more modest improvements to performance, as shown in Fi
 
 \begin{figure}
   \centering
-  \includegraphics[width=\columnwidth]{2q_robustness.pdf}
-  \caption{\textbf{Two-qubit robust generator-exact MQG} Numerical results showing the diamond distance errors for a generator-exact MQG (dashed blue), a robust generator-exact MQG (solid orange), and a large set of bare unitary controls (thin solid grey) as a function of a spurious detuning (quantified by the ratio of the detuning to the maximum control amplitude). It is intended to model a pair of qubits interacting via resonant exchange. Both MQGs can be seen to outperform the bare unitary control over a wide range of detunings. The robust generator-exact  MQG always outperforms the generator-exact MQG, and both MQGs outperform any of the bare unitary controls over a wide range of detunings. Similar results are obtained for drift in the qubit control amplitude.}
+  \DIFdelbeginFL %DIFDELCMD < \includegraphics[width=\columnwidth]{figures/2q_robustness.pdf}
+%DIFDELCMD <   %%%
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\columnwidth]{2q_robustness.pdf}
+  \DIFaddendFL \caption{\textbf{Two-qubit robust generator-exact MQG} Numerical results showing the \DIFdelbeginFL \DIFdelFL{the }\DIFdelendFL diamond distance errors for a generator-exact MQG (dashed blue), a robust generator-exact MQG (solid orange), and a large set of bare unitary controls (thin solid grey) as a function of a spurious detuning (quantified by the ratio of the detuning to the maximum control amplitude). It is intended to model a pair of qubits interacting via resonant exchange. Both MQGs can be seen to outperform the bare unitary control over a wide range of detunings. The robust generator-exact  MQG always outperforms the generator-exact MQG, and both MQGs outperform any of the bare unitary controls over a wide range of detunings. Similar results are obtained for drift in the qubit control amplitude.}
   \label{fig:2MQG}
 \end{figure}
 
@@ -521,7 +634,7 @@ In this example, we find more modest improvements to performance, as shown in Fi
 
 
 \section{Conclusion and Future Work}
-We have shown numerically that using MQGs can reduce coherent error by more than an order of magnitude in diamond norm, over a wide range of quasi-static values of noise. In addition, we have demonstrated that these approximate controls can be generated through optimal control (GRAPE), and that the minimization problem is tractable. By implementing four miscalibrated $X_{\frac{\pi}{2}}$ rotations on a superconducting qubit and drawing from them with optimized weights, we see that coherent over- and under- rotations can be averaged away.
+We have shown numerically that using MQGs can reduce coherent error by more than an order of magnitude in diamond norm, over a wide range of quasi-static values of noise. In addition, we have demonstrated that these approximate controls can be generated through optimal control (GRAPE), and that the minimization problem is tractable\DIFaddbegin \DIFadd{. By implementing four miscalibrated $X_{\frac{\pi}{2}}$ rotations on a superconducting qubit and drawing from them with optimized weights, we see that coherent over- and under- rotations can be averaged away}\DIFaddend .
 
 Future directions for this work include demonstrating the routine experimentally on a two-qubit gate, moving the random gate selection from a pre-compilation step to runtime logic onboard the control electronics, investigating other control routines such as CRAB \cite{Caneva2011} and GOAT\cite{Machnes2018}, and using more sophisticated benchmarking routines such as GST\cite{BlumeKohout2017} to quantitatively investigate the performance of our method.
 
