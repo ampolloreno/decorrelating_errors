@@ -470,7 +470,7 @@ where $\epsilon$ corresponds to fluctuations in qubit frequency and $\delta$ cor
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{sparisity-versus-parameter_kcy.png}
-\caption{Sparsity of MQGs as a function of the sparisty parameter $\lambda$. Numerical values of $\lambda_i$ are: $\lambda_0=0$, $\lambda_1=0.0001$, $\lambda_2=0.00025$ and $\lambda_3=0.0005$. As the parameter is increased from zero, the number of controls with low probability increases (seen on the plot as the probability mass moving to the left). For $\lambda_3$ virtually all of the 750 controls have vanishingly small probability, allowing for the restriction of the MQG to a small number of controls.}
+\caption{Sparsity of MQGs as a function of the sparsity parameter $\lambda$, with $\lambda_0=0$ and $\lambda_1=0.0005$. As the parameter is increased from zero, the number of controls with low probability increases (seen on the plot as the probability mass moving to the left). For $\lambda_1$ virtually all of the 750 controls have vanishingly small probability, allowing for the restriction of the MQG to a small number of controls.}
 \label{fig:sparsity}
 \end{figure}
 To generate the initial controls, we use the GRAPE algorithm\cite{Khaneja2005} with N=25 steps and total evolution time of $\pi$ to generate 750 candidate controls. Using the results from in Section \ref{sec:sparsity} we generated MQGs that sample from only 10 of these controls. Fig.~\ref{fig:sparsity} shows solutions to Eq.~\eqref{eq:minimization_sparsity} for different choices of  $\lambda$. As $\lambda$ increases, most of the weights in the optimal solution become smaller, resulting in a sparser MQG. 
