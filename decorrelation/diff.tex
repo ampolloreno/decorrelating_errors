@@ -1,7 +1,7 @@
 \documentclass[aps,nofootinbib,pra,notitlepage,twocolumn]{revtex4-1}
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL ../../mixed_unitaries.tex   Wed Apr 22 13:22:05 2020
-%DIF ADD mixed_unitaries.tex         Thu May  7 17:04:17 2020
+%DIF ADD mixed_unitaries.tex         Thu May  7 17:15:13 2020
 \usepackage{amsfonts,amsmath,amssymb,amsthm}
  \usepackage{array,bm,color}
 \usepackage{epsfig,graphicx,nomencl,revsymb4-1,upgreek,url}
@@ -484,7 +484,9 @@ As a practical consideration, we would also like to regularize our objective fun
 &\ \ \hspace{.2cm}\textbf{subject to: } \weight_m > \frac{\lambda}{t}.
 \end{split}
 \end{equation}
-Here, \DIFdelbegin \DIFdel{$\lambda > 0$ }\DIFdelend \DIFaddbegin \DIFadd{$\lambda \geq 0$ }\DIFaddend is a tunable parameter that can be used to control the degree of sparsity in the solution. \DIFdelbegin \DIFdel{Increasing }\DIFdelend \DIFaddbegin \DIFadd{If }\DIFaddend $\lambda$ \DIFdelbegin \DIFdel{will }\DIFdelend \DIFaddbegin \DIFadd{is set to zero, the inner program reduces to Eq.~}\eqref{eq:minimization} \DIFadd{and the outer minimization is redundant. If $\lambda$ is very large, each inner minimization problem is minimized for an MQG with a single control, and the outer minimization simply selects the control which has the error generator of smallest norm. While this gives a maximally sparse solution, it doesn't allow for any cancellation of coherent errors.
+\DIFdelbegin \DIFdel{Here, $\lambda > 0$ }\DIFdelend \DIFaddbegin 
+
+\DIFadd{Here, $\lambda \geq 0$ }\DIFaddend is a tunable parameter that can be used to control the degree of sparsity in the solution. \DIFdelbegin \DIFdel{Increasing }\DIFdelend \DIFaddbegin \DIFadd{If }\DIFaddend $\lambda$ \DIFdelbegin \DIFdel{will }\DIFdelend \DIFaddbegin \DIFadd{is set to zero, the inner program reduces to Eq.~}\eqref{eq:minimization} \DIFadd{and the outer minimization is redundant. If $\lambda$ is very large, each inner minimization problem is minimized for an MQG with a single control, and the outer minimization simply selects the control which has the error generator of smallest norm. While this gives a maximally sparse solution, it doesn't allow for any cancellation of coherent errors.
 }
 
 \DIFadd{In general, increasing $\lambda$ decreases the number of controls with large weights, and by removing controls with weights below a threshold probability we can }\DIFaddend increase the sparsity of the solution\DIFdelbegin \DIFdel{, but will generally }\DIFdelend \DIFaddbegin \DIFadd{. Truncating in this way will introduce error in the Pauli-exactness of the solution. For larger $\lambda$ the required threshold probability decreases, and so the error introduced from truncation can be made smaller. However, larger $\lambda$ will also }\DIFaddend decrease the likelihood \DIFdelbegin \DIFdel{that the solution will be }\DIFdelend \DIFaddbegin \DIFadd{of the optimizer returning a }\DIFaddend generator-exact \DIFaddbegin \DIFadd{solution, and so in this way, tuning $\lambda$ allows us to trade between different sources of error when constructing sparse MQGs}\DIFaddend .

@@ -383,6 +383,7 @@ The problem of enforcing sparsity in such situations has been considered in \cit
 &\ \ \hspace{.2cm}\textbf{subject to: } \weight_m > \frac{\lambda}{t}.
 \end{split}
 \end{equation}
+
 Here, $\lambda \geq 0$ is a tunable parameter that can be used to control the degree of sparsity in the solution. If $\lambda$ is set to zero, the inner program reduces to Eq.~\eqref{eq:minimization} and the outer minimization is redundant. If $\lambda$ is very large, each inner minimization problem is minimized for an MQG with a single control, and the outer minimization simply selects the control which has the error generator of smallest norm. While this gives a maximally sparse solution, it doesn't allow for any cancellation of coherent errors.
 
 In general, increasing $\lambda$ decreases the number of controls with large weights, and by removing controls with weights below a threshold probability we can increase the sparsity of the solution. Truncating in this way will introduce error in the Pauli-exactness of the solution. For larger $\lambda$ the required threshold probability decreases, and so the error introduced from truncation can be made smaller. However, larger $\lambda$ will also decrease the likelihood of the optimizer returning a generator-exact solution, and so in this way, tuning $\lambda$ allows us to trade between different sources of error when constructing sparse MQGs.
