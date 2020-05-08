@@ -36,9 +36,7 @@ Randomized compiling is technique known to the QC community for quite some time 
 While the referee is correct that our approach is superficially similar to randomized compiling, we wish to emphasize that our technique is intended as an alternative approach to solving the problem of coherent errors in quantum information processors. Our method is particularly well suited for experimental implementation, as the mixed unitary gates can be implemented at the level of individual logic operations using the FPGA control hardware. Contrast this against the randomized compiling approach, which requires wholesale recompilation of the circuit every time it is run. Importantly, though, we make no claim that this broad approach is novel – in fact, we frequently cite prior foundational work in this area. Instead, our manuscript extends and expands the scope of this prior work, formulating the problem as an explicit convex optimization, incorporating robustness to uncertainty, and, critically, providing the first experimental demonstration of this technique on quantum information processing hardware. We have added the following to the text to clarify this point:
 
 
-MQGs are an alternative approach to solving this problem. Because they are implemented by randomly drawing from different gate realizations, they only require randomness at run-time. Moreover, when the construction of MQGs is posed as a numerical optimization problem, numerous useful modifications can be made to augment their performance.
-
-
+MQGs are an alternative approach to solving this problem. Because they are implemented by randomly drawing from different gate realizations, they only require randomness at run-time, allowing them to be easily implemented in hardware. Moreover, when the construction of MQGs is posed as a numerical optimization problem, numerous useful modifications can be made to augment their performance.
 
 
 We further thank the referee for their detailed assessment of our experimental demonstration. We address each of the referees comments below and, in doing so, we have substantially improved our manuscript. 
