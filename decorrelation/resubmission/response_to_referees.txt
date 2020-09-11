@@ -9,8 +9,21 @@ While randomized compiling is well known in the field and affects the same outco
 ""
 
 We will now respond to your five bullet points.
+
 The experiment we chose was meant to demonstrate the reduced coherent error of the channel. While it's true that any mixing of the unitaries will outperform any of the constituent unitaries as measured by RB number, the demonstration was meant to show a reduction in the coherence of the error. This is the result mentioned by Ball et al., and we have revised the text to emphasize this. Had we chosen different weights than those produced by the convex optimizer, the error bars would have been larger.
+
 This is a great suggestion, although the presentation might be more cluttered. However, the first author no longer has access to the hardware at Rigetti Computing.
+
 While it is true that RB randomizes errors and our technique also randomizes errors, randomized benchmarking still show cases the property of the resulting channel that we want. Namely, that the errors have minimal coherent error. Using an algorithm like QAOA would be challenging to demonstrate a decrease in the coherent error of the resulting channel. 
+
 The two-qubit experiment is substantially harder to do. Two qubit infidelities are sufficiently high that even repeating the randomized benchmarking experiment would have very poor signal to noise, since an average clifford gate has a large number of two qubit gates. While we agree that a two-qubit demonstration would be a good addition to the manuscript, it is also the case the author no longer has access to the hardware.
-The control errors need to be known to you - you can accomplish this through something like tomography. You might object - if I know my control errors, I will just fix them! It could be the case that you don't have enough samples in your DAC to do this, or that the coherent errors come from unknown interactions that are out of your control. Moreover, in the context of drift as in superconducting platforms, it is the case that you can pick out a family of controls that will all drift, but drift in different ways such that their average channel performs in a better way than any individual channel. In our experiment we have introduced the miscalibrations intentionally, since the qubits were coherence limited. We have clarified this in the text as a summary of the protocol:  ""
+
+The control errors need to be known to you - you can accomplish this through something like tomography. You might object - if I know my control errors, I will just fix them! It could be the case that you don't have enough samples in your DAC to do this, or that the coherent errors come from unknown interactions that are out of your control. Moreover, in the context of drift as in superconducting platforms, it is the case that you can pick out a family of controls that will all drift, but drift in different ways such that their average channel performs in a better way than any individual channel. In our experiment we have introduced the miscalibrations intentionally, since the qubits were coherence limited. We have clarified this in the text as a summary of the protocol:  
+
+
+
+------
+
+
+Kevin's Edits:
+
