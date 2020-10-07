@@ -1,7 +1,7 @@
 \documentclass[aps,nofootinbib,pra,notitlepage,twocolumn]{revtex4-1}
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL mixed_unitaries.copy   Tue Oct  6 18:24:16 2020
-%DIF ADD mixed_unitaries.tex    Tue Oct  6 19:09:45 2020
+%DIF ADD mixed_unitaries.tex    Tue Oct  6 19:23:56 2020
 \usepackage{amsfonts,amsmath,amssymb,amsthm}
  \usepackage{array,bm,color}
 \usepackage{epsfig,graphicx,nomencl,revsymb4-1,upgreek,url}
@@ -435,8 +435,10 @@ We illustrate this in Fig.~\ref{fig:vectorspace2}. \DIFdelbegin %DIFDELCMD <
 \DIFdelend We call a gate constructed in this way a \emph{robust} generator-exact MQG. These techniques can be easily adapted to construct robust Pauli-exact MQGs, where vectors of the off-diagonal elements of the error maps take the role of the error generators used above. \DIFdelbegin %DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \DIFadd{An important property of these robust MQGs is their relatively short implementation times, as compared with conventional coherent control techniques. To see this, consider two well-known robust optimal control sequences, BB1 and SK1.\mbox{%DIFAUXCMD
-\cite{Wimperis1994, Brown2004}}\hspace{0pt}%DIFAUXCMD
+\DIFdelend \DIFaddbegin \DIFadd{An important property of these robust MQGs is their relatively short implementation times, as compared with conventional coherent control techniques. To see this, consider two well-known robust optimal control sequences, BB1 \mbox{%DIFAUXCMD
+\cite{Wimperis1994} }\hspace{0pt}%DIFAUXCMD
+and SK1 \mbox{%DIFAUXCMD
+\cite{Brown2004}}\hspace{0pt}%DIFAUXCMD
 . Considering specifically pulse amplitude errors, BB1 utilizes a so-called broadband sequence which requires four rotations to mitigate calibration errirs. In the more general case of SK1 (and SKn) pulses, we consider an arbitrary error of magnitude $\epsilon$, that we wish to supress to order $n$. Already, for an SK1 pulse, this technique requires three rotation. Contrast this with the duration of an MQG, which is at worst the duration of the longest gate in the family.
 }\DIFaddend \begin{figure}
   \centering
