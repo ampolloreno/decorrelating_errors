@@ -1,7 +1,7 @@
 \documentclass[aps,nofootinbib,pra,notitlepage,twocolumn]{revtex4-1}
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL mixed_unitaries.copy   Fri Sep 11 16:49:12 2020
-%DIF ADD mixed_unitaries.tex    Fri Sep 11 18:24:42 2020
+%DIF DEL mixed_unitaries.copy   Tue Oct  6 18:24:16 2020
+%DIF ADD mixed_unitaries.tex    Tue Oct  6 19:09:45 2020
 \usepackage{amsfonts,amsmath,amssymb,amsthm}
  \usepackage{array,bm,color}
 \usepackage{epsfig,graphicx,nomencl,revsymb4-1,upgreek,url}
@@ -181,7 +181,7 @@ Campbell \cite{Campbell2017,Campbell2019} and Hastings \cite{Hastings2017} have 
 \cite{Viola2005, Santos2006}}\hspace{0pt}%DIFAUXCMD
 . In circuit models, Pauli Frame Randomization \mbox{%DIFAUXCMD
 \cite{Wallman2016, 1803.01818, dahlen2018experimental} }\hspace{0pt}%DIFAUXCMD
-has been shown to reduce coherent errors by introducing randomness in a compilation step. MQGs are an alternative approach to solving this problem. Because they are implemented by randomly drawing from different gate realizations, they only require randomness at run-time, allowing them to be easily implemented in hardware. Moreover, as we  when the construction of MQGs is posed as a numerical optimization problem, numerous useful modifications can be made to augment their performance.
+has been shown to reduce coherent errors by introducing randomness in a compilation step. MQGs are an alternative approach to solving this problem. Because they are implemented by randomly drawing from different gate realizations, they only require randomness at run-time, allowing them to be easily implemented in hardware. Moreover, when the construction of MQGs is posed as a numerical optimization problem, numerous useful modifications can be made to augment their performance.
 }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
@@ -194,7 +194,7 @@ has been shown to reduce coherent errors by introducing randomness in a compilat
 \cite{Viola2005, Santos2006}}\hspace{0pt}%DIFAUXCMD
 . In circuit models, Pauli Frame Randomization \mbox{%DIFAUXCMD
 \cite{Wallman2016, 1803.01818, dahlen2018experimental} }\hspace{0pt}%DIFAUXCMD
-has been shown to reduce coherent errors by introducing randomness in a compilation step. MQGs are an alternative approach to solving this problem. Because they are implemented by randomly drawing from different gate realizations, they only require randomness at run-time, allowing them to be easily implemented in hardware. Moreover, when the construction of MQGs is posed as a numerical optimization problem, numerous useful modifications can be made to augment their performance.
+has been shown to reduce coherent errors by introducing randomness in a compilation step. MQGs are an alternative approach to solving this problem. Because they are implemented by randomly drawing from different gate realizations, they only require randomness at run-time, allowing them to be easily implemented in hardware. Moreover, as we will discuss, when the construction of MQGs is posed as a numerical optimization problem, numerous useful modifications can be made to augment their performance.
 }\DIFaddend 
 
 
@@ -432,12 +432,13 @@ We can additionally generalize the geometric criterion for guaranteeing the exis
 We illustrate this in Fig.~\ref{fig:vectorspace2}. \DIFdelbegin %DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdelend We call a gate constructed in this way a \emph{robust} generator-exact MQG. These techniques can be easily adapted to construct robust Pauli-exact MQGs, where vectors of the off-diagonal elements of the error maps take the role of the error generators used above. \DIFaddbegin \DIFadd{A key feature of these robust MQGs is their relatively short implementation times, when compared to conventional coherent control techniques. To see this, consider two well-known robust optimal control sequences, BB1 and SK1.\mbox{%DIFAUXCMD
-\cite{Wimperis1994, Brown2004}}\hspace{0pt}%DIFAUXCMD
-. In the case of BB1, when considering pulse amplitude errors, it's possible to write a so-called broadband sequence which requires four rotations. In the more general case of SK1 (and SKn) pulses, we consider an error of magnitude $\epsilon$, that we wish to supress to order $n$. Using techniques from the Solvay-Kitaev algorithm, this control family requires already two pulses for the first order sequence to implement a $\sigma_z$ rotation, and requires approximating exponentiating a commutator for higher orders. While the post-compilation length of a such pulse sequence depends ultimately on which operations are in the native gate set, it's clear that this negatively impacts the gate duration, subjecting the qubits to more noise. Contrast this with the duration of an MQG, which is equal to the duration of longest gate being mixed.
-}\DIFaddend 
+\DIFdelend We call a gate constructed in this way a \emph{robust} generator-exact MQG. These techniques can be easily adapted to construct robust Pauli-exact MQGs, where vectors of the off-diagonal elements of the error maps take the role of the error generators used above. \DIFdelbegin %DIFDELCMD < 
 
-\begin{figure}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \DIFadd{An important property of these robust MQGs is their relatively short implementation times, as compared with conventional coherent control techniques. To see this, consider two well-known robust optimal control sequences, BB1 and SK1.\mbox{%DIFAUXCMD
+\cite{Wimperis1994, Brown2004}}\hspace{0pt}%DIFAUXCMD
+. Considering specifically pulse amplitude errors, BB1 utilizes a so-called broadband sequence which requires four rotations to mitigate calibration errirs. In the more general case of SK1 (and SKn) pulses, we consider an arbitrary error of magnitude $\epsilon$, that we wish to supress to order $n$. Already, for an SK1 pulse, this technique requires three rotation. Contrast this with the duration of an MQG, which is at worst the duration of the longest gate in the family.
+}\DIFaddend \begin{figure}
   \centering
   \includegraphics[width=\columnwidth]{vectorspace3.png}
   \caption{\textbf{Geometric condition for robustness:}   A target unitary gate can be implemented a number of ways, each with a different effective error generator, $\genmat_i$. a) The error generators are shown as elements of a vector space (solid, black arrows). Also shown are their derivatives $\genmat_{i,k}$ (dashed, grey arrows) with respect to a model parameter, $\delta_k$. As this parameter drifts, the generators may no longer cancel. b) To construct a robust, generator-exact MQG, there must exist a set of weights, $\{\weight_i\}$, so that $\sum_i \weight_i \genmat_i = \sum_i \weight_i \genmat_{i,k} = 0$. This is equivalent to demanding that the origin lie in the convex hull $\mathsf{conv}(\{\genmat_i \bigoplus_k \genmat_{i,k} \}_i)$. The gradient arrows indicate that this space is higher-dimensional. }
@@ -610,23 +611,17 @@ H(\vec{\delta}, \vec{\epsilon}, t) = &\sum_{j=1}^2(\epsilon_j\sigma_z^j + (1 + \
 
 In this example it was infeasible to use GRAPE to return non-trivial solutions, as the algorithm would tend to return similar solutions for a wide variety of initial conditions. Instead we manually selected piecewise constant echoing sequences with 500 steps and total evolution time of $\frac{5\pi}{2}$. In particular, we considered $RX(\pi)$, $RX(-\pi)$, $RY(\pi)$ and $RY(-\pi)$ bang-bang sequences \cite{bangbang}, consisting of all combinations of simultaneous $\pi$ pulses activated at multiples of $8$ steps from the beginning of the controls, and the same multiple of $8$ steps prior to the end of the controls. To give the control family a variety of RF errors, we also added uniformly distributed amplitude errors to each $\pi$ pulse, between $-.25$\% and $.25$\%.
 
-In this example, we find more modest improvements to performance, as shown in Fig. \ref{fig:2MQG}. There are now four free parameters to optimize over, and the uncontrolled entangling interaction means that there is little room for variation in the controls. Nonetheless, using an MQG improves performance over any of the constituent controls over a wide-range of detunings, and for all values of the detunings we see that the robust generator-exact MQG performs as well or better than generator-exact MQG. \DIFaddbegin \DIFadd{Additionally, the robustness comes without the temporal overhead of sequentially applying gates associated with coherent control techniques\mbox{%DIFAUXCMD
-\cite{Wimperis1994}}\hspace{0pt}%DIFAUXCMD
-.
-}\DIFaddend 
+In this example, we find more modest improvements to performance, as shown in Fig. \ref{fig:2MQG}. There are now four free parameters to optimize over, and the uncontrolled entangling interaction means that there is little room for variation in the controls. Nonetheless, using an MQG improves performance over any of the constituent controls over a wide-range of detunings, and for all values of the detunings we see that the robust generator-exact MQG performs as well or better than generator-exact MQG. \DIFdelbegin %DIFDELCMD < 
 
-\begin{figure}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \DIFadd{And, as discussed previously, the robustness comes without the temporal overhead of introducing more gates sequentially.
+}\DIFaddend \begin{figure}
   \centering
   \includegraphics[width=\columnwidth]{2q_robustness.pdf}
-  \DIFdelbeginFL %DIFDELCMD < \caption{%
-{%DIFAUXCMD
-\textbf{\DIFdelFL{Two-qubit robust generator-exact MQG}} %DIFAUXCMD
-\DIFdelFL{Numerical results showing the diamond distance errors for a generator-exact MQG (dashed blue), a robust generator-exact MQG (solid orange), and a large set of bare unitary controls (thin solid grey) as a function of a spurious detuning (quantified by the ratio of the detuning to the maximum control amplitude). It is intended to model a pair of qubits interacting via resonant exchange. Both MQGs can be seen to outperform the bare unitary control over a wide range of detunings. The robust generator-exact  MQG always outperforms the generator-exact MQG, and both MQGs outperform any of the bare unitary controls over a wide range of detunings. Similar results are obtained for drift in the qubit control amplitude.}}
-  %DIFAUXCMD
-\DIFdelendFL \DIFaddbeginFL \caption{\textbf{\DIFaddFL{Two-qubit robust generator-exact MQG}} \DIFaddFL{Numerical results showing the diamond distance errors for a generator-exact MQG (dashed blue), a robust generator-exact MQG (solid orange), and a large set of bare unitary controls (thin solid grey) as a function of a spurious detuning (quantified by the ratio of the detuning to the maximum control amplitude). It is intended to model a pair of qubits interacting via resonant exchange. Both MQGs can be seen to outperform the bare unitary control over a wide range of detunings. The robust generator-exact  MQG always outperforms the generator-exact MQG, and both MQGs outperform any of the bare unitary controls over a wide range of detunings. Similar results are obtained for drift in the qubit control amplitude. The insensitivity to $\epsilon$ here is reminiscent of the figures in \mbox{%DIFAUXCMD
+  \caption{\textbf{Two-qubit robust generator-exact MQG} Numerical results showing the diamond distance errors for a generator-exact MQG (dashed blue), a robust generator-exact MQG (solid orange), and a large set of bare unitary controls (thin solid grey) as a function of a spurious detuning (quantified by the ratio of the detuning to the maximum control amplitude). It is intended to model a pair of qubits interacting via resonant exchange. Both MQGs can be seen to outperform the bare unitary control over a wide range of detunings. The robust generator-exact  MQG always outperforms the generator-exact MQG, and both MQGs outperform any of the bare unitary controls over a wide range of detunings. Similar results are obtained for drift in the qubit control amplitude\DIFaddbeginFL \DIFaddFL{. The insensitivity to $\epsilon$ here is reminiscent of the insensitivity to pulse amplitude in \mbox{%DIFAUXCMD
 \cite{Wimperis1994}}\hspace{0pt}%DIFAUXCMD
-, however we emphasize that the robustness here is achieved without the temporal overhead associated with coherent control techniques.
-  }}\DIFaddendFL \label{fig:2MQG}
+, however we emphasize that the robustness here is achieved without increasing the duration of the gate}\DIFaddendFL .}
+  \label{fig:2MQG}
 \end{figure}
 
 
